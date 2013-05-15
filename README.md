@@ -1,4 +1,4 @@
-# Tanks, Tanks, & more Tanks
+# Tanks, Tanks, & More Tanks
 
 ## Overview
 
@@ -12,5 +12,14 @@ Please read through the resources available at https://developer.mozilla.org/en-
 
 Please also note that this project's indentation style is 4 spaces (no tabs!). :)
 
-Unfortunately, this project at the moment seems to limited to Chrome (on my Mac, Firefox chokes,
-and Safari refuses to load WebGL).
+#### Browser Limitations:
+
+For OSX:
+* Chrome: Works with no issues (Recommended).
+* Safari: Works (seemingly with no issues) if WebGL is enabled. To enable WebGL,
+open Safari, go to Safari->Preferences->Advanced, check "Show Develop menu...",
+go to Develop->Enable WebGL.
+* Firefox: Works, but slow.
+
+For Windows:
+* ?
