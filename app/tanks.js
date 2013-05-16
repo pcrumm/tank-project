@@ -11,7 +11,7 @@ var shaderProgram;
 
 var camera;
 
-var cube;
+var shapes;
 
 var degreesToRadians = Math.PI / 180.0;
 
@@ -38,7 +38,10 @@ function start() {
         // Set up to draw the scene periodically.
         setInterval(drawScene, 15);
         
-        cube = new Cube({x: 0, y: 2, z: 0}, {x: 0, y: 20, z: 0}, 1);
+        shapes = [
+            new Cube({x: 0, y: 0, z: 0}, {x: 0, y: 150, z: 0}, 1),
+            new Cube({x: -3, y: 0, z: 0}, {x: 60, y: -45, z: 0}, 1)
+        ];
         
         camera = new Camera();
     
@@ -125,11 +128,11 @@ function drawScene() {
     mvRotate(camera.rotation.y, [0, 1, 0]);
     mvTranslate([camera.offset.x, camera.offset.y, camera.offset.z]);
     
-    cube.update();
-    
-    setMatrixUniforms();
-    
-    cube.draw();
+    for (var i = 0; i < shapes.length; i++)
+    {
+        shapes[i].draw();
+    }
+    shapes[1].rotation.y += 0.5; // TODO: remove this. this is only for demonstration.
     
     // Restore the original matrix
     mvPopMatrix();

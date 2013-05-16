@@ -47,16 +47,24 @@ function Shape (vertices, colors, vertex_indices) {
 }
 
 Shape.prototype.update = function() {
+    mvPushMatrix();
+    
     mvRotate(this.rotation.x, [1, 0, 0]);
     mvRotate(this.rotation.y, [0, 1, 0]);
     mvRotate(this.rotation.z, [0, 0, 1]);
     
     mvTranslate([this.offset.x, this.offset.y, this.offset.z]);
     
-    // TODO: Scale
+    // TODO: Implement scale
+    
+    setMatrixUniforms();
+    
+    mvPopMatrix();
 };
 
 Shape.prototype.draw = function() {
+    this.update();
+    
     gl.bindBuffer(gl.ARRAY_BUFFER, this.vertices_buffer);
     gl.vertexAttribPointer(vertexPositionAttribute, 3, gl.FLOAT, false, 0, 0);
     
