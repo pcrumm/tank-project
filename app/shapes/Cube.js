@@ -1,4 +1,4 @@
-function Cube() {
+function Cube(offset, rotation, scale) {
     // Create an array of vertices for the cube.
     var vertices = [
         // Front face
@@ -75,5 +75,9 @@ function Cube() {
     ];
     
     Shape.call(this, vertices, generated_colors, vertex_indices); // inherit from Shape
+    
+    this.offset = offset || {x: 0, y: 0, z: 0};
+    this.rotation = rotation || {x: 0, y: 0, z: 0};
+    this.scale = scale || 1;
 }
 inheritPrototype(Cube, Shape);

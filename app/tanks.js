@@ -12,7 +12,6 @@ var shaderProgram;
 var camera;
 
 var cube;
-var cubeRotation = 0.0;
 
 var degreesToRadians = Math.PI / 180.0;
 
@@ -39,7 +38,7 @@ function start() {
         // Set up to draw the scene periodically.
         setInterval(drawScene, 15);
         
-        cube = new Cube();
+        cube = new Cube({x: 0, y: 2, z: 0}, {x: 0, y: 20, z: 0}, 1);
         
         camera = new Camera();
     
@@ -126,12 +125,7 @@ function drawScene() {
     mvRotate(camera.rotation.y, [0, 1, 0]);
     mvTranslate([camera.offset.x, camera.offset.y, camera.offset.z]);
     
-    mvRotate(cubeRotation, [0, 1, 0]);
-    
-    cubeRotation += 0.5;
-    if ( cubeRotation > 360 ) {
-        cubeRotation -= 360;
-    }
+    cube.update();
     
     setMatrixUniforms();
     
