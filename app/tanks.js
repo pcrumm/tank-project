@@ -39,8 +39,9 @@ function start() {
         setInterval(drawScene, 15);
         
         shapes = [
+            new Square({x: 0, y: 0, z: 0}, {x: 0, y: 0, z: 0}, 1),
             new Cube({x: 0, y: 0, z: 0}, {x: 0, y: 150, z: 0}, 1),
-            new Cube({x: -3, y: 0, z: 0}, {x: 60, y: -45, z: 0}, 1)
+            new Cube({x: -3, y: 0, z: 0}, {x: 0, y: -45, z: 0}, 1)
         ];
         
         camera = new Camera();
@@ -128,8 +129,7 @@ function drawScene() {
     mvRotate(camera.rotation.y, [0, 1, 0]);
     mvTranslate([camera.offset.x, camera.offset.y, camera.offset.z]);
     
-    for (var i = 0; i < shapes.length; i++)
-    {
+    for (var i = 0; i < shapes.length; i++) {
         shapes[i].draw();
     }
     shapes[1].rotation.y += 0.5; // TODO: remove this. this is only for demonstration.
