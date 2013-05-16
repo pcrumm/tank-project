@@ -28,7 +28,7 @@ function start() {
     
     // Only continue if WebGL is available and working
     if ( gl ) {
-        gl.clearColor(0.8, 0.8, 0.8, 1.0);  // Clear to black, fully opaque
+        gl.clearColor(0.7, 0.7, 1.0, 1.0);  // Clear to sky blue
         gl.clearDepth(1.0);                 // Clear everything
         gl.enable(gl.DEPTH_TEST);           // Enable depth testing
         gl.depthFunc(gl.LEQUAL);            // Near things obscure far things
@@ -39,9 +39,9 @@ function start() {
         setInterval(drawScene, 15);
         
         shapes = [
-            new Square({x: 0, y: 0, z: 0}, {x: 0, y: 0, z: 0}, 1),
-            new Cube({x: 0, y: 0, z: 0}, {x: 0, y: 150, z: 0}, 1),
-            new Cube({x: -3, y: 0, z: 0}, {x: 0, y: -45, z: 0}, 1)
+            new Square({x: 0, y: 0, z: 0}, {x: 0, y: 0, z: 0}, {x: 100, y: 1, z: 100}), // the ground
+            new Cube({x: 0, y: 2, z: 0}, {x: 0, y: 150, z: 0}, {x: 3, y: 1, z: 1}),
+            new Cube({x: 0, y: 0, z: 0}, {x: 0, y: -45, z: 0}, {x: 1, y: 1, z: 1})
         ];
         
         camera = new Camera();

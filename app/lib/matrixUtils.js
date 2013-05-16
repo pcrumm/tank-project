@@ -21,6 +21,17 @@ function mvRotate(angle, v) {
     multMatrix(m);
 }
 
+function mvScale(x, y, z) {
+    var m = $M([
+        [x, 0, 0, 0],
+        [0, y, 0, 0],
+        [0, 0, z, 0],
+        [0, 0, 0, 1],
+    ]);
+    
+    multMatrix(m);
+}
+
 function setMatrixUniforms() {
     var pUniform = gl.getUniformLocation(shaderProgram, "uPMatrix");
     gl.uniformMatrix4fv(pUniform, false, new Float32Array(perspectiveMatrix.flatten()));

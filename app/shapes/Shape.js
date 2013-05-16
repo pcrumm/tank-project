@@ -23,7 +23,11 @@ function Shape (vertices, colors, vertex_indices) {
         z: 0
     };
     
-    this.scale = 1;
+    this.scale = {
+        x: 1,
+        y: 1,
+        z: 1
+    };
     
     // Construct buffers:
     
@@ -55,7 +59,7 @@ Shape.prototype.update = function() {
     
     mvTranslate([this.offset.x, this.offset.y, this.offset.z]);
     
-    // TODO: Implement scale
+    mvScale(this.scale.x, this.scale.y, this.scale.z);
     
     setMatrixUniforms();
     
