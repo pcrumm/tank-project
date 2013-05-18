@@ -23,3 +23,16 @@ go to Develop->Enable WebGL.
 
 For Windows:
 * ?
+
+### Setup
+#### Requirements
+The front-end of this application has no requirements.
+
+The backend will require node.js, and the configuration instructions below.
+
+#### Server
+First, download and install node.js from http://nodejs.org/
+
+Once you've done so, open a terminal window and
+
+    npm install socket.io
