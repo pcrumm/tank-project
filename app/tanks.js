@@ -40,8 +40,8 @@ function start() {
         
         shapes = [
             new Square({x: 0, y: 0, z: 0}, {x: 0, y: 0, z: 0}, {x: 100, y: 1, z: 100}), // the ground
-            new Cube({x: 0, y: 2, z: 0}, {x: 0, y: 150, z: 0}, {x: 3, y: 1, z: 1}),
-            new Cube({x: 0, y: 0, z: 0}, {x: 0, y: -45, z: 0}, {x: 1, y: 1, z: 1})
+            new Cube({x: 0, y: 2, z: 0}, {x: 0, y: 150, z: 0}, {x: 1, y: 1, z: 1}),
+            new Cube({x: 0, y: 0, z: 0}, {x: 0, y: 0, z: 0}, {x: 1, y: 1, z: 1})
         ];
         
         camera = new Camera();
@@ -128,6 +128,8 @@ function drawScene() {
     
     mvRotate(camera.rotation.y, [0, 1, 0]);
     mvTranslate([camera.offset.x, camera.offset.y, camera.offset.z]);
+    
+    camera.update();
     
     for (var i = 0; i < shapes.length; i++) {
         shapes[i].draw();

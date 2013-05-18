@@ -6,6 +6,13 @@ function Square(offset, rotation, scale) {
         -1.0, -1.0,  1.0,
     ];
     
+    var normals = [
+        0.0,  1.0,  0.0,
+        0.0,  1.0,  0.0,
+        0.0,  1.0,  0.0,
+        0.0,  1.0,  0.0,
+    ];
+    
     var green = [0.2,  0.8,  0.2,  1.0];
     var colors = [];
     for (var i = 0; i < 4; i++) {
@@ -19,7 +26,7 @@ function Square(offset, rotation, scale) {
         0, 2, 3
     ];
     
-    Shape.call(this, vertices, colors, vertex_indices); // inherit from Shape
+    Shape.call(this, vertices, normals, colors, vertex_indices); // inherit from Shape
     
     this.offset = offset || {x: 0, y: 0, z: 0};
     this.rotation = rotation || {x: 0, y: 0, z: 0};

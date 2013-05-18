@@ -1,3 +1,7 @@
+var vertexPositionAttribute;
+var vertexNormalAttribute;
+var vertexColorAttribute;
+
 //
 // initShaders()
 //
@@ -23,6 +27,9 @@ function initShaders() {
     
     vertexPositionAttribute = gl.getAttribLocation(shaderProgram, "aVertexPosition");
     gl.enableVertexAttribArray(vertexPositionAttribute);
+    
+    vertexNormalAttribute = gl.getAttribLocation(shaderProgram, "aVertexNormal");
+    gl.enableVertexAttribArray(vertexNormalAttribute);
     
     vertexColorAttribute = gl.getAttribLocation(shaderProgram, "aVertexColor");
     gl.enableVertexAttribArray(vertexColorAttribute);
