@@ -1,7 +1,3 @@
-// Because Shape handles buffer ugliness, it's appropriate to keep these related globals in this file.
-var vertexPositionAttribute;
-var vertexColorAttribute;
-
 // Helper function:
 function inheritPrototype(subType, superType) {
     var p = Object.create(superType.prototype);
@@ -10,7 +6,7 @@ function inheritPrototype(subType, superType) {
 }
 
 // The Shape object holds ugly GL buffer stuff, and takes care of drawing it. Also holds translation/rotation/scale info
-function Shape (vertices, colors, vertex_indices) {
+function Shape (vertices, normals, colors, vertex_indices) {
     this.offset = {
         x: 0,
         y: 0,
@@ -36,6 +32,11 @@ function Shape (vertices, colors, vertex_indices) {
     this.vertices_buffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, this.vertices_buffer);
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
+    
+    
+    this.vertex_normals_buffer = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, this.vertex_normals_buffer);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(normals), gl.STATIC_DRAW);
     
     // Colors:
     this.vertices_color_buffer = gl.createBuffer();
@@ -70,11 +71,13 @@ Shape.prototype.draw = function() {
     this.update();
     
     gl.bindBuffer(gl.ARRAY_BUFFER, this.vertices_buffer);
-    gl.vertexAttribPointer(vertexPositionAttribute, 3, gl.FLOAT, false, 0, 0);
+    gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, 3, gl.FLOAT, false, 0, 0);
     
-    // Set the colors attribute for the vertices.
+    gl.bindBuffer(gl.ARRAY_BUFFER, this.vertex_normals_buffer);
+    gl.vertexAttribPointer(shaderProgram.vertexNormalAttribute, 3, gl.FLOAT, false, 0, 0);
+    
     gl.bindBuffer(gl.ARRAY_BUFFER, this.vertices_color_buffer);
-    gl.vertexAttribPointer(vertexColorAttribute, 4, gl.FLOAT, false, 0, 0);
+    gl.vertexAttribPointer(shaderProgram.vertexColorAttribute, 4, gl.FLOAT, false, 0, 0);
     
     // Draw the cube.
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.vertices_index_buffer);

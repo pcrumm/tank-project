@@ -38,6 +38,45 @@ function Cube(offset, rotation, scale) {
         -1.0,  1.0, -1.0
     ];
     
+    // Normals:
+    var normals = [
+        // Front
+        0.0,  0.0,  1.0,
+        0.0,  0.0,  1.0,
+        0.0,  0.0,  1.0,
+        0.0,  0.0,  1.0,
+        
+        // Back
+        0.0,  0.0, -1.0,
+        0.0,  0.0, -1.0,
+        0.0,  0.0, -1.0,
+        0.0,  0.0, -1.0,
+        
+        // Top
+        0.0,  1.0,  0.0,
+        0.0,  1.0,  0.0,
+        0.0,  1.0,  0.0,
+        0.0,  1.0,  0.0,
+        
+        // Bottom
+        0.0, -1.0,  0.0,
+        0.0, -1.0,  0.0,
+        0.0, -1.0,  0.0,
+        0.0, -1.0,  0.0,
+        
+        // Right
+        1.0,  0.0,  0.0,
+        1.0,  0.0,  0.0,
+        1.0,  0.0,  0.0,
+        1.0,  0.0,  0.0,
+        
+        // Left
+        -1.0,  0.0,  0.0,
+        -1.0,  0.0,  0.0,
+        -1.0,  0.0,  0.0,
+        -1.0,  0.0,  0.0
+    ];
+    
     // Now set up the colors for the faces. We'll use solid colors for each face.
     var colors = [
         [1.0,  1.0,  1.0,  1.0], // Front face: white
@@ -74,7 +113,7 @@ function Cube(offset, rotation, scale) {
         20, 21, 22,     20, 22, 23  // left
     ];
     
-    Shape.call(this, vertices, generated_colors, vertex_indices); // inherit from Shape
+    Shape.call(this, vertices, normals, generated_colors, vertex_indices); // inherit from Shape
     
     this.offset = offset || {x: 0, y: 0, z: 0};
     this.rotation = rotation || {x: 0, y: 0, z: 0};

@@ -17,25 +17,54 @@
         <script id="shader-fs" type="x-shader/x-fragment">
             varying lowp vec4 vColor;
             
+            varying mediump vec3 vLightWeighting;
+            
             void main(void)
             {
-                gl_FragColor = vColor;
+                gl_FragColor = vec4(vLightWeighting, 1.0) * vColor;
+                gl_FragColor.a = 1.0;
             }
         </script>
         
         <script id="shader-vs" type="x-shader/x-vertex">
-            attribute vec3 aVertexPosition;
-            attribute vec4 aVertexColor;
+            attribute highp vec3 aVertexPosition;
+            attribute mediump vec3 aVertexNormal;
+            attribute lowp vec4 aVertexColor;
             
-            uniform mat4 uMVMatrix;
-            uniform mat4 uPMatrix;
+            uniform mediump mat4 uNormalMatrix;
+            uniform mediump mat4 uMVMatrix;
+            uniform mediump mat4 uPMatrix;
+            
+            uniform mediump float uCameraRotY;
             
             varying lowp vec4 vColor;
+            
+            varying vec3 vLightWeighting;
             
             void main(void)
             {
                 gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);
+                
                 vColor = aVertexColor;
+                
+                // Lighting:
+                float c = cos(radians(uCameraRotY));
+                float s = sin(radians(uCameraRotY));
+                mat4 ry = mat4( c,   0.0, -s,   0.0,
+                                0.0, 1.0,  0.0, 0.0,
+                                s,   0.0,  c,   0.0,
+                                0.0, 0.0,  0.0, 1.0 );
+                
+                vec3 lighting_direction = normalize(vec3(0.5, 0.5, 1));
+                // Make sure the light source seems static relative to the camera:
+                lighting_direction = (ry * vec4(lighting_direction, 0.0)).xyz;
+                
+                vec3 ambient_color = vec3(0.5, 0.5, 0.5);
+                vec3 directional_color = vec3(0.8, 0.8, 0.8);
+                
+                vec3 transformed_normal = (uNormalMatrix * vec4(aVertexNormal, 1.0)).xyz;
+                float directional_light_weighting = max(dot(transformed_normal, lighting_direction), 0.0);
+                vLightWeighting = ambient_color + directional_color * directional_light_weighting;
             }
         </script>
     </head>

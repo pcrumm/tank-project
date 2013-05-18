@@ -8,6 +8,7 @@ function Camera () {
     this.rotation = {
         y: 0
     };
+    this.cameraRotYUniform = gl.getUniformLocation(shaderProgram, "uCameraRotY");
     
     this.moveOnXAxis = function(units) {
         var yRotationInRadians = this.rotation.y * degreesToRadians;
@@ -37,6 +38,9 @@ function Camera () {
     }
     
     this.update = function () {
-        // TODO: Finish this, make it take care of updating translations / rotations (in drawScene)
+        mvRotate(this.rotation.y, [0, 1, 0]);
+        mvTranslate([this.offset.x, this.offset.y, this.offset.z]);
+        
+        gl.uniform1f(this.cameraRotYUniform, this.rotation.y);
     }
 }
