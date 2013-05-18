@@ -1,16 +1,11 @@
-var canvas;
 var gl;
-
-var cubeVerticesBuffer;
-var cubeVerticesColorBuffer;
-var cubeVerticesIndexBuffer;
 
 var mvMatrix;
 var perspectiveMatrix;
+
 var shaderProgram;
 
 var camera;
-
 var shapes;
 
 var degreesToRadians = Math.PI / 180.0;
@@ -22,7 +17,7 @@ var degreesToRadians = Math.PI / 180.0;
 // Figuratively, that is. There's nothing moving in this demo.
 //
 function start() {
-    canvas = document.getElementById("glcanvas");
+    var canvas = document.getElementById("glcanvas");
     
     initWebGL(canvas); // Initialize the GL context
     
@@ -56,7 +51,7 @@ function start() {
 // Initialize WebGL, returning the GL context or null if
 // WebGL isn't available or could not be initialized.
 //
-function initWebGL() {
+function initWebGL(canvas) {
     gl = null;
     
     try {
@@ -123,11 +118,8 @@ function drawScene() {
     // the center of the scene.
     loadIdentity();
     
-    // Save the current matrix, then rotate/translate before we draw.
+    // Save the current matrix.
     mvPushMatrix();
-    
-    mvRotate(camera.rotation.y, [0, 1, 0]);
-    mvTranslate([camera.offset.x, camera.offset.y, camera.offset.z]);
     
     camera.update();
     

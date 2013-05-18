@@ -1,7 +1,3 @@
-var vertexPositionAttribute;
-var vertexNormalAttribute;
-var vertexColorAttribute;
-
 //
 // initShaders()
 //
@@ -18,21 +14,20 @@ function initShaders() {
     gl.linkProgram(shaderProgram);
     
     // If creating the shader program failed, alert
-    
     if ( !gl.getProgramParameter(shaderProgram, gl.LINK_STATUS) ) {
         alert("Unable to initialize the shader program.");
     }
     
     gl.useProgram(shaderProgram);
     
-    vertexPositionAttribute = gl.getAttribLocation(shaderProgram, "aVertexPosition");
-    gl.enableVertexAttribArray(vertexPositionAttribute);
+    shaderProgram.vertexPositionAttribute = gl.getAttribLocation(shaderProgram, "aVertexPosition");
+    gl.enableVertexAttribArray(shaderProgram.vertexPositionAttribute);
     
-    vertexNormalAttribute = gl.getAttribLocation(shaderProgram, "aVertexNormal");
-    gl.enableVertexAttribArray(vertexNormalAttribute);
+    shaderProgram.vertexNormalAttribute = gl.getAttribLocation(shaderProgram, "aVertexNormal");
+    gl.enableVertexAttribArray(shaderProgram.vertexNormalAttribute);
     
-    vertexColorAttribute = gl.getAttribLocation(shaderProgram, "aVertexColor");
-    gl.enableVertexAttribArray(vertexColorAttribute);
+    shaderProgram.vertexColorAttribute = gl.getAttribLocation(shaderProgram, "aVertexColor");
+    gl.enableVertexAttribArray(shaderProgram.vertexColorAttribute);
 }
 
 //
