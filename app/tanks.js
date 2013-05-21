@@ -34,7 +34,7 @@ function start() {
         setInterval(drawScene, 15);
         
         shapes = [
-            new Square({x: 0, y: 0, z: 0}, {x: 0, y: 0, z: 0}, {x: 100, y: 1, z: 100}), // the ground
+            new Terrain(),
             new Cube({x: 0, y: 2, z: 0}, {x: 0, y: 150, z: 0}, {x: 1, y: 1, z: 1}),
             new Cube({x: 0, y: 0, z: 0}, {x: 0, y: 0, z: 0}, {x: 1, y: 1, z: 1})
         ];
@@ -94,6 +94,16 @@ function bindInputEvents() {
             case 39: // Right Arrow
                 camera.rotateOnYAxis(2);
                 break;
+
+            //I put these in for testing purposes
+
+            case 40:
+                camera.moveOnYAxis(2);
+                break;
+
+            case 38:
+                camera.moveOnYAxis(-2);
+                break;
         };
     });
 }
@@ -112,7 +122,7 @@ function drawScene() {
     // scene. Our field of view is 45 degrees, with a width/height
     // ratio of 640:480, and we only want to see objects between 0.1 units
     // and 100 units away from the camera.
-    perspectiveMatrix = makePerspective(45, 640.0/480.0, 0.1, 100.0);
+    perspectiveMatrix = makePerspective(45, 640.0/480.0, 0.1, 1000.0);
     
     // Set the drawing position to the "identity" point, which is
     // the center of the scene.
