@@ -108,6 +108,18 @@ function bindInputEvents() {
                 player.rotateRight();
                 break;
         };
+        
+        // If any key was called that changed the player's tank's position or rotation, be sure to notify the server:
+        switch ( event.keyCode ) {
+            case 65: // A
+            case 68: // D
+            case 87: // W
+            case 83: // S
+            case 37: // Left Arrow
+            case 39: // Right Arrow
+                var player_tank = player.getTank();
+                multiplayer.sendTankUpdate(player_tank.id, player_tank.offset, player_tank.rotation);
+        };
     });
 }
 

@@ -9,6 +9,10 @@ function Player(player_tank) {
     var units_to_move = 0.5;
     var units_to_rotate = 3;
     
+    this.getTank = function() {
+        return tank;
+    };
+    
     this.moveForward = function() {
         camera.moveOnZAxis(units_to_move);
         tank.moveOnZAxis(units_to_move);
