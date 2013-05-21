@@ -119,4 +119,5 @@ function Cube(offset, rotation, scale) {
     this.rotation = rotation || {x: 0, y: 0, z: 0};
     this.scale = scale || {x: 1, y: 1, z: 1};
 }
+
 inheritPrototype(Cube, Shape);
