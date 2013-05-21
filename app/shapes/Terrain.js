@@ -9,7 +9,7 @@ function getVec3(row, col) {
     return vec3( mapVertices[index],  mapVertices[index+1],  mapVertices[index+2]);
 }
 
-function generateMap() {
+function Terrain() {
     //Returns a shape object holding the map;
     var dimension = 100;
     var scale = 10;
@@ -81,7 +81,7 @@ function generateMap() {
             indicesIndex++;      
         }
 
-    var map = new Shape(mapVertices, mapNormals, [0.2,  0.8,  0.2,  1.0], mapIndices);
-
-    return map;
+    Shape.call(this, mapVertices, mapNormals, [0.2,  0.8,  0.2,  1.0], mapIndices);
 }
+
+inheritPrototype(Terrain, Shape);
