@@ -7,7 +7,7 @@ function getIndex(row, col)
 
 function getVec3(row, col)
 {
-    var index = mapVertices[getIndex(z, x);
+    var index = mapVertices[getIndex(z, x)];
     return vec3( mapVertices[index],  mapVertices[index+1],  mapVertices[index+2]);
 }
 
@@ -84,7 +84,13 @@ function generateMap()
             indicesIndex++;      
         }
 
-    var map = new Shape(mapVertices, mapNormals, [0.2,  0.8,  0.2,  1.0], mapIndices);
+    var green = [0.2,  0.8,  0.2,  1.0];
+    var colors = [];
+    for (var i = 0; i < mapVertices.length; i++) {
+        colors = colors.concat(green);
+    }
+
+    var map = new Shape(mapVertices, mapNormals, colors, mapIndices);
 
     return map;
 }
