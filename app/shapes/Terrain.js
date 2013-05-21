@@ -81,7 +81,14 @@ function Terrain() {
             indicesIndex++;      
         }
 
-    Shape.call(this, mapVertices, mapNormals, [0.2,  0.8,  0.2,  1.0], mapIndices);
+    var green = [0.2,  0.8,  0.2,  1.0];
+    var colors = [];
+    for (var i = 0; i < mapVertices.length; i++) {
+        colors = colors.concat(green);
+    }
+
+    Shape.call(this, mapVertices, mapNormals, colors, mapIndices);
 }
+
 
 inheritPrototype(Terrain, Shape);
