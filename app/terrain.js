@@ -1,18 +1,15 @@
-function getIndex(row, col)
-{
+function getIndex(row, col) {
     //Gets an array index for the vertex or normal array
     //Given a position in a 2D array, returns the position in a 1D array.
     return 3*((dimension*row)+col);
 }
 
-function getVec3(row, col)
-{
-    var index = mapVertices[getIndex(z, x);
+function getVec3(row, col) {
+    var index = mapVertices[getIndex(z, x)];
     return vec3( mapVertices[index],  mapVertices[index+1],  mapVertices[index+2]);
 }
 
-function generateMap()
-{
+function generateMap() {
     //Returns a shape object holding the map;
     var dimension = 100;
     var scale = 10;
@@ -49,7 +46,7 @@ function generateMap()
             if (z > 0 && x+1 < dimension)
                 sum += (getVec3(z-1, x) - current).cross(getVec3(z, x+1) - current);
 
-            sum  = normalize(sum)
+            sum = normalize(sum)
 
             mapNormals[getIndex(z, x)] = sum.x;
             mapNormals[getIndex(z, x)+1] = sum.y;
