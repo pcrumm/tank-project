@@ -8,6 +8,7 @@ var shaderProgram;
 var shapes;
 var tanks;
 var player;
+var multiplayer;
 
 var degreesToRadians = Math.PI / 180.0;
 
@@ -30,9 +31,6 @@ function start() {
         
         initShaders();
         
-        // Set up to draw the scene periodically.
-        setInterval(drawScene, 15);
-        
         shapes = [
             new Square({x: 0, y: 0, z: 0}, {x: 0, y: 0, z: 0}, {x: 100, y: 1, z: 100}), // the ground
             new Cube({x: 0, y: 2, z: -5}, {x: 0, y: 0, z: 0}, {x: 1, y: 1, z: 1}) // random floating cube
@@ -50,8 +48,13 @@ function start() {
         player = new Player(tanks[0]);
         
         shapes = shapes.concat(tanks);
+        
+        multiplayer = new Multiplayer();
     
         bindInputEvents();
+        
+        // Set up to draw the scene periodically:
+        setInterval(drawScene, 30);
     }
 }
 
@@ -139,4 +142,6 @@ function drawScene() {
     
     // Restore the original matrix
     mvPopMatrix();
+    
+    multiplayer.receiveTankUpdate();
 }
