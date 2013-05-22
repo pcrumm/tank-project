@@ -39,6 +39,7 @@ function start() {
         shapes = [
             new Terrain(),
             new Cube({x: 0, y: 2, z: 0}, {x: 0, y: 150, z: 0}, {x: 1, y: 1, z: 1}),
+            new Square({x: 0, y: -5 , z: 0}, {x: 0, y: 0, z: 0}, {x: 600, y: 1, z: 600}),
             new Cube({x: 0, y: 0, z: 0}, {x: 0, y: 0, z: 0}, {x: 1, y: 1, z: 1})
         ];
         

@@ -36,6 +36,14 @@ function Terrain() {
             var xVal = x*dimScale;
             var zVal = z*dimScale;
             var height = getNoise(generator, xVal*.005, zVal*.005);
+
+            var dx = (2*(xVal/dimension)-1);
+            var dz = (2*(zVal/dimension)-1);
+            var d = Math.sqrt(dx*dx+dz*dz);
+
+            if (height > .3+.4*d*d)
+                height *= -1;
+
             mapVertices[getIndex(z, x)]   = xVal;
             mapVertices[getIndex(z, x)+1] = height * heightScale;
             mapVertices[getIndex(z, x)+2] = zVal;
@@ -72,7 +80,7 @@ function Terrain() {
 
     for (var z = 0; z < (dimension-2); z++)
     {
-        for (var x = 0; x < (dimension-1); x++)
+        for (var x = 1; x < (dimension-1); x++)
         {
             var start = (z*dimension) + x;
 
@@ -110,7 +118,7 @@ function Terrain() {
 
     var displacement = (dimScale*dimension)/2
 
-    this.offset = {x: -displacement, y: -(heightScale/2), z: -displacement};
+    this.offset = {x: -displacement, y: -heightScale/2, z: -displacement};
     this.rotation = {x: 0, y: 0, z: 0};
     this.scale = {x: 1, y: 1, z: 1};
 }

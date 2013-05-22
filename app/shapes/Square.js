@@ -14,9 +14,10 @@ function Square(offset, rotation, scale) {
     ];
     
     var green = [0.2,  0.8,  0.2,  1.0];
+    var blue = [0.0, 0.0, 1.0, 1.0];
     var colors = [];
     for (var i = 0; i < 4; i++) {
-        colors = colors.concat(green);
+        colors = colors.concat(blue);
     }
     
     // This array defines each face as two triangles, using the
