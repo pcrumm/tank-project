@@ -5,6 +5,7 @@ function Player(player_tank) {
     var camera_distance_from_tank = 6;
     camera.offset.z = camera_distance_from_tank;
     camera.offset.y = 1.5;
+    camera.offset.x = tank.offset.x;
     
     var units_to_move = 0.5;
     var units_to_rotate = 3;

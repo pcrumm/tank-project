@@ -36,20 +36,10 @@ function start() {
             new Cube({x: 0, y: 2, z: -5}, {x: 0, y: 0, z: 0}, {x: 1, y: 1, z: 1}) // random floating cube
         ];
         
-        tanks = [
-            new Tank({x: 0, y: 0, z: 0}, {x: 0, y: 0, z: 0}, {x: 1, y: 1, z: 1.5}), // the player's tank
-            new Tank({x: -4, y: 0, z: -10}, {x: 0, y: 0, z: 0}, {x: 1, y: 1, z: 1})
-        ];
-        
-        // TODO: Remove these temporary settings:
-        tanks[0].id = 0;
-        tanks[1].id = 1;
-        
-        player = new Player(tanks[0]);
-        
-        shapes = shapes.concat(tanks);
+        tanks = [];
         
         multiplayer = new Multiplayer();
+        multiplayer.initConnection();
     
         bindInputEvents();
         
@@ -148,6 +138,7 @@ function drawScene() {
     
     player.update();
     
+    shapes = shapes.concat(tanks); // Since a tank may have been added...
     for (var i = 0; i < shapes.length; i++) {
         shapes[i].draw();
     }
@@ -156,4 +147,19 @@ function drawScene() {
     mvPopMatrix();
     
     multiplayer.receiveTankUpdate();
+}
+
+//
+// updateTank
+// Moves the given tank to the given orientation.
+//
+function updateTank(tank_id, tank_position, tank_rotation)
+{
+    for (var i = 0; i < tanks.length; i++) {
+        if ( tanks[i].id == tank_id ) {
+            tanks[i].offset = tank_position;
+            tanks[i].rotation = tank_rotation;
+            return true;
+        }
+    }
 }
