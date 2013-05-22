@@ -1,5 +1,5 @@
 //Declared outside in order to be used in helpers
-var dimension = 16;
+var dimension = 10;
 var mapVertices = [];
 
 function getIndex(row, col) {
@@ -13,12 +13,21 @@ function getVec3(row, col) {
     return $V([mapVertices[index],  mapVertices[index+1],  mapVertices[index+2]]);
 }
 
+function getNoise(generator, xVal, zVal) {
+    var n = (1/15)*(generator.noise(xVal, zVal)) + (2/15)*(generator.noise(xVal*2, zVal*2)) + 
+                            (4/15)*(generator.noise(4*xVal, 4*zVal)) + (8/15)*(generator.noise(8*xVal, 8*zVal));
+
+    //Clamp the value to [0,1]
+    return (1+n)/2;
+}
+
 function Terrain() {
     //Returns a shape object holding the map;
     var heightScale = 70;
-    var dimScale = 10;
+    var dimScale = 60;
     var mapNormals = [];
     var mapIndices = [];
+    var generator = new SimplexNoise();
 
     //Generates the terrain vertices
     for (var z = 0; z < dimension; z++)
@@ -26,8 +35,7 @@ function Terrain() {
         {
             var xVal = x*dimScale;
             var zVal = z*dimScale;
-            var height = (1/15)*(PerlinNoise.noise(xVal, zVal, .8)) + (2/15)*(PerlinNoise.noise(xVal*2, zVal*2, .8)) + 
-                            (4/15)*(PerlinNoise.noise(4*xVal, 4*zVal, .8)) + (8/15)*(PerlinNoise.noise(8*xVal, 8*zVal, .8));
+            var height = getNoise(generator, xVal*.01, zVal*.01);
             mapVertices[getIndex(z, x)]   = xVal;
             mapVertices[getIndex(z, x)+1] = height * heightScale;
             mapVertices[getIndex(z, x)+2] = zVal;
@@ -100,7 +108,7 @@ function Terrain() {
 
     Shape.call(this, mapVertices, mapNormals, colors, mapIndices);
 
-    this.offset = {x: -80, y: -35, z: -80};
+    this.offset = {x: -300, y: -35, z: -300};
     this.rotation = {x: 0, y: 0, z: 0};
     this.scale = {x: 1, y: 1, z: 1};
 }

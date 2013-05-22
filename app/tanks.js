@@ -32,7 +32,10 @@ function start() {
         
         // Set up to draw the scene periodically.
         setInterval(drawScene, 15);
-        
+
+
+        Math.seedrandom("Lorem Ipsum");
+
         shapes = [
             new Terrain(),
             new Cube({x: 0, y: 2, z: 0}, {x: 0, y: 150, z: 0}, {x: 1, y: 1, z: 1}),
