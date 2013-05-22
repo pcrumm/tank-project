@@ -34,9 +34,10 @@ function Player(player_tank) {
     };
     
     var syncCameraAndTankRotation = function() {
-        var yRotationInRadians = tank.rotation.y * degreesToRadians;
-        camera.offset.x = tank.offset.x + (Math.sin(yRotationInRadians) * camera_distance_from_tank);
-        camera.offset.z = tank.offset.z + (Math.cos(yRotationInRadians) * camera_distance_from_tank);
+        var y_rotation_in_rads = tank.getBodyYRotation() * degreesToRadians;
+        var tank_offset = tank.getOffset();
+        camera.offset.x = tank_offset.x + (Math.sin(y_rotation_in_rads) * camera_distance_from_tank);
+        camera.offset.z = tank_offset.z + (Math.cos(y_rotation_in_rads) * camera_distance_from_tank);
     };
     
     this.rotateLeft = function() {

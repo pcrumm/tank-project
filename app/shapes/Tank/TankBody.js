@@ -1,4 +1,4 @@
-function Tank(offset, rotation, scale) {
+function TankBody(offset, y_rotation) {
     // Create an array of vertices for the cube.
     var vertices = [
         // Front face
@@ -96,11 +96,9 @@ function Tank(offset, rotation, scale) {
     Shape.call(this, vertices, normals, colors, vertex_indices); // inherit from Shape
     
     this.offset = offset || {x: 0, y: 0, z: 0};
-    this.rotation = rotation || {x: 0, y: 0, z: 0};
-    this.scale = scale || {x: 1, y: 1, z: 1};
-    
-    this.id = 0; // TODO: fix, this is just a dummy value
-    
+    this.rotation = {x: 0, y: y_rotation, z: 0};
+    this.scale = {x: 1, y: 1, z: 1};
+        
     this.moveOnXAxis = function(units) {
         var y_rotation_in_rads = this.rotation.y * degreesToRadians;
         this.offset.x += Math.cos(y_rotation_in_rads) * units;
@@ -122,14 +120,14 @@ function Tank(offset, rotation, scale) {
         if ( this.rotation.y < -360.0 ) {
             this.rotation.y += 360.0;
         }
-    }
+    };
 }
 
-inheritPrototype(Tank, Shape);
+inheritPrototype(TankBody, Shape);
 
 // Overloading Shape.prototype's update():
 // (Rotation comes after translation, and only rotating around Y axis)
-Tank.prototype.update = function() {
+TankBody.prototype.update = function() {
     mvPushMatrix();
         
     mvTranslate([this.offset.x, this.offset.y, this.offset.z]);
@@ -139,4 +137,4 @@ Tank.prototype.update = function() {
     setMatrixUniforms();
     
     mvPopMatrix();
-}
+};

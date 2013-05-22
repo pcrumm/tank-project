@@ -37,13 +37,9 @@ function start() {
         ];
         
         tanks = [
-            new Tank({x: 0, y: 0, z: 0}, {x: 0, y: 0, z: 0}, {x: 1, y: 1, z: 1.5}), // the player's tank
-            new Tank({x: -4, y: 0, z: -10}, {x: 0, y: 0, z: 0}, {x: 1, y: 1, z: 1})
+            new Tank({x: 0, y: 0, z: 0}, 0), // the player's tank
+            new Tank({x: -4, y: 0, z: -10}, 0)
         ];
-        
-        // TODO: Remove these temporary settings:
-        tanks[0].id = 0;
-        tanks[1].id = 1;
         
         player = new Player(tanks[0]);
         
