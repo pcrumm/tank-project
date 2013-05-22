@@ -35,4 +35,4 @@ First, download and install node.js from http://nodejs.org/
 
 Once you've done so, open a terminal window and
 
-    npm install socket.io
+    cd server && npm install
