@@ -1,23 +1,23 @@
-function Cube(offset, rotation, scale) {
+function Tank(offset, rotation, scale) {
     // Create an array of vertices for the cube.
     var vertices = [
         // Front face
         -1.0, -1.0,  1.0,
          1.0, -1.0,  1.0,
-         1.0,  1.0,  1.0,
-        -1.0,  1.0,  1.0,
+         1.0,  0.5,  1.0,
+        -1.0,  0.5,  1.0,
         
         // Back face
         -1.0, -1.0, -1.0,
-        -1.0,  1.0, -1.0,
-         1.0,  1.0, -1.0,
+        -1.0,  0.5, -1.0,
+         1.0,  0.5, -1.0,
          1.0, -1.0, -1.0,
         
         // Top face
-        -1.0,  1.0, -1.0,
-        -1.0,  1.0,  1.0,
-         1.0,  1.0,  1.0,
-         1.0,  1.0, -1.0,
+        -1.0,  0.5, -1.0,
+        -1.0,  0.5,  1.0,
+         1.0,  0.5,  1.0,
+         1.0,  0.5, -1.0,
         
         // Bottom face
         -1.0, -1.0, -1.0,
@@ -27,15 +27,15 @@ function Cube(offset, rotation, scale) {
         
         // Right face
          1.0, -1.0, -1.0,
-         1.0,  1.0, -1.0,
-         1.0,  1.0,  1.0,
+         1.0,  0.5, -1.0,
+         1.0,  0.5,  1.0,
          1.0, -1.0,  1.0,
         
         // Left face
         -1.0, -1.0, -1.0,
         -1.0, -1.0,  1.0,
-        -1.0,  1.0,  1.0,
-        -1.0,  1.0, -1.0
+        -1.0,  0.5,  1.0,
+        -1.0,  0.5, -1.0
     ];
     
     // Normals:
@@ -77,30 +77,10 @@ function Cube(offset, rotation, scale) {
         -1.0,  0.0,  0.0
     ];
     
-    // Now set up the colors for the faces. We'll use solid colors for each face.
-    var colors = [
-        [1.0,  1.0,  1.0,  1.0], // Front face: white
-        [1.0,  0.0,  0.0,  1.0], // Back face: red
-        [0.0,  1.0,  0.0,  1.0], // Top face: green
-        [0.0,  0.0,  1.0,  1.0], // Bottom face: blue
-        [1.0,  1.0,  0.0,  1.0], // Right face: yellow
-        [1.0,  0.0,  1.0,  1.0]  // Left face: purple
-    ];
-    
-    // -----
-    
-    // Convert the array of colors into a table for all the vertices.
-    var generated_colors = [];
-    for (var j = 0; j < 6; j++) {
-        var c = colors[j];
-        
-        // Repeat each color four times for the four vertices of the face
-        for (var i = 0; i < 4; i++) {
-            generated_colors = generated_colors.concat(c);
-        }
+    var colors = [];
+    for (var i = 0; i < 24; i++) {
+        colors = colors.concat([0.4,  0.4,  0.4,  1.0]);
     }
-    
-    // -----
     
     // This array defines each face as two triangles, using the
     // indices into the vertex array to specify each triangle's position.
@@ -113,11 +93,50 @@ function Cube(offset, rotation, scale) {
         20, 21, 22,     20, 22, 23  // left
     ];
     
-    Shape.call(this, vertices, normals, generated_colors, vertex_indices); // inherit from Shape
+    Shape.call(this, vertices, normals, colors, vertex_indices); // inherit from Shape
     
     this.offset = offset || {x: 0, y: 0, z: 0};
     this.rotation = rotation || {x: 0, y: 0, z: 0};
     this.scale = scale || {x: 1, y: 1, z: 1};
+    
+    this.id = 0; // TODO: fix, this is just a dummy value
+    
+    this.moveOnXAxis = function(units) {
+        var y_rotation_in_rads = this.rotation.y * degreesToRadians;
+        this.offset.x += Math.cos(y_rotation_in_rads) * units;
+        this.offset.z -= Math.sin(y_rotation_in_rads) * units;
+    };
+    
+    this.moveOnZAxis = function(units) {
+        var y_rotation_in_rads = this.rotation.y * degreesToRadians;
+        this.offset.x -= Math.sin(y_rotation_in_rads) * units;
+        this.offset.z -= Math.cos(y_rotation_in_rads) * units;
+    };
+    
+    this.rotateOnYAxis = function(units) {
+        this.rotation.y -= units;
+        
+        if ( this.rotation.y > 360.0 ) {
+            this.rotation.y -= 360.0;
+        }
+        if ( this.rotation.y < -360.0 ) {
+            this.rotation.y += 360.0;
+        }
+    }
 }
 
-inheritPrototype(Cube, Shape);
+inheritPrototype(Tank, Shape);
+
+// Overloading Shape.prototype's update():
+// (Rotation comes after translation, and only rotating around Y axis)
+Tank.prototype.update = function() {
+    mvPushMatrix();
+        
+    mvTranslate([this.offset.x, this.offset.y, this.offset.z]);
+    mvRotate(this.rotation.y, [0, 1, 0]);
+    mvScale(this.scale.x, this.scale.y, this.scale.z);
+    
+    setMatrixUniforms();
+    
+    mvPopMatrix();
+}

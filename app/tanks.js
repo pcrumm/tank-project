@@ -5,8 +5,10 @@ var perspectiveMatrix;
 
 var shaderProgram;
 
-var camera;
 var shapes;
+var tanks;
+var player;
+var multiplayer;
 
 var degreesToRadians = Math.PI / 180.0;
 
@@ -14,7 +16,6 @@ var degreesToRadians = Math.PI / 180.0;
 // start()
 //
 // Called when the canvas is created to get the ball rolling.
-// Figuratively, that is. There's nothing moving in this demo.
 //
 function start() {
     var canvas = document.getElementById("glcanvas");
@@ -43,9 +44,26 @@ function start() {
             new Cube({x: 0, y: 0, z: 0}, {x: 0, y: 0, z: 0}, {x: 1, y: 1, z: 1})
         ];
         
-        camera = new Camera();
-    
-        bindInputEvents();
+        tanks = [
+            new Tank({x: 0, y: 0, z: 0}, {x: 0, y: 0, z: 0}, {x: 1, y: 1, z: 1.5}), // the player's tank
+            new Tank({x: -4, y: 0, z: -10}, {x: 0, y: 0, z: 0}, {x: 1, y: 1, z: 1})
+        ];
+        
+        // TODO: Remove these temporary settings:
+        tanks[0].id = 0;
+        tanks[1].id = 1;
+        
+        player = new Player(tanks[0]);
+        
+        shapes = shapes.concat(tanks);
+        
+        multiplayer = new Multiplayer();
+        
+        initInputEventHandler();
+        
+        // Set up periodic updates:
+        setInterval(drawScene, 30);
+        setInterval(multiplayer.receiveTankUpdate, 30);
     }
 }
 
@@ -71,6 +89,7 @@ function initWebGL(canvas) {
 }
 
 //
+<<<<<<< HEAD
 // bindInputEvents()
 //
 // Bind events for the application, e.g. keyboard or mouse interaction
@@ -114,6 +133,8 @@ function bindInputEvents() {
 
 
 //
+=======
+>>>>>>> origin/master
 // drawScene()
 //
 // Draw the scene.
@@ -135,12 +156,11 @@ function drawScene() {
     // Save the current matrix.
     mvPushMatrix();
     
-    camera.update();
+    player.update();
     
     for (var i = 0; i < shapes.length; i++) {
         shapes[i].draw();
     }
-    shapes[1].rotation.y += 0.5; // TODO: remove this. this is only for demonstration.
     
     // Restore the original matrix
     mvPopMatrix();
