@@ -17,10 +17,10 @@ function handleKeyUp(event) {
 
 function handleKeys() {
     if ( currentlyPressedKeys[65] ) { // A
-        player.moveLeft();
+        player.rotateTankBodyLeft();
     }
     if ( currentlyPressedKeys[68] ) { // D
-        player.moveRight();
+        player.rotateTankBodyRight();
     }
     
     if ( currentlyPressedKeys[87] ) { // W
@@ -31,10 +31,10 @@ function handleKeys() {
     }
     
     if ( currentlyPressedKeys[37] ) { // Left Arrow
-        player.rotateLeft();
+        player.rotateTankTurretLeft();
     }
     if ( currentlyPressedKeys[39] ) { // Right Arrow
-        player.rotateRight();
+        player.rotateTankTurretRight();
     }
     
     // If any key was called that changed the player's tank's position or rotation, be sure to notify the server:

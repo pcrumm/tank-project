@@ -15,6 +15,10 @@ function Tank(offset, y_rotation) {
         return body.rotation.y;
     };
 
+    this.getTurretYRotation = function() {
+        return turret.rotation.y;
+    };
+
     this.moveOnXAxis = function(units) {
         body.moveOnXAxis(units);
         setTurretOffset();
@@ -25,8 +29,12 @@ function Tank(offset, y_rotation) {
         setTurretOffset();
     };
 
-    this.rotateOnYAxis = function(units) {
+    this.rotateBodyOnYAxis = function(units) {
         body.rotateOnYAxis(units);
+    };
+
+    this.rotateTurretOnYAxis = function(units) {
+        turret.rotateOnYAxis(units);
     };
 
     this.update = function() {
