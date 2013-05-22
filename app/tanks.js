@@ -50,11 +50,12 @@ function start() {
         shapes = shapes.concat(tanks);
         
         multiplayer = new Multiplayer();
-    
-        bindInputEvents();
         
-        // Set up to draw the scene periodically:
+        initInputEventHandler();
+        
+        // Set up periodic updates:
         setInterval(drawScene, 30);
+        setInterval(multiplayer.receiveTankUpdate, 30);
     }
 }
 
@@ -78,51 +79,6 @@ function initWebGL(canvas) {
         alert("Unable to initialize WebGL. Your browser may not support it.");
     }
 }
-
-//
-// bindInputEvents()
-//
-// Bind events for the application, e.g. keyboard or mouse interaction
-//
-function bindInputEvents() {
-    document.addEventListener('keydown', function(event) {
-        switch ( event.keyCode ) {
-            case 65: // A
-                player.moveLeft();
-                break;
-            case 68: // D
-                player.moveRight();
-                break;
-                
-            case 87: // W
-                player.moveForward();
-                break;
-            case 83: // S
-                player.moveBackward();
-                break;
-                
-            case 37: // Left Arrow
-                player.rotateLeft();
-                break;
-            case 39: // Right Arrow
-                player.rotateRight();
-                break;
-        };
-        
-        // If any key was called that changed the player's tank's position or rotation, be sure to notify the server:
-        switch ( event.keyCode ) {
-            case 65: // A
-            case 68: // D
-            case 87: // W
-            case 83: // S
-            case 37: // Left Arrow
-            case 39: // Right Arrow
-                var player_tank = player.getTank();
-                multiplayer.sendTankUpdate(player_tank.id, player_tank.offset, player_tank.rotation);
-        };
-    });
-}
-
 
 //
 // drawScene()
@@ -154,6 +110,4 @@ function drawScene() {
     
     // Restore the original matrix
     mvPopMatrix();
-    
-    multiplayer.receiveTankUpdate();
 }
