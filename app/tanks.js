@@ -88,8 +88,6 @@ function initWebGL(canvas) {
     }
 }
 
-//
-<<<<<<< HEAD
 // bindInputEvents()
 //
 // Bind events for the application, e.g. keyboard or mouse interaction
@@ -132,9 +130,6 @@ function bindInputEvents() {
 }
 
 
-//
-=======
->>>>>>> origin/master
 // drawScene()
 //
 // Draw the scene.
