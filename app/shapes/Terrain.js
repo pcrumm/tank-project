@@ -1,5 +1,5 @@
 //Declared outside in order to be used in helpers
-var dimension = 10;
+var dimension = 64;
 var mapVertices = [];
 
 function getIndex(row, col) {
@@ -14,8 +14,8 @@ function getVec3(row, col) {
 }
 
 function getNoise(generator, xVal, zVal) {
-    var n = (1/15)*(generator.noise(xVal, zVal)) + (2/15)*(generator.noise(xVal*2, zVal*2)) + 
-                            (4/15)*(generator.noise(4*xVal, 4*zVal)) + (8/15)*(generator.noise(8*xVal, 8*zVal));
+    var n = (9/15)*(generator.noise(xVal, zVal)) + (4/15)*(generator.noise(xVal*2, zVal*2)) + 
+                            (1/15)*(generator.noise(4*xVal, 4*zVal)) + (1/15)*(generator.noise(8*xVal, 8*zVal));
 
     //Clamp the value to [0,1]
     return (1+n)/2;
@@ -24,7 +24,7 @@ function getNoise(generator, xVal, zVal) {
 function Terrain() {
     //Returns a shape object holding the map;
     var heightScale = 70;
-    var dimScale = 60;
+    var dimScale = 10;
     var mapNormals = [];
     var mapIndices = [];
     var generator = new SimplexNoise();
@@ -35,7 +35,7 @@ function Terrain() {
         {
             var xVal = x*dimScale;
             var zVal = z*dimScale;
-            var height = getNoise(generator, xVal*.01, zVal*.01);
+            var height = getNoise(generator, xVal*.005, zVal*.005);
             mapVertices[getIndex(z, x)]   = xVal;
             mapVertices[getIndex(z, x)+1] = height * heightScale;
             mapVertices[getIndex(z, x)+2] = zVal;
@@ -100,7 +100,7 @@ function Terrain() {
     var red = [1.0, 0.0, 0.0, 1.0];
     var colors = [];
     for (var i = 0; i < (mapVertices.length)/3; i++) {
-        if (mapVertices[3*i + 1] > 35)
+        if (mapVertices[3*i + 1] > (heightScale/2))
             colors = colors.concat(green);
         else
             colors = colors.concat(red);
@@ -108,7 +108,9 @@ function Terrain() {
 
     Shape.call(this, mapVertices, mapNormals, colors, mapIndices);
 
-    this.offset = {x: -300, y: -35, z: -300};
+    var displacement = (dimScale*dimension)/2
+
+    this.offset = {x: -displacement, y: -(heightScale/2), z: -displacement};
     this.rotation = {x: 0, y: 0, z: 0};
     this.scale = {x: 1, y: 1, z: 1};
 }

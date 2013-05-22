@@ -23,7 +23,7 @@ function start() {
     
     // Only continue if WebGL is available and working
     if ( gl ) {
-        gl.clearColor(0.7, 0.7, 1.0, 1.0);  // Clear to sky blue
+        gl.clearColor(0.2, 0.7, 1.0, 1.0);  // Clear to sky blue
         gl.clearDepth(1.0);                 // Clear everything
         gl.enable(gl.DEPTH_TEST);           // Enable depth testing
         gl.depthFunc(gl.LEQUAL);            // Near things obscure far things
