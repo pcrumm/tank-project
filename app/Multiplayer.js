@@ -40,11 +40,28 @@ function Multiplayer() {
             }
         });
 
+        // Used to track tank movement
         socket.on('tank_did_move', function(tank_data) {
             if (tanks[0].id != tank_data.tank_id) // Ignore self reports
             {
                 updateTank(tank_data.tank_id, tank_data.tank_position, tank_data.tank_rotation);
             }
         });
+
+        // Used to remove a tank that's appearing, like when a client quits
+        socket.on('remove_tank', function(tank_id) {
+            for (var i = 0; i < tanks.length; i++)
+                if (tanks[i].id == tank_id)
+                {
+                    tanks.remove(i);
+                    console.log('Removed tank ' + i + ' with id ' + tank_id);
+                    break;
+                }
+        });
+    });
+
+    // Used to notify the server this client is disconnecting
+    socket.on('disconnect', function() {
+        socket.emit('leaving', tanks[0].id);
     });
 }

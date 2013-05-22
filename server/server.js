@@ -11,18 +11,21 @@ app.use('/shapes', express.static(__dirname + '/../app/shapes'));
 app.use(express.static(__dirname + '/../app'));
 
 var game_data = []; // Store all of the ongoing game data here
+var connected_tanks = 0;
 
 io.sockets.on('connection', function(socket) {
     // When a client emits "join", we'll respond with the data they need to get instantiated
     socket.on('client_join', function() {
         var tank_id = game_data.length;
+        var tank_uniq_id = socket.id;
         game_data[tank_id] = {
-            tank_id: tank_id,
+            tank_id: tank_uniq_id,
             position: {x: 10*tank_id, y: 0, z: 0},
             rotation: {x: 0, y: 0, z: 0}
         };
 
         console.log('Hello, ' + tank_id);
+        connected_tanks++;
 
         // Now that we've created the default positioning information, provide it to the client
         socket.emit('welcome_client', game_data[tank_id]);
@@ -33,7 +36,7 @@ io.sockets.on('connection', function(socket) {
         // Notify the client to add all of the other tanks
         for (var i = 0; i < game_data.length; i++)
         {
-            if (game_data[i].tank_id != tank_id)
+            if (game_data[i].tank_id != tank_uniq_id)
             {
                 socket.emit('add_tank', game_data[i]);
             }
@@ -52,5 +55,21 @@ io.sockets.on('connection', function(socket) {
                 socket.broadcast.emit('tank_did_move', game_data[i]);
             }
         }
+    });
+
+    // Used to notify the client that we're heading out
+    socket.on('disconnect', function() {
+        var tank_id = socket.id;
+        console.log('Removing ' + tank_id);
+        for (var i = 0; i < game_data.length; i++)
+        {
+            if (game_data[i].tank_id == tank_id)
+            {
+                game_data.splice(i, 1);
+                break;
+            }
+        }
+
+        socket.broadcast.emit('remove_tank', tank_id);
     });
 });

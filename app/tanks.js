@@ -138,15 +138,13 @@ function drawScene() {
     
     player.update();
     
-    shapes = shapes.concat(tanks); // Since a tank may have been added...
-    for (var i = 0; i < shapes.length; i++) {
-        shapes[i].draw();
+    items = shapes.concat(tanks); // Since a tank may have been added...
+    for (var i = 0; i < items.length; i++) {
+        items[i].draw();
     }
     
     // Restore the original matrix
     mvPopMatrix();
-    
-    multiplayer.receiveTankUpdate();
 }
 
 //
@@ -163,3 +161,8 @@ function updateTank(tank_id, tank_position, tank_rotation)
         }
     }
 }
+
+// Array Remove - By John Resig (MIT Licensed)
+Array.prototype.remove = function(offset) {
+  this.splice(this.indexOf(offset, 1));
+};
