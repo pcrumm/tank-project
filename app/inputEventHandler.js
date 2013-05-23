@@ -3,6 +3,8 @@ var currentlyPressedKeys = {};
 function initInputEventHandler() {
     document.onkeydown = handleKeyDown;
     document.onkeyup = handleKeyUp;
+    document.onmousedown = handleMouseDown;
+    document.onmouseup = handleMouseUp;
     document.onmousemove = handleMouseMove;
 
     setInterval(handleKeys, 30);
@@ -50,6 +52,16 @@ var mouseInfo = {
     rotation_magnitude: 0,
     rotation_magnitude_divisor: 100
 };
+
+function handleMouseDown(event) {
+    if (event.which == 1) // left click
+        player.shootOn();
+}
+
+function handleMouseUp(event) {
+    if (event.which == 1) // left click
+        player.shootOff();
+}
 
 function handleMouseMove(event) {
     if ( event.pageX < mouseInfo.threshold_left ) {
