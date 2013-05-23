@@ -52,8 +52,14 @@ function Terrain() {
             else if (mask > 0)
                 height = 0.8 * height;
 
-            else if (mask > -0.1)
+            else if (mask > -0.5)
                 height = 0.4 * height;
+
+            else if (mask > -0.1)
+                height = 0.1 * height;
+
+            else if (mask > -0.3)
+                height = 0.05 * height;
 
             else
                 height = 0;
