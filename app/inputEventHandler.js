@@ -34,12 +34,6 @@ function handleKeys() {
         player.moveBackward();
     }
     
-    if ( currentlyPressedKeys[37] ) { // Left Arrow
-        player.rotateLeft();
-    }
-    if ( currentlyPressedKeys[39] ) { // Right Arrow
-        player.rotateRight();
-    }
     //I need this for testing
     if ( currentlyPressedKeys[38] ) { // Right Arrow
         player.moveUp();

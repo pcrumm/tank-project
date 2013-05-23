@@ -196,17 +196,14 @@ function Terrain() {
 /*----------------------------------------------------------------*/
 
     //Sets the colors
-    var green = [0.2,  0.8,  0.2,  1.0];
-    var red = [1.0, 0.0, 0.0, 1.0];
-    var colors = [];
-    for (var i = 0; i < (mapVertices.length)/3; i++) {
-        if (mapVertices[3*i + 1] > (heightScale/2))
-            colors = colors.concat(green);
-        else
-            colors = colors.concat(red);
-    }
+    var texCoords = [
+        0, 1,
+        0, 0,
+        1, 0,
+        1, 1
+    ];
 
-    Shape.call(this, mapVertices, mapNormals, colors, mapIndices);
+    Shape.call(this, mapVertices, mapNormals, {texture: textures.grass, texture_coords: texCoords}, mapIndices);
 
     var displacement = (dimScale*dimension)/2
 
