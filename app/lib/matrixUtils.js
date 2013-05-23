@@ -32,18 +32,14 @@ function mvScale(x, y, z) {
     multMatrix(m);
 }
 
-function setMatrixUniforms() {
-    var pUniform = gl.getUniformLocation(shaderProgram, "uPMatrix");
-    gl.uniformMatrix4fv(pUniform, false, new Float32Array(perspectiveMatrix.flatten()));
+function updateMatrixUniforms() {
+    gl.uniformMatrix4fv(shaderProgram.pUniform, false, new Float32Array(perspectiveMatrix.flatten()));
 
-    var mvUniform = gl.getUniformLocation(shaderProgram, "uMVMatrix");
-    gl.uniformMatrix4fv(mvUniform, false, new Float32Array(mvMatrix.flatten()));
-    
-    // Normals:
+    gl.uniformMatrix4fv(shaderProgram.mvUniform, false, new Float32Array(mvMatrix.flatten()));
+
     var normalMatrix = mvMatrix.inverse();
     normalMatrix = normalMatrix.transpose();
-    var nUniform = gl.getUniformLocation(shaderProgram, "uNormalMatrix");
-    gl.uniformMatrix4fv(nUniform, false, new Float32Array(normalMatrix.flatten()));
+    gl.uniformMatrix4fv(shaderProgram.nUniform, false, new Float32Array(normalMatrix.flatten()));
 }
 
 var mvMatrixStack = [];
