@@ -101,16 +101,23 @@ function Tank(offset, rotation, scale) {
     
     this.id = 0; // TODO: fix, this is just a dummy value
     
+    this.updateYOffset = function() {
+        this.offset.y = terrain.heightMap(this.offset.x, this.offset.z);
+        console.log(this.offset);
+    };
+
     this.moveOnXAxis = function(units) {
         var y_rotation_in_rads = this.rotation.y * degreesToRadians;
         this.offset.x += Math.cos(y_rotation_in_rads) * units;
         this.offset.z -= Math.sin(y_rotation_in_rads) * units;
+        this.updateYOffset();
     };
     
     this.moveOnZAxis = function(units) {
         var y_rotation_in_rads = this.rotation.y * degreesToRadians;
         this.offset.x -= Math.sin(y_rotation_in_rads) * units;
         this.offset.z -= Math.cos(y_rotation_in_rads) * units;
+        this.updateYOffset();
     };
     
     this.rotateOnYAxis = function(units) {

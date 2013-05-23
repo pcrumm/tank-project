@@ -4,9 +4,9 @@ function Player(player_tank) {
     var camera = new Camera();
     var camera_distance_from_tank = 6;
     camera.offset.z = camera_distance_from_tank;
-    camera.offset.y = 1.5;
+    camera.offset.y = 3;
     
-    var units_to_move = 0.5;
+    var units_to_move = 1;
     var units_to_rotate = 3;
     
     this.getTank = function() {
@@ -16,21 +16,25 @@ function Player(player_tank) {
     this.moveForward = function() {
         camera.moveOnZAxis(units_to_move);
         tank.moveOnZAxis(units_to_move);
+        camera.offset.y = tank.offset.y;
     };
     
     this.moveBackward = function() {
         camera.moveOnZAxis(-units_to_move);
         tank.moveOnZAxis(-units_to_move);
+        camera.offset.y = tank.offset.y;
     };
     
     this.moveLeft = function() {
         camera.moveOnXAxis(-units_to_move);         
         tank.moveOnXAxis(-units_to_move);
+        camera.offset.y = tank.offset.y;
     };
     
     this.moveRight = function() {
         camera.moveOnXAxis(units_to_move);                
         tank.moveOnXAxis(units_to_move);
+        camera.offset.y = tank.offset.y;
     };
 
     this.moveDown = function() {
