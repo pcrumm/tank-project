@@ -1,5 +1,5 @@
 //Declared outside in order to be used in helpers
-var dimension = 64;
+var dimension = 128;
 var mapVertices = [];
 
 function getIndex(row, col) {
@@ -24,10 +24,11 @@ function getNoise(generator, xVal, zVal) {
 function Terrain() {
     //Returns a shape object holding the map;
     var heightScale = 70;
-    var dimScale = 10;
+    var dimScale = 5;
     var mapNormals = [];
     var mapIndices = [];
     var generator = new SimplexNoise();
+    var lowest = 1000000;
 
     //Generates the terrain vertices
     for (var z = 0; z < dimension; z++)
@@ -37,17 +38,26 @@ function Terrain() {
             var zVal = z*dimScale;
             var height = getNoise(generator, xVal*.005, zVal*.005);
 
-            var dx = (2*(xVal/dimension)-1);
-            var dz = (2*(zVal/dimension)-1);
-            var d = Math.sqrt(dx*dx+dz*dz);
+            var dx = (((2 * x) / dimension) - 1);
+            var dz = (((2 * z) / dimension) - 1);
+            var d = (dx*dx)+(dz*dz);
 
-            if (height > .3+.4*d*d)
-                height *= -1;
+            //if (height <= 0.3+0.4*d)
+            //   height *= -1;
+
+            var mask = height - (.2+.85*d)
+
+            height = (mask > 0.1) ? height : (mask >= 0 ? (.8 * height) : 0)
+
+            if (height*heightScale < lowest)
+                lowest = height*heightScale;
 
             mapVertices[getIndex(z, x)]   = xVal;
             mapVertices[getIndex(z, x)+1] = height * heightScale;
             mapVertices[getIndex(z, x)+2] = zVal;
         }
+
+    console.log("Lowest %d\n", lowest);
 
     //Generates the normals
     for (var z = 0; z < dimension; z++)
@@ -110,6 +120,9 @@ function Terrain() {
     for (var i = 0; i < (mapVertices.length)/3; i++) {
         if (mapVertices[3*i + 1] > (heightScale/2))
             colors = colors.concat(green);
+
+        else if (mapVertices[3*i + 1] == lowest)
+            colors = colors.concat([0.0, 0.0, 0.0, 1.0]);
         else
             colors = colors.concat(red);
     }
@@ -118,7 +131,7 @@ function Terrain() {
 
     var displacement = (dimScale*dimension)/2
 
-    this.offset = {x: -displacement, y: -heightScale/2, z: -displacement};
+    this.offset = {x: -displacement, y: -5+0*-heightScale/2, z: -displacement};
     this.rotation = {x: 0, y: 0, z: 0};
     this.scale = {x: 1, y: 1, z: 1};
 }

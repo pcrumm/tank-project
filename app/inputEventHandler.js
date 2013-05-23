@@ -36,6 +36,13 @@ function handleKeys() {
     if ( currentlyPressedKeys[39] ) { // Right Arrow
         player.rotateRight();
     }
+    //I need this for testing
+    if ( currentlyPressedKeys[38] ) { // Right Arrow
+        player.moveUp();
+    }
+    if ( currentlyPressedKeys[40] ) { // Right Arrow
+        player.moveDown();
+    }
     
     // If any key was called that changed the player's tank's position or rotation, be sure to notify the server:
     if ( currentlyPressedKeys[65] || currentlyPressedKeys[68] || currentlyPressedKeys[87]

@@ -32,6 +32,14 @@ function Player(player_tank) {
         camera.moveOnXAxis(units_to_move);                
         tank.moveOnXAxis(units_to_move);
     };
+
+    this.moveDown = function() {
+        camera.moveOnYAxis(-units_to_move);
+    }
+
+    this.moveUp = function() {
+        camera.moveOnYAxis(units_to_move);
+    }
     
     var syncCameraAndTankRotation = function() {
         var yRotationInRadians = tank.rotation.y * degreesToRadians;
