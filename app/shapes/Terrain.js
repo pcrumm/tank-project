@@ -1,5 +1,5 @@
 //Declared outside in order to be used in helpers
-var dimension = 128;
+var dimension = 110;
 var mapVertices = [];
 
 function getIndex(row, col) {
@@ -14,21 +14,23 @@ function getVec3(row, col) {
 }
 
 function getNoise(generator, xVal, zVal) {
-    var n = (9/15)*(generator.noise(xVal, zVal)) + (4/15)*(generator.noise(xVal*2, zVal*2)) + 
-                            (1/15)*(generator.noise(4*xVal, 4*zVal)) + (1/15)*(generator.noise(8*xVal, 8*zVal));
+    //Generates the noise value using a combination of amplitudes and frequencies
+    var n = (8/15)*(generator.noise(xVal, zVal)) + (4/15)*(generator.noise(xVal*2, zVal*2)) + 
+                            (2/15)*(generator.noise(4*xVal, 4*zVal)) + (1/15)*(generator.noise(8*xVal, 8*zVal));
 
-    //Clamp the value to [0,1]
+    //Clamps the value to [0,1]
     return (1+n)/2;
 }
 
 function Terrain() {
     //Returns a shape object holding the map;
     var heightScale = 70;
-    var dimScale = 5;
+    var dimScale = 6;
     var mapNormals = [];
     var mapIndices = [];
     var generator = new SimplexNoise();
-    var lowest = 1000000;
+
+/*----------------------------------------------------------------*/
 
     //Generates the terrain vertices
     for (var z = 0; z < dimension; z++)
@@ -36,28 +38,87 @@ function Terrain() {
         {
             var xVal = x*dimScale;
             var zVal = z*dimScale;
-            var height = getNoise(generator, xVal*.005, zVal*.005);
+            var height = getNoise(generator, xVal*.0055, zVal*.0055);
 
             var dx = (((2 * x) / dimension) - 1);
             var dz = (((2 * z) / dimension) - 1);
             var d = (dx*dx)+(dz*dz);
 
-            //if (height <= 0.3+0.4*d)
-            //   height *= -1;
-
             var mask = height - (.2+.85*d)
 
             height = (mask > 0.1) ? height : (mask >= 0 ? (.8 * height) : 0)
-
-            if (height*heightScale < lowest)
-                lowest = height*heightScale;
 
             mapVertices[getIndex(z, x)]   = xVal;
             mapVertices[getIndex(z, x)+1] = height * heightScale;
             mapVertices[getIndex(z, x)+2] = zVal;
         }
 
-    console.log("Lowest %d\n", lowest);
+/*----------------------------------------------------------------*/
+
+    //Smoothes the vertices to remove some of the sharpness
+    for (var z = 0; z < dimension; z++)
+        for (var x = 0; x < dimension; x++)
+        {
+            var average = 0;
+            var times = 0;
+
+            if (x-1 >= 0)
+            {
+                average += mapVertices[getIndex(z, x-1)+1];
+                times += 1;
+            }
+
+            if (x+1 < dimension -1)
+            {
+                average += mapVertices[getIndex(z, x+1)+1];
+                times += 1;
+            }
+
+            if (z-1 >= 0)
+            {
+                average += mapVertices[getIndex(z-1, x)+1];
+                times += 1;
+            }
+
+            if (z+1 < dimension - 1)
+            {
+                average += mapVertices[getIndex(z+1, x)+1];
+                times += 1;
+            }
+
+            if (x-1 >= 0 && z-1 >= 0)
+            {
+                average += mapVertices[getIndex(z-1, x-1)+1];
+                times += 1;
+            }
+
+            if (x+1 < dimension-1 && z-1 >= 0)
+            {
+                average += mapVertices[getIndex(z-1, x+1)+1];
+                times += 1;
+            }
+
+            if (x-1 >= 0 && z+1 > dimension-1)
+            {
+                average += mapVertices[getIndex(z+1, x-1)+1];
+                times += 1;
+            }
+
+            if (x+1 < dimension-1 && z+1 < dimension-1)
+            {
+                average += mapVertices[getIndex(z+1, x+1)+1];
+                times += 1;
+            }
+
+            average += mapVertices[getIndex(z,x)+1];
+            times += 1;
+
+            average /= times;
+
+            mapVertices[getIndex(z,x)+1] = average;
+        }
+
+/*----------------------------------------------------------------*/
 
     //Generates the normals
     for (var z = 0; z < dimension; z++)
@@ -85,12 +146,14 @@ function Terrain() {
             mapNormals[getIndex(z, x)+1] = sum.z;
         }
 
+/*----------------------------------------------------------------*/
+
     //Generates the index array
     var indicesIndex = 0;
 
     for (var z = 0; z < (dimension-2); z++)
     {
-        for (var x = 1; x < (dimension-1); x++)
+        for (var x = 0; x < (dimension-2); x++)
         {
             var start = (z*dimension) + x;
 
@@ -114,6 +177,9 @@ function Terrain() {
         }
     }
 
+/*----------------------------------------------------------------*/
+
+    //Sets the colors
     var green = [0.2,  0.8,  0.2,  1.0];
     var red = [1.0, 0.0, 0.0, 1.0];
     var colors = [];
@@ -121,8 +187,6 @@ function Terrain() {
         if (mapVertices[3*i + 1] > (heightScale/2))
             colors = colors.concat(green);
 
-        else if (mapVertices[3*i + 1] == lowest)
-            colors = colors.concat([0.0, 0.0, 0.0, 1.0]);
         else
             colors = colors.concat(red);
     }
