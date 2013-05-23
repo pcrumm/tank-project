@@ -30,6 +30,7 @@ function start() {
         gl.depthFunc(gl.LEQUAL);            // Near things obscure far things
         
         initShaders();
+        initTextures();
         
         shapes = [
             new Square({x: 0, y: 0, z: 0}, {x: 0, y: 0, z: 0}, {x: 100, y: 1, z: 100}), // the ground

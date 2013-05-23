@@ -77,11 +77,6 @@ function TankTurret(offset, y_rotation) {
         -1.0,  0.0,  0.0
     ];
 
-    var colors = [];
-    for (var i = 0; i < 24; i++) {
-        colors = colors.concat([0.4,  0.4,  0.4,  1.0]);
-    }
-
     // This array defines each face as two triangles, using the
     // indices into the vertex array to specify each triangle's position.
     var vertex_indices = [
@@ -93,7 +88,7 @@ function TankTurret(offset, y_rotation) {
         20, 21, 22,     20, 22, 23  // left
     ];
 
-    Shape.call(this, vertices, normals, colors, vertex_indices); // inherit from Shape
+    Shape.call(this, vertices, normals, {texture: textures.metal, texture_coords: cube_texture_coords}, vertex_indices);
 
     this.offset = offset || {x: 0, y: 0, z: 0};
     this.rotation = {x: 0, y: y_rotation, z: 0};
@@ -122,7 +117,7 @@ TankTurret.prototype.update = function() {
     mvRotate(this.rotation.y, [0, 1, 0]);
     mvScale(this.scale.x, this.scale.y, this.scale.z);
 
-    setMatrixUniforms();
+    updateMatrixUniforms();
 
     mvPopMatrix();
 };
