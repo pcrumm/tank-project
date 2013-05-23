@@ -9,6 +9,10 @@ function Player(player_tank) {
     var units_to_move = 0.1;
     var units_to_rotate = 2;
 
+    var fire_rate = 5; // shots per second
+    var is_shooting = false;
+    var shot_interval;
+
     this.getTank = function() {
         return tank;
     };
@@ -55,6 +59,27 @@ function Player(player_tank) {
 
     this.rotateTankTurretRight = function(units) {
         rotateTankTurretOnYAxis(units);
+    };
+
+    this.generateProjectile = function() {
+        console.log("bang");
+    };
+
+    this.shootOn = function () {
+        if (!is_shooting)
+        {
+            is_shooting = true;
+            this.generateProjectile();
+            shot_interval = setInterval(this.generateProjectile, 1000/fire_rate);
+        }
+    };
+    
+    this.shootOff = function () {
+        if (is_shooting)
+        {
+            is_shooting = false;
+            clearInterval(shot_interval);
+        }
     };
 
     this.update = function() {

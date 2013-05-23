@@ -97,7 +97,7 @@ function TankBody(offset, y_rotation) {
     
     this.offset = offset || {x: 0, y: 0, z: 0};
     this.rotation = {x: 0, y: y_rotation, z: 0};
-    this.scale = {x: 1, y: 1, z: 1};
+    this.scale = {x: 1, y: 0.5, z: 1};
         
     this.moveOnXAxis = function(units) {
         var y_rotation_in_rads = this.rotation.y * degreesToRadians;
