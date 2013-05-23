@@ -120,7 +120,6 @@ function Terrain() {
     for (var i = 0; i < (mapVertices.length)/3; i++) {
         if (mapVertices[3*i + 1] > (heightScale/2))
             colors = colors.concat(green);
-
         else if (mapVertices[3*i + 1] == lowest)
             colors = colors.concat([0.0, 0.0, 0.0, 1.0]);
         else
@@ -134,6 +133,35 @@ function Terrain() {
     this.offset = {x: -displacement, y: -5+0*-heightScale/2, z: -displacement};
     this.rotation = {x: 0, y: 0, z: 0};
     this.scale = {x: 1, y: 1, z: 1};
+
+    console.log(mapVertices);
+
+    this.heightMap = function(x, z) {
+        var d = dimScale;
+
+        x = (x - this.offset.x) / d;
+        z = (z - this.offset.z) / d;
+
+        // Bilinear interpolation
+
+        var x1 = Math.floor(x / d) * d;
+        var z1 = Math.floor(z / d) * d;        
+        var x2 = Math.ceil(x / d) * d;
+        var z2 = Math.ceil(z / d) * d;
+
+        var h12 = mapVertices[getIndex(z2, x1) + 1];
+        var h22 = mapVertices[getIndex(z2, x2) + 1];
+        var h11 = mapVertices[getIndex(z1, x1) + 1];
+        var h21 = mapVertices[getIndex(z1, x2) + 1];
+
+        var lhs = 1 / ((x2-x1) * (z2-z1));
+        var rhs = h11 * (x2-x) * (z2-z) +
+                  h21 * (x-x1) * (z2-z) + 
+                  h12 * (x2-x) * (z-z1) +
+                  h22 * (x-x1) * (z-z1);
+
+        return lhs * rhs + this.offset.y;
+    };
 }
 
 

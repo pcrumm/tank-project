@@ -9,6 +9,7 @@ var shapes;
 var tanks;
 var player;
 var multiplayer;
+var terrain;
 
 var degreesToRadians = Math.PI / 180.0;
 
@@ -36,14 +37,17 @@ function start() {
 
 
         //Math.seedrandom("Lorem Ipsum");
-        Math.seedrandom("Kasey Carrothers");
+        Math.seedrandom("Kasey Cararothers");
         
+        terrain = new Terrain();
+
         shapes = [
-            new Terrain(),
+            terrain, 
             new Cube({x: 0, y: 2, z: 0}, {x: 0, y: 150, z: 0}, {x: 1, y: 1, z: 1}),
             new Square({x: 0, y: 0 , z: 0}, {x: 0, y: 0, z: 0}, {x: 600, y: 1, z: 600}),
             new Cube({x: 0, y: 0, z: 0}, {x: 0, y: 0, z: 0}, {x: 1, y: 1, z: 1})
         ];
+
         
         tanks = [
             new Tank({x: 0, y: 0, z: 0}, {x: 0, y: 0, z: 0}, {x: 1, y: 1, z: 1.5}), // the player's tank
