@@ -38,7 +38,7 @@ function Terrain() {
         {
             var xVal = x*dimScale;
             var zVal = z*dimScale;
-            var height = getNoise(generator, xVal*.0055, zVal*.0055);
+            var height = getNoise(generator, xVal*.005, zVal*.005);
 
             var dx = (((2 * x) / dimension) - 1);
             var dz = (((2 * z) / dimension) - 1);
@@ -46,7 +46,17 @@ function Terrain() {
 
             var mask = height - (.2+.85*d)
 
-            height = (mask > 0.1) ? height : (mask >= 0 ? (.8 * height) : 0)
+            if (mask > 0.1)
+                height = height; //No change
+
+            else if (mask > 0)
+                height = 0.8 * height;
+
+            else if (mask > -0.1)
+                height = 0.4 * height;
+
+            else
+                height = 0;
 
             mapVertices[getIndex(z, x)]   = xVal;
             mapVertices[getIndex(z, x)+1] = height * heightScale;

@@ -37,7 +37,7 @@ function start() {
 
 
         //Math.seedrandom("Lorem Ipsum");
-        Math.seedrandom("Kasey Cararothers");
+        Math.seedrandom("I am Ozymandius, King of Kings");
         
         terrain = new Terrain();
 
