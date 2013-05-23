@@ -26,7 +26,7 @@ function initTextures() {
     textures.grass = grass;
 }
 
-function handleLoadedTexture(texture) {    
+function handleLoadedTexture(texture) {
     gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
 
     gl.bindTexture(gl.TEXTURE_2D, texture);

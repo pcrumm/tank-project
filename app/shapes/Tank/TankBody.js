@@ -127,9 +127,13 @@ TankBody.prototype.update = function() {
         
     mvTranslate([this.offset.x, this.offset.y, this.offset.z]);
     mvRotate(this.rotation.y, [0, 1, 0]);
-    mvScale(this.scale.x, this.scale.y, this.scale.z);
     
     updateMatrixUniforms();
     
+    // Need to scale *after* updating the normals matrix (normals aren't normals if they get scaled)
+    // After, only updating the modelview matrix necessary.
+    mvScale(this.scale.x, this.scale.y, this.scale.z);
+    updateViewMatrixUniform();
+
     mvPopMatrix();
 };

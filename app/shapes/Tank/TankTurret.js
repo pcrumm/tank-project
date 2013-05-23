@@ -109,15 +109,4 @@ function TankTurret(offset, y_rotation) {
 inheritPrototype(TankTurret, Shape);
 
 // Overloading Shape.prototype's update():
-// (Rotation comes after translation, and only rotating around Y axis)
-TankTurret.prototype.update = function() {
-    mvPushMatrix();
-
-    mvTranslate([this.offset.x, this.offset.y, this.offset.z]);
-    mvRotate(this.rotation.y, [0, 1, 0]);
-    mvScale(this.scale.x, this.scale.y, this.scale.z);
-
-    updateMatrixUniforms();
-
-    mvPopMatrix();
-};
+TankTurret.prototype.update = TankBody.prototype.update;
