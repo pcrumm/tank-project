@@ -33,13 +33,13 @@ function start() {
         initTextures();
         
         shapes = [
-            new Square({x: 0, y: 0, z: 0}, {x: 0, y: 0, z: 0}, {x: 100, y: 1, z: 100}), // the ground
+            new Square({x: 0, y: 0, z: 0}, {x: 0, y: 0, z: 0}, {x: 100, y: 1, z: 100}, textures.crate), // the ground
             new Cube({x: 0, y: 2, z: -5}, {x: 0, y: 0, z: 0}, {x: 1, y: 3, z: 1}) // random floating cube
         ];
         
         tanks = [
-            new Tank({x: 0, y: 0, z: 0}, 0), // the player's tank
-            new Tank({x: -4, y: 0, z: -10}, 0)
+            new Tank({x: 0, y: 0.25, z: 0}, 0), // the player's tank
+            new Tank({x: -4, y: 0.25, z: -10}, 30)
         ];
         
         player = new Player(tanks[0]);
