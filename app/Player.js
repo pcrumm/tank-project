@@ -32,26 +32,26 @@ function Player(player_tank) {
     this.moveForward = function() {
         camera.moveOnZAxis(units_to_move);
         tank.moveOnZAxis(units_to_move);
-        camera.offset.y = tank.offset.y;
+        camera.offset.y = tank.getOffset().y;
         syncCameraAndTankTurretRotation();
     };
 
     this.moveBackward = function() {
         camera.moveOnZAxis(-units_to_move);
         tank.moveOnZAxis(-units_to_move);
-        camera.offset.y = tank.offset.y;
+        camera.offset.y = tank.getOffset().y;
     };
     
     this.moveLeft = function() {
         camera.moveOnXAxis(-units_to_move);         
         tank.moveOnXAxis(-units_to_move);
-        camera.offset.y = tank.offset.y;
+        camera.offset.y = tank.getOffset().y;
     };
     
     this.moveRight = function() {
         camera.moveOnXAxis(units_to_move);                
         tank.moveOnXAxis(units_to_move);
-        camera.offset.y = tank.offset.y;
+        camera.offset.y = tank.getOffset().y;
     };
 
     this.moveDown = function() {

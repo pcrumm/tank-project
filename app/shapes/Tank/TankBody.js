@@ -96,7 +96,6 @@ function TankBody(offset, y_rotation) {
 
     this.updateYOffset = function() {
         this.offset.y = terrain.heightMap(this.offset.x, this.offset.z);
-        console.log(this.offset);
     };
         
     this.moveOnXAxis = function(units) {
