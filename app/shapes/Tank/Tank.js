@@ -40,7 +40,8 @@ function Tank(offset, y_rotation) {
     this.setPositionAndRotation = function(pos, y_rot) {
         body.offset = pos;
         body.rotation.y = y_rot;
-    }
+        setTurretOffset();
+    };
 
     this.update = function() {
         body.update();
