@@ -24,6 +24,14 @@ function initTextures() {
     };
     grass.image.src = 'assets/grass_tile.jpg';
     textures.grass = grass;
+
+    var ocean = gl.createTexture();
+    ocean.image = new Image();
+    ocean.image.onload = function() {
+        handleLoadedTexture(ocean);
+    };
+    ocean.image.src = 'assets/ocean.png';
+    textures.ocean = ocean;
 }
 
 function handleLoadedTexture(texture) {    

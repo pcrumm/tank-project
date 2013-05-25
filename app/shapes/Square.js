@@ -30,13 +30,13 @@ function Square(offset, rotation, scale) {
 
     // TODO: Have a way to specify these, i.e. not hardcode 100
     var texture_coords = [
-        0,   100,
-        0,   0,
-        100, 0,
-        100, 100
+        0,    1000,
+        0,    0,
+        1000, 0,
+        1000, 1000
     ];
 
-    Shape.call(this, vertices, normals, {texture: textures.grass, texture_coords: texture_coords}, vertex_indices);
+    Shape.call(this, vertices, normals, {texture: textures.ocean, texture_coords: texture_coords}, vertex_indices);
 
     this.offset = offset || {x: 0, y: 0, z: 0};
     this.rotation = rotation || {x: 0, y: 0, z: 0};

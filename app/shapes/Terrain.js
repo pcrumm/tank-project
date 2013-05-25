@@ -15,8 +15,8 @@ function getVec3(row, col) {
 
 function getNoise(generator, xVal, zVal) {
     //Generates the noise value using a combination of amplitudes and frequencies
-    var n = (8/15)*(generator.noise(xVal, zVal)) + (4/15)*(generator.noise(xVal*2, zVal*2)) + 
-                            (2/15)*(generator.noise(4*xVal, 4*zVal)) + (1/15)*(generator.noise(8*xVal, 8*zVal));
+    var n = (8/15)*(generator.noise(xVal, zVal)) + (5/15)*(generator.noise(xVal*2, zVal*2)) + 
+                            (1/15)*(generator.noise(4*xVal, 4*zVal)) + (1/15)*(generator.noise(8*xVal, 8*zVal));
 
     //Clamps the value to [0,1]
     return (1+n)/2;
@@ -28,23 +28,33 @@ function Terrain() {
     var dimScale = 6;
     var mapNormals = [];
     var mapIndices = [];
+    var texCoords = [];
     var generator = new SimplexNoise();
 
 /*----------------------------------------------------------------*/
 
-    //Generates the terrain vertices
+    //Generates the terrain vertices and texture coordinates
+    var texOptions = [
+        [0, 0],
+        [1, 0],
+        [1, 1],
+        [0, 1]
+    ];
+
+    var texNum = 0;
+
     for (var z = 0; z < dimension; z++)
         for (var x = 0; x < dimension; x++)
         {
             var xVal = x*dimScale;
             var zVal = z*dimScale;
-            var height = getNoise(generator, xVal*.005, zVal*.005);
+            var height = getNoise(generator, xVal*.004, zVal*.004);
 
             var dx = (((2 * x) / dimension) - 1);
             var dz = (((2 * z) / dimension) - 1);
             var d = (dx*dx)+(dz*dz);
 
-            var mask = height - (.2+.85*d)
+            var mask = height - (.4+.8*d)
 
             if (mask > 0.1)
                 height = height; //No change
@@ -64,9 +74,14 @@ function Terrain() {
             else
                 height = 0;
 
-            mapVertices[getIndex(z, x)]   = xVal;
-            mapVertices[getIndex(z, x)+1] = height * heightScale;
-            mapVertices[getIndex(z, x)+2] = zVal;
+            mapVertices = mapVertices.concat([xVal, height * heightScale, zVal]);
+        }
+
+    for (var z = 0; z < dimension; z++)
+        for(var x = 0; x < dimension; x++)
+        {
+            texCoords = texCoords.concat(texOptions[texNum%4]);
+            texNum++;
         }
 
 /*----------------------------------------------------------------*/
@@ -193,15 +208,10 @@ function Terrain() {
         }
     }
 
-/*----------------------------------------------------------------*/
+    console.log(mapVertices);
+    console.log(texCoords);
 
-    //Sets the colors
-    var texCoords = [
-        0, 1,
-        0, 0,
-        1, 0,
-        1, 1
-    ];
+/*----------------------------------------------------------------*/
 
     Shape.call(this, mapVertices, mapNormals, {texture: textures.grass, texture_coords: texCoords}, mapIndices);
 
@@ -210,8 +220,6 @@ function Terrain() {
     this.offset = {x: -displacement, y: -5+0*-heightScale/2, z: -displacement};
     this.rotation = {x: 0, y: 0, z: 0};
     this.scale = {x: 1, y: 1, z: 1};
-
-    console.log(mapVertices);
 
     this.heightMap = function(x, z) {
         var d = dimScale;
