@@ -1,5 +1,5 @@
 function Multiplayer() {
-    var socket = io.connect('http://localhost:8080');
+    var socket = io.connect(document.URL);
     var time_since_last_sent_update = new Date();
 
     // Client calls this to indicate to the server that a tank's position/rotation has changed:

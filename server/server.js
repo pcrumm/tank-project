@@ -5,13 +5,15 @@ var app = express()
   , server = http.createServer(app).listen(8080, 511, console.log('Listening on :8080'))
   , io = require('socket.io').listen(server);
 
+  var connected_tanks = 0;
+  var TANK_LIMIT = 20; // The maximum number of allowed clients
+
 // Serve all of the static files in our directory
 app.use('/lib', express.static(__dirname + '/../app/lib'));
 app.use('/shapes', express.static(__dirname + '/../app/shapes'));
 app.use(express.static(__dirname + '/../app'));
 
 var game_data = []; // Store all of the ongoing game data here
-var connected_tanks = 0;
 
 io.sockets.on('connection', function(socket) {
     // When a client emits "join", we'll respond with the data they need to get instantiated
@@ -66,6 +68,8 @@ io.sockets.on('connection', function(socket) {
             if (game_data[i].tank_id == tank_id)
             {
                 game_data.splice(i, 1);
+                connected_tanks--;
+
                 break;
             }
         }

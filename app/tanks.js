@@ -38,7 +38,6 @@ function start() {
         ];
 
         tanks = [];
-
         multiplayer = new Multiplayer();
         multiplayer.initConnection();
         
