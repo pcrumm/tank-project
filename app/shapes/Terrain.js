@@ -15,8 +15,8 @@ function getVec3(row, col) {
 
 function getNoise(generator, xVal, zVal) {
     //Generates the noise value using a combination of amplitudes and frequencies
-    var n = (8/15)*(generator.noise(xVal, zVal)) + (5/15)*(generator.noise(xVal*2, zVal*2)) + 
-                            (1/15)*(generator.noise(4*xVal, 4*zVal)) + (1/15)*(generator.noise(8*xVal, 8*zVal));
+    var n = (8/15)*(generator.noise(xVal, zVal)) + (4/15)*(generator.noise(xVal*2, zVal*2)) + 
+                            (2/15)*(generator.noise(4*xVal, 4*zVal)) + (1/15)*(generator.noise(8*xVal, 8*zVal));
 
     //Clamps the value to [0,1]
     return (1+n)/2;
@@ -34,6 +34,7 @@ function Terrain() {
 /*----------------------------------------------------------------*/
 
     //Generates the terrain vertices and texture coordinates
+
     var texOptions = [
         [0, 0],
         [1, 0],
@@ -42,8 +43,10 @@ function Terrain() {
     ];
 
     var texNum = 0;
+    var top = 1;
 
     for (var z = 0; z < dimension; z++)
+    {
         for (var x = 0; x < dimension; x++)
         {
             var xVal = x*dimScale;
@@ -54,7 +57,7 @@ function Terrain() {
             var dz = (((2 * z) / dimension) - 1);
             var d = (dx*dx)+(dz*dz);
 
-            var mask = height - (.4+.8*d)
+            var mask = height - (.4+.9*d)
 
             if (mask > 0.1)
                 height = height; //No change
@@ -75,18 +78,24 @@ function Terrain() {
                 height = 0;
 
             mapVertices = mapVertices.concat([xVal, height * heightScale, zVal]);
-        }
 
-    for (var z = 0; z < dimension; z++)
-        for(var x = 0; x < dimension; x++)
-        {
-            texCoords = texCoords.concat(texOptions[texNum%4]);
+            //Sets the textures coordinates. As a set of squares along each row
+            var index = texNum % 2;
+            if (top)
+                index += 2;
+
+            texCoords = texCoords.concat(texOptions[index]);
             texNum++;
         }
+
+        top = !top;
+        texNum = 0;
+    }
 
 /*----------------------------------------------------------------*/
 
     //Smoothes the vertices to remove some of the sharpness
+    //Averages the point with the (up to) 8 points around it
     for (var z = 0; z < dimension; z++)
         for (var x = 0; x < dimension; x++)
         {
@@ -207,9 +216,6 @@ function Terrain() {
             indicesIndex++;      
         }
     }
-
-    console.log(mapVertices);
-    console.log(texCoords);
 
 /*----------------------------------------------------------------*/
 
