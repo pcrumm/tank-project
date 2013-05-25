@@ -6,28 +6,34 @@
 function initShaders() {
     var fragmentShader = getShader(gl, "shader-fs");
     var vertexShader = getShader(gl, "shader-vs");
-    
+
     // Create the shader program
     shaderProgram = gl.createProgram();
     gl.attachShader(shaderProgram, vertexShader);
     gl.attachShader(shaderProgram, fragmentShader);
     gl.linkProgram(shaderProgram);
-    
+
     // If creating the shader program failed, alert
     if ( !gl.getProgramParameter(shaderProgram, gl.LINK_STATUS) ) {
         alert("Unable to initialize the shader program.");
     }
-    
+
     gl.useProgram(shaderProgram);
-    
+
     shaderProgram.vertexPositionAttribute = gl.getAttribLocation(shaderProgram, "aVertexPosition");
     gl.enableVertexAttribArray(shaderProgram.vertexPositionAttribute);
-    
+
     shaderProgram.vertexNormalAttribute = gl.getAttribLocation(shaderProgram, "aVertexNormal");
     gl.enableVertexAttribArray(shaderProgram.vertexNormalAttribute);
-    
-    shaderProgram.vertexColorAttribute = gl.getAttribLocation(shaderProgram, "aVertexColor");
-    gl.enableVertexAttribArray(shaderProgram.vertexColorAttribute);
+
+    shaderProgram.textureCoordAttribute = gl.getAttribLocation(shaderProgram, "aTextureCoord");
+    gl.enableVertexAttribArray(shaderProgram.textureCoordAttribute);
+
+    shaderProgram.samplerUniform = gl.getUniformLocation(shaderProgram, "uSampler");
+
+    shaderProgram.pUniform  = gl.getUniformLocation(shaderProgram, "uPMatrix");
+    shaderProgram.mvUniform = gl.getUniformLocation(shaderProgram, "uMVMatrix");
+    shaderProgram.nUniform  = gl.getUniformLocation(shaderProgram, "uNMatrix");
 }
 
 //

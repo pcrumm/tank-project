@@ -28,6 +28,20 @@ For Windows:
 #### Requirements
 The front-end of this application has no requirements.
 
+However, Chrome does not allow you to load certain local files (e.g. textures). There are two ways to get around this:
+
+* Host a local server on your computer. This is very easy on OSX: run
+
+            $ python -m SimpleHTTPServer
+
+  and navigate to localhost:8000.
+
+* Disable the above Chrome security option. This solution is not recommended. Run
+
+            $ open /Applications/"Google Chrome.app" –args -disable-web-security
+
+  this will last until Chrome is closed.
+
 The backend will require node.js, and the configuration instructions below.
 
 #### Server

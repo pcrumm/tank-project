@@ -30,21 +30,25 @@ function start() {
         gl.depthFunc(gl.LEQUAL);            // Near things obscure far things
         
         initShaders();
+        initTextures();
         
         shapes = [
-            new Square({x: 0, y: 0, z: 0}, {x: 0, y: 0, z: 0}, {x: 100, y: 1, z: 100}), // the ground
-            new Cube({x: 0, y: 2, z: -5}, {x: 0, y: 0, z: 0}, {x: 1, y: 1, z: 1}) // random floating cube
+            new Square({x: 0, y: 0, z: 0}, {x: 0, y: 0, z: 0}, {x: 100, y: 1, z: 100}, textures.crate), // the ground
+            new Cube({x: 0, y: 2, z: -5}, {x: 0, y: 0, z: 0}, {x: 1, y: 3, z: 1}) // random floating cube
         ];
-        
+
         tanks = [];
-        
+
         multiplayer = new Multiplayer();
         multiplayer.initConnection();
-    
+
         bindInputEvents();
         
-        // Set up to draw the scene periodically:
+        initInputEventHandler();
+        
+        // Set up periodic updates:
         setInterval(drawScene, 30);
+        setInterval(multiplayer.receiveTankUpdate, 30);
     }
 }
 
@@ -68,51 +72,6 @@ function initWebGL(canvas) {
         alert("Unable to initialize WebGL. Your browser may not support it.");
     }
 }
-
-//
-// bindInputEvents()
-//
-// Bind events for the application, e.g. keyboard or mouse interaction
-//
-function bindInputEvents() {
-    document.addEventListener('keydown', function(event) {
-        switch ( event.keyCode ) {
-            case 65: // A
-                player.moveLeft();
-                break;
-            case 68: // D
-                player.moveRight();
-                break;
-                
-            case 87: // W
-                player.moveForward();
-                break;
-            case 83: // S
-                player.moveBackward();
-                break;
-                
-            case 37: // Left Arrow
-                player.rotateLeft();
-                break;
-            case 39: // Right Arrow
-                player.rotateRight();
-                break;
-        };
-        
-        // If any key was called that changed the player's tank's position or rotation, be sure to notify the server:
-        switch ( event.keyCode ) {
-            case 65: // A
-            case 68: // D
-            case 87: // W
-            case 83: // S
-            case 37: // Left Arrow
-            case 39: // Right Arrow
-                var player_tank = player.getTank();
-                multiplayer.sendTankUpdate(player_tank.id, player_tank.offset, player_tank.rotation);
-        };
-    });
-}
-
 
 //
 // drawScene()
