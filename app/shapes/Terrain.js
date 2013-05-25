@@ -37,9 +37,9 @@ function Terrain() {
 
     var texOptions = [
         [0, 0],
-        [1, 0],
-        [1, 1],
-        [0, 1]
+        [dimScale, 0],
+        [dimScale, dimScale],
+        [0, dimScale]
     ];
 
     var texNum = 0;
