@@ -41,10 +41,12 @@ function start() {
 
         multiplayer = new Multiplayer();
         multiplayer.initConnection();
-
-        bindInputEvents();
         
         initInputEventHandler();
+
+        // Make a player = to prevent load issues...
+        tanks[0] =  new Tank({x: 0, y: 0.25, z: 0}, 0);
+        player = new Player(tanks[0]);
         
         // Set up periodic updates:
         setInterval(drawScene, 30);
@@ -114,8 +116,7 @@ function updateTank(tank_id, tank_position, tank_rotation)
 {
     for (var i = 0; i < tanks.length; i++) {
         if ( tanks[i].id == tank_id ) {
-            tanks[i].offset = tank_position;
-            tanks[i].rotation = tank_rotation;
+            tanks[i].setPositionAndRotation(tank_position, tank_rotation);
             return true;
         }
     }

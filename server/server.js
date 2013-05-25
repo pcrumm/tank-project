@@ -21,7 +21,7 @@ io.sockets.on('connection', function(socket) {
         game_data[tank_id] = {
             tank_id: tank_uniq_id,
             position: {x: 10*tank_id, y: 0, z: 0},
-            rotation: {x: 0, y: 0, z: 0}
+            rotation: 0
         };
 
         console.log('Hello, ' + tank_id);
@@ -49,8 +49,8 @@ io.sockets.on('connection', function(socket) {
         {
             if (game_data[i].tank_id == tank_id)
             {
-                game_data[i].tank_position = tank_position;
-                game_data[i].tank_rotation = tank_rotation;
+                game_data[i].position = tank_position;
+                game_data[i].rotation = tank_rotation;
 
                 socket.broadcast.emit('tank_did_move', game_data[i]);
             }
