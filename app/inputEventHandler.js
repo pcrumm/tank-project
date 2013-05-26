@@ -41,10 +41,12 @@ function handleKeys() {
     };
 }
 
+var window_center = document.body.clientWidth / 2;
+
 var mouseInfo = {
-    center: 320,
-    threshold_left:  290, // center - 30
-    threshold_right: 350, // center + 30
+    center: window_center,
+    threshold_left:  window_center - 30,
+    threshold_right: window_center + 30,
 
     looking_left:  false,
     looking_right: false,

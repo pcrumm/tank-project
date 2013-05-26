@@ -105,7 +105,7 @@ function drawScene() {
     for (var i = 0; i < shapes.length; i++) {
         shapes[i].draw();
     }
-    
+
     // Restore the original matrix
     mvPopMatrix();
 }
