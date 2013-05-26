@@ -11,12 +11,28 @@ function initInputEventHandler() {
     setInterval(handleMouse, 30);
 }
 
+function isMovementKeyPressed() {
+    if ( currentlyPressedKeys[65] || currentlyPressedKeys[68] || currentlyPressedKeys[87] || currentlyPressedKeys[83] ) {
+          return true;
+    }
+
+    return false;
+}
+
 function handleKeyDown(event) {
     currentlyPressedKeys[event.keyCode] = true;
+
+    if ( isMovementKeyPressed() ) {
+        sounds.tank_move.play();
+    }
 }
 
 function handleKeyUp(event) {
     currentlyPressedKeys[event.keyCode] = false;
+
+    if ( ! isMovementKeyPressed() ) {
+        sounds.tank_move.pause();
+    }
 }
 
 function handleKeys() {

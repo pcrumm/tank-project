@@ -62,7 +62,7 @@ function Player(player_tank) {
     };
 
     this.generateProjectile = function() {
-        console.log("bang");
+        sounds.tank_shoot.play();
     };
 
     this.shootOn = function () {
