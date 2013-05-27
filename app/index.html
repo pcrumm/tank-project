@@ -27,14 +27,79 @@
         <script id="shader-fs" type="x-shader/x-fragment">
             precision mediump float;
 
+            struct TerrainRegion
+            {
+                float min;
+                float max;
+            };
+
             varying vec3 vLightWeighting;
             varying vec2 vTextureCoord;
+            varying float height;
 
             uniform sampler2D uSampler;
 
+            uniform int multiTex;
+
+            uniform TerrainRegion region1;
+            uniform TerrainRegion region2;
+            uniform TerrainRegion region3;
+            uniform TerrainRegion region4;
+
+            uniform sampler2D region1Texture;
+            uniform sampler2D region2Texture;
+            uniform sampler2D region3Texture;
+            uniform sampler2D region4Texture;
+
             void main(void)
             {
-                vec4 textureColor = texture2D(uSampler, vec2(vTextureCoord.s, vTextureCoord.t));
+                float regionMin = 0.0;
+                float regionMax = 0.0;
+                float regionRange = 0.0;
+                float regionWeight = 0.0;
+
+                vec4 textureColor = vec4(0.0, 0.0, 0.0, 1.0);
+
+                if (multiTex == 0)
+                {
+                    textureColor = texture2D(uSampler, vec2(vTextureCoord.s, vTextureCoord.t));
+                }
+
+                else
+                {
+                    //Region 1
+                    regionMin = region1.min;
+                    regionMax = region1.max;
+                    regionRange = regionMax - regionMin;
+                    regionWeight = (regionRange - abs(height - regionMax)) / regionRange;
+                    regionWeight = max(0.0, regionWeight);
+                    textureColor += regionWeight * texture2D(region1Texture, vec2(vTextureCoord.s, vTextureCoord.t));
+
+                    //Region 2
+                    regionMin = region2.min;
+                    regionMax = region2.max;
+                    regionRange = regionMax - regionMin;
+                    regionWeight = (regionRange - abs(height - regionMax)) / regionRange;
+                    regionWeight = max(0.0, regionWeight);
+                    textureColor += regionWeight * texture2D(region2Texture, vec2(vTextureCoord.s, vTextureCoord.t));
+
+                    //Region 3
+                    regionMin = region3.min;
+                    regionMax = region3.max;
+                    regionRange = regionMax - regionMin;
+                    regionWeight = (regionRange - abs(height - regionMax)) / regionRange;
+                    regionWeight = max(0.0, regionWeight);
+                    textureColor += regionWeight * texture2D(region3Texture, vec2(vTextureCoord.s, vTextureCoord.t));
+
+                    //Region 4
+                    regionMin = region4.min;
+                    regionMax = region4.max;
+                    regionRange = regionMax - regionMin;
+                    regionWeight = (regionRange - abs(height - regionMax)) / regionRange;
+                    regionWeight = max(0.0, regionWeight);
+                    textureColor += regionWeight * texture2D(region4Texture, vec2(vTextureCoord.s, vTextureCoord.t));
+                }
+
                 gl_FragColor = vec4(textureColor.rgb * vLightWeighting, textureColor.a);
             }
         </script>
@@ -52,12 +117,14 @@
 
             varying vec3 vLightWeighting;
             varying vec2 vTextureCoord;
+            varying float height;
 
             void main(void)
             {
                 gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);
 
                 vTextureCoord = aTextureCoord;
+                height = aVertexPosition.y;
 
                 // Lighting:
                 float c = cos(radians(uCameraRotY));

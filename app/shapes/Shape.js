@@ -6,7 +6,7 @@ function inheritPrototype(subType, superType) {
 }
 
 // The Shape object holds ugly GL buffer stuff, and takes care of drawing it. Also holds translation/rotation/scale info
-function Shape (vertices, normals, texture_info, vertex_indices) {
+function Shape (vertices, normals, texture_info, vertex_indices, use_multitexture) {
     this.offset = {
         x: 0,
         y: 0,
@@ -24,6 +24,8 @@ function Shape (vertices, normals, texture_info, vertex_indices) {
         y: 1,
         z: 1
     };
+
+    this.multiTex = use_multitexture || 0;
 
     this.vertices_buffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, this.vertices_buffer);
@@ -58,6 +60,8 @@ Shape.prototype.update = function() {
 
     mvScale(this.scale.x, this.scale.y, this.scale.z);
 
+    gl.uniform1i(shaderProgram.multi, this.multiTex);
+
     updateMatrixUniforms();
 
     mvPopMatrix();
@@ -75,9 +79,31 @@ Shape.prototype.draw = function() {
     gl.bindBuffer(gl.ARRAY_BUFFER, this.vertex_texture_coords_buffer);
     gl.vertexAttribPointer(shaderProgram.textureCoordAttribute, 2, gl.FLOAT, false, 0, 0);
 
-    gl.activeTexture(gl.TEXTURE0);
-    gl.bindTexture(gl.TEXTURE_2D, this.texture);
-    gl.uniform1i(shaderProgram.samplerUniform, 0);
+    if (this.multiTex == 0)
+    {
+        gl.activeTexture(gl.TEXTURE0);
+        gl.bindTexture(gl.TEXTURE_2D, this.texture);
+        gl.uniform1i(shaderProgram.samplerUniform, 0);
+    }
+
+    else
+    {
+        gl.activeTexture(gl.TEXTURE0);
+        gl.bindTexture(gl.TEXTURE_2D, textures.dirt);
+        gl.uniform1i(shaderProgram.r1Tex, 0);
+
+        gl.activeTexture(gl.TEXTURE1);
+        gl.bindTexture(gl.TEXTURE_2D, textures.grass);
+        gl.uniform1i(shaderProgram.r2Tex, 1);
+
+        gl.activeTexture(gl.TEXTURE2);
+        gl.bindTexture(gl.TEXTURE_2D, textures.rock);
+        gl.uniform1i(shaderProgram.r3Tex, 2);
+
+        gl.activeTexture(gl.TEXTURE3);
+        gl.bindTexture(gl.TEXTURE_2D, textures.snow);
+        gl.uniform1i(shaderProgram.r4Tex, 3);
+    }
 
     // Draw the cube.
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.vertices_index_buffer);
