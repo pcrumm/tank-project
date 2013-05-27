@@ -1,4 +1,5 @@
 var currentlyPressedKeys = {};
+var window_center = document.body.clientWidth / 2;
 
 function initInputEventHandler() {
     document.onkeydown = handleKeyDown;
@@ -7,32 +8,19 @@ function initInputEventHandler() {
     document.onmouseup = handleMouseUp;
     document.onmousemove = handleMouseMove;
 
+    // Fix the center if the window is resized:
+    window.onresize = function() { window_center = document.body.clientWidth / 2; };
+
     setInterval(handleKeys, 30);
     setInterval(handleMouse, 30);
 }
 
-function isMovementKeyPressed() {
-    if ( currentlyPressedKeys[65] || currentlyPressedKeys[68] || currentlyPressedKeys[87] || currentlyPressedKeys[83] ) {
-          return true;
-    }
-
-    return false;
-}
-
 function handleKeyDown(event) {
     currentlyPressedKeys[event.keyCode] = true;
-
-    if ( isMovementKeyPressed() ) {
-        sounds.tank_move.play();
-    }
 }
 
 function handleKeyUp(event) {
     currentlyPressedKeys[event.keyCode] = false;
-
-    if ( ! isMovementKeyPressed() ) {
-        sounds.tank_move.pause();
-    }
 }
 
 function handleKeys() {
@@ -58,9 +46,9 @@ function handleKeys() {
 }
 
 var mouseInfo = {
-    center: 320,
-    threshold_left:  290, // center - 30
-    threshold_right: 350, // center + 30
+    center: window_center,
+    threshold_left:  function() { return window_center - 30},
+    threshold_right: function() { return window_center + 30},
 
     looking_left:  false,
     looking_right: false,
@@ -80,15 +68,15 @@ function handleMouseUp(event) {
 }
 
 function handleMouseMove(event) {
-    if ( event.pageX < mouseInfo.threshold_left ) {
+    if ( event.pageX < mouseInfo.threshold_left() ) {
         mouseInfo.looking_left  = true;
         mouseInfo.looking_right = false;
-        mouseInfo.rotation_magnitude = mouseInfo.threshold_left - event.pageX;
+        mouseInfo.rotation_magnitude = mouseInfo.threshold_left() - event.pageX;
     }
-    else if ( event.pageX > mouseInfo.threshold_right ) {
+    else if ( event.pageX > mouseInfo.threshold_right() ) {
         mouseInfo.looking_left  = false;
         mouseInfo.looking_right = true;
-        mouseInfo.rotation_magnitude = event.pageX - mouseInfo.threshold_right;
+        mouseInfo.rotation_magnitude = event.pageX - mouseInfo.threshold_right();
     }
     else {
         mouseInfo.looking_left  = false;

@@ -12,6 +12,9 @@ function Player(player_tank) {
     var fire_rate = 5; // shots per second
     var is_shooting = false;
     var shot_interval;
+    var shot_done = true;
+
+    var projectiles = [];
 
     this.getTank = function() {
         return tank;
@@ -62,6 +65,7 @@ function Player(player_tank) {
     };
 
     this.generateProjectile = function() {
+        projectiles.push(new Projectile());
         sounds.tank_shoot.play();
     };
 
@@ -69,7 +73,13 @@ function Player(player_tank) {
         if (!is_shooting)
         {
             is_shooting = true;
-            this.generateProjectile();
+            if (shot_done)
+            {
+                // prevents spamming to fire faster than fire_rate
+                shot_done = false;
+                this.generateProjectile();
+                setTimeout(function() {shot_done = true;}, 1000/fire_rate);
+            }
             shot_interval = setInterval(this.generateProjectile, 1000/fire_rate);
         }
     };
