@@ -1,4 +1,10 @@
+body {
+	margin: 0;
+	padding: 50px;
+}
+
 #glcanvas {
-    display: block;
-    margin: auto;
+	box-shadow: 0 0 7px rgba(0, 0, 0, 0.8);
+	display: block;
+	margin: 0 auto;
 }
