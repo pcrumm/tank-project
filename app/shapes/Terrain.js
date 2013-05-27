@@ -1,6 +1,33 @@
 //Declared outside in order to be used in helpers
 var dimension = 110;
+var heightScale = 70;
 var mapVertices = [];
+
+function TerrainRegion(min, max) {
+    this.min = min;
+    this.max = max;
+}
+
+var regions = [
+    new TerrainRegion(0, 13),
+    new TerrainRegion(13, 28),
+    new TerrainRegion(28, 56),
+    new TerrainRegion(56, 70)
+];
+
+function initTerrainRegions() {
+    gl.uniform1f(shaderProgram.r1max, regions[0].max);
+    gl.uniform1f(shaderProgram.r1min, regions[0].min);
+
+    gl.uniform1f(shaderProgram.r2max, regions[1].max);
+    gl.uniform1f(shaderProgram.r2min, regions[1].min);
+
+    gl.uniform1f(shaderProgram.r3max, regions[2].max);
+    gl.uniform1f(shaderProgram.r3min, regions[2].min);
+
+    gl.uniform1f(shaderProgram.r4max, regions[3].max);
+    gl.uniform1f(shaderProgram.r4min, regions[3].min);
+}
 
 function getIndex(row, col) {
     //Gets an array index for the vertex or normal array
@@ -24,7 +51,6 @@ function getNoise(generator, xVal, zVal) {
 
 function Terrain() {
     //Returns a shape object holding the map;
-    var heightScale = 70;
     var dimScale = 6;
     var mapNormals = [];
     var mapIndices = [];
@@ -80,11 +106,11 @@ function Terrain() {
             mapVertices = mapVertices.concat([xVal, height * heightScale, zVal]);
 
             //Sets the textures coordinates. As a set of squares along each row
-            var index = texNum % 2;
-            if (top)
-                index += 2;
+            //var index = texNum % 2;
+            //if (top)
+                //index += 2;
 
-            texCoords = texCoords.concat(texOptions[index]);
+            texCoords = texCoords.concat([x/dimension*12, z/dimension*12]);
             texNum++;
         }
 
@@ -216,10 +242,9 @@ function Terrain() {
             indicesIndex++;      
         }
     }
-
 /*----------------------------------------------------------------*/
 
-    Shape.call(this, mapVertices, mapNormals, {texture: textures.grass, texture_coords: texCoords}, mapIndices);
+    Shape.call(this, mapVertices, mapNormals, {texture: textures.grass, texture_coords: texCoords}, mapIndices, 1);
 
     var displacement = (dimScale*dimension)/2
 
