@@ -9,12 +9,10 @@ function Player(player_tank) {
     var units_to_move = 0.1;
     var units_to_rotate = 2;
 
-    var fire_rate = 5; // shots per second
+    var fire_rate = 1; // shots per second
     var is_shooting = false;
     var shot_interval;
     var shot_done = true;
-
-    var projectiles = [];
 
     this.getTank = function() {
         return tank;
@@ -65,7 +63,13 @@ function Player(player_tank) {
     };
 
     this.generateProjectile = function() {
-        projectiles.push(new Projectile());
+        var tank_offset = tank.getOffset();
+
+        var y_rotation_in_rads = tank.getTurretYRotation() * degreesToRadians;
+        var projectile_velocity = {x: -Math.sin(y_rotation_in_rads), y: 0, z: -Math.cos(y_rotation_in_rads)};
+
+        shapes.push(new Projectile({x: tank_offset.x, y: tank_offset.y + 0.3, z: tank_offset.z}, projectile_velocity));
+
         sounds.tank_shoot.play();
     };
 

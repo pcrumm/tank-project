@@ -26,6 +26,14 @@ function initTextures() {
     };
     grass.image.src = 'assets/grass_tile.jpg';
     textures.grass = grass;
+
+    var projectile = gl.createTexture();
+    projectile.image = new Image();
+    projectile.image.onload = function() {
+        handleLoadedTexture(projectile);
+    };
+    projectile.image.src = 'assets/projectile.jpg';
+    textures.projectile = projectile;
 }
 
 function handleLoadedTexture(texture) {
