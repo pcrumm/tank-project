@@ -118,6 +118,14 @@ function Terrain() {
         texNum = 0;
     }
 
+    // Format the object holding Terrain's multiple objects, to be passed to Shape:
+    var multitexture = [
+        {texture: textures.dirt,  uniform: shaderProgram.r1Tex},
+        {texture: textures.grass, uniform: shaderProgram.r2Tex},
+        {texture: textures.rock,  uniform: shaderProgram.r3Tex},
+        {texture: textures.snow,  uniform: shaderProgram.r4Tex}
+    ];
+
 /*----------------------------------------------------------------*/
 
     //Smoothes the vertices to remove some of the sharpness
@@ -244,7 +252,7 @@ function Terrain() {
     }
 /*----------------------------------------------------------------*/
 
-    Shape.call(this, mapVertices, mapNormals, {texture: textures.grass, texture_coords: texCoords}, mapIndices, 1);
+    Shape.call(this, mapVertices, mapNormals, {texture_coords: texCoords, use_multitexture: true, multitexture: multitexture}, mapIndices);
 
     var displacement = (dimScale*dimension)/2
 

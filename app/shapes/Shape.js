@@ -6,7 +6,7 @@ function inheritPrototype(subType, superType) {
 }
 
 // The Shape object holds ugly GL buffer stuff, and takes care of drawing it. Also holds translation/rotation/scale info
-function Shape (vertices, normals, texture_info, vertex_indices, use_multitexture) {
+function Shape (vertices, normals, texture_info, vertex_indices) {
     this.offset = {
         x: 0,
         y: 0,
@@ -25,8 +25,6 @@ function Shape (vertices, normals, texture_info, vertex_indices, use_multitextur
         z: 1
     };
 
-    this.multiTex = use_multitexture || 0;
-
     this.vertices_buffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, this.vertices_buffer);
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
@@ -39,7 +37,12 @@ function Shape (vertices, normals, texture_info, vertex_indices, use_multitextur
     gl.bindBuffer(gl.ARRAY_BUFFER, this.vertex_texture_coords_buffer);
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(texture_info.texture_coords), gl.STATIC_DRAW);
 
-    this.texture = texture_info.texture;
+    this.texture = texture_info.texture || null;
+    this.multiTex = 0;
+    if ( texture_info.use_multitexture === true ) {
+        this.multiTex = 1;
+        this.multitexture = texture_info.multitexture;
+    }
 
     // Build the element array buffer; this specifies the indices
     // into the vertex array for each face's vertices.
@@ -79,30 +82,17 @@ Shape.prototype.draw = function() {
     gl.bindBuffer(gl.ARRAY_BUFFER, this.vertex_texture_coords_buffer);
     gl.vertexAttribPointer(shaderProgram.textureCoordAttribute, 2, gl.FLOAT, false, 0, 0);
 
-    if (this.multiTex == 0)
-    {
+    if (this.multiTex === 0) {
         gl.activeTexture(gl.TEXTURE0);
         gl.bindTexture(gl.TEXTURE_2D, this.texture);
         gl.uniform1i(shaderProgram.samplerUniform, 0);
     }
-
-    else
-    {
-        gl.activeTexture(gl.TEXTURE0);
-        gl.bindTexture(gl.TEXTURE_2D, textures.dirt);
-        gl.uniform1i(shaderProgram.r1Tex, 0);
-
-        gl.activeTexture(gl.TEXTURE1);
-        gl.bindTexture(gl.TEXTURE_2D, textures.grass);
-        gl.uniform1i(shaderProgram.r2Tex, 1);
-
-        gl.activeTexture(gl.TEXTURE2);
-        gl.bindTexture(gl.TEXTURE_2D, textures.rock);
-        gl.uniform1i(shaderProgram.r3Tex, 2);
-
-        gl.activeTexture(gl.TEXTURE3);
-        gl.bindTexture(gl.TEXTURE_2D, textures.snow);
-        gl.uniform1i(shaderProgram.r4Tex, 3);
+    else {
+        for (var i = 0; i < this.multitexture.length; i++) {
+            gl.activeTexture(gl.TEXTURE0 + i);
+            gl.bindTexture(gl.TEXTURE_2D, this.multitexture[i].texture);
+            gl.uniform1i(this.multitexture[i].uniform, 0);
+        }
     }
 
     // Draw the cube.
