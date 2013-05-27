@@ -4,6 +4,8 @@
         <title>Tank Project</title>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 
+        <link rel="stylesheet" type="text/css" href="style.css">
+
         <script src="lib/sylvester.min.js" type="text/javascript"></script>
         <script src="lib/seedrandom.min.js" type="text/javascript"></script>
         <script src="lib/glUtils.js" type="text/javascript"></script>
@@ -11,14 +13,16 @@
         <script src="lib/simplexNoise.js" type="text/javascript"></script>
         <script src="initShaders.js" type="text/javascript"></script>
         <script src="initTextures.js" type="text/javascript"></script>
-        <script src="inputEventHandler.js" type="text/javascript"></script>
+        <script src="initSounds.js" type="text/javascript"></script>
         <script src="Camera.js" type="text/javascript"></script>
         <script src="Player.js" type="text/javascript"></script>
         <script src="Multiplayer.js" type="text/javascript"></script>
         <script src="shapes/Shape.js" type="text/javascript"></script>
         <script src="shapes/Square.js" type="text/javascript"></script>
         <script src="shapes/Cube.js" type="text/javascript"></script>
+        <script src="shapes/Sphere.js" type="text/javascript"></script>
         <script src="shapes/Terrain.js" type="text/javascript"></script>
+        <script src="shapes/Projectile.js" type="text/javascript"></script>
         <script src="shapes/Tank/TankBody.js" type="text/javascript"></script>
         <script src="shapes/Tank/TankTurret.js" type="text/javascript"></script>
         <script src="shapes/Tank/Tank.js" type="text/javascript"></script>
@@ -152,5 +156,7 @@
         <canvas id="glcanvas" width="640" height="480">
             Your browser doesn't appear to support the HTML5 <code>&lt;canvas&gt;</code> element.
         </canvas>
+        
+        <script src="inputEventHandler.js" type="text/javascript"></script>
     </body>
 </html>

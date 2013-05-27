@@ -1,9 +1,9 @@
 function Square(offset, rotation, scale) {
     var vertices = [
-        -1.0, 0.0, -1.0,
-         1.0, 0.0, -1.0,
-         1.0, 0.0,  1.0,
-        -1.0, 0.0,  1.0,
+        -0.5, 0.0, -0.5,
+         0.5, 0.0, -0.5,
+         0.5, 0.0,  0.5,
+        -0.5, 0.0,  0.5,
     ];
 
     var normals = [
@@ -12,14 +12,6 @@ function Square(offset, rotation, scale) {
         0.0,  1.0,  0.0,
         0.0,  1.0,  0.0,
     ];
-    
-    var green = [0.2,  0.8,  0.2,  1.0];
-    var blue = [0.0, 0.0, 1.0, 1.0];
-    var colors = [];
-    for (var i = 0; i < 4; i++) {
-        colors = colors.concat(blue);
-    }
-    
 
     // This array defines a face as two triangles, using the
     // indices in the vertex array to specify each triangle's position.
@@ -28,7 +20,7 @@ function Square(offset, rotation, scale) {
         0, 2, 3
     ];
 
-    // TODO: Have a way to specify these, i.e. not hardcode 100
+    // TODO: Have a way to specify these, i.e. not hardcode 1000
     var texture_coords = [
         0,    1000,
         0,    0,

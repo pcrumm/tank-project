@@ -35,11 +35,15 @@ function mvScale(x, y, z) {
 function updateMatrixUniforms() {
     gl.uniformMatrix4fv(shaderProgram.pUniform, false, new Float32Array(perspectiveMatrix.flatten()));
 
-    gl.uniformMatrix4fv(shaderProgram.mvUniform, false, new Float32Array(mvMatrix.flatten()));
+    updateViewMatrixUniform();
 
     var normalMatrix = mvMatrix.inverse();
     normalMatrix = normalMatrix.transpose();
     gl.uniformMatrix4fv(shaderProgram.nUniform, false, new Float32Array(normalMatrix.flatten()));
+}
+
+function updateViewMatrixUniform() {
+    gl.uniformMatrix4fv(shaderProgram.mvUniform, false, new Float32Array(mvMatrix.flatten()));
 }
 
 var mvMatrixStack = [];

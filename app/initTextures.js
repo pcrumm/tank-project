@@ -1,6 +1,8 @@
 var textures = {};
 
 function initTextures() {
+    // Please note: Image dimensions must be a power of 2!
+    
     var metal = gl.createTexture();
     metal.image = new Image();
     metal.image.onload = function() {
@@ -66,7 +68,7 @@ function initTextures() {
     textures.snow = snow;
 }
 
-function handleLoadedTexture(texture) {    
+function handleLoadedTexture(texture) {
     gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
 
     gl.bindTexture(gl.TEXTURE_2D, texture);
@@ -74,7 +76,7 @@ function handleLoadedTexture(texture) {
     gl.generateMipmap(gl.TEXTURE_2D);
 
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);    
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_NEAREST);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_LINEAR);
 
     gl.bindTexture(gl.TEXTURE_2D, null);
 }

@@ -1,4 +1,6 @@
 var currentlyPressedKeys = {};
+var window_center = document.body.clientWidth / 2;
+var window_in_focus = true;
 
 function initInputEventHandler() {
     document.onkeydown = handleKeyDown;
@@ -6,6 +8,13 @@ function initInputEventHandler() {
     document.onmousedown = handleMouseDown;
     document.onmouseup = handleMouseUp;
     document.onmousemove = handleMouseMove;
+
+    // If the window goes out of focus, turn off mouse capture, and vice versa:
+    window.onblur = function() { window_in_focus = false; };
+    window.onfocus = function() { window_in_focus = true; };
+
+    // Fix the center if the window is resized:
+    window.onresize = function() { window_center = document.body.clientWidth / 2; };
 
     setInterval(handleKeys, 30);
     setInterval(handleMouse, 30);
@@ -35,10 +44,10 @@ function handleKeys() {
     }
     
     //I need this for testing
-    if ( currentlyPressedKeys[38] ) { // Right Arrow
+    if ( currentlyPressedKeys[38] ) { // Up Arrow
         player.moveUp();
     }
-    if ( currentlyPressedKeys[40] ) { // Right Arrow
+    if ( currentlyPressedKeys[40] ) { // Left Arrow
         player.moveDown();
     }
     
@@ -50,9 +59,9 @@ function handleKeys() {
 }
 
 var mouseInfo = {
-    center: 320,
-    threshold_left:  290, // center - 30
-    threshold_right: 350, // center + 30
+    center: window_center,
+    threshold_left:  function() { return window_center - 30},
+    threshold_right: function() { return window_center + 30},
 
     looking_left:  false,
     looking_right: false,
@@ -72,15 +81,15 @@ function handleMouseUp(event) {
 }
 
 function handleMouseMove(event) {
-    if ( event.pageX < mouseInfo.threshold_left ) {
+    if ( event.pageX < mouseInfo.threshold_left() ) {
         mouseInfo.looking_left  = true;
         mouseInfo.looking_right = false;
-        mouseInfo.rotation_magnitude = mouseInfo.threshold_left - event.pageX;
+        mouseInfo.rotation_magnitude = mouseInfo.threshold_left() - event.pageX;
     }
-    else if ( event.pageX > mouseInfo.threshold_right ) {
+    else if ( event.pageX > mouseInfo.threshold_right() ) {
         mouseInfo.looking_left  = false;
         mouseInfo.looking_right = true;
-        mouseInfo.rotation_magnitude = event.pageX - mouseInfo.threshold_right;
+        mouseInfo.rotation_magnitude = event.pageX - mouseInfo.threshold_right();
     }
     else {
         mouseInfo.looking_left  = false;
@@ -89,10 +98,12 @@ function handleMouseMove(event) {
 }
 
 function handleMouse() {
-    if ( mouseInfo.looking_left ) {
-        player.rotateTankTurretLeft(mouseInfo.rotation_magnitude / mouseInfo.rotation_magnitude_divisor);
-    }
-    else if ( mouseInfo.looking_right ) {
-        player.rotateTankTurretRight(mouseInfo.rotation_magnitude / mouseInfo.rotation_magnitude_divisor);
+    if ( window_in_focus ) {
+        if ( mouseInfo.looking_left ) {
+            player.rotateTankTurretLeft(mouseInfo.rotation_magnitude / mouseInfo.rotation_magnitude_divisor);
+        }
+        else if ( mouseInfo.looking_right ) {
+            player.rotateTankTurretRight(mouseInfo.rotation_magnitude / mouseInfo.rotation_magnitude_divisor);
+        }
     }
 }

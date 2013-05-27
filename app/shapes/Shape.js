@@ -61,11 +61,14 @@ Shape.prototype.update = function() {
 
     mvTranslate([this.offset.x, this.offset.y, this.offset.z]);
 
-    mvScale(this.scale.x, this.scale.y, this.scale.z);
-
     gl.uniform1i(shaderProgram.multi, this.multiTex);
 
     updateMatrixUniforms();
+
+    // Need to scale *after* updating the normals matrix (normals aren't normals if they get scaled)
+    // After, only updating the modelview matrix necessary.
+    mvScale(this.scale.x, this.scale.y, this.scale.z);
+    updateViewMatrixUniform();
 
     mvPopMatrix();
 };
