@@ -62,4 +62,3 @@ function Sphere(offset, rotation, scale, texture) {
 }
 
 inheritPrototype(Sphere, Shape);
-

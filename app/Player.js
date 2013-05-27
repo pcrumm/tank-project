@@ -14,8 +14,6 @@ function Player(player_tank) {
     var shot_interval;
     var shot_done = true;
 
-    var snd = {shot: new Audio("assets/tank_shot.ogg") };
-
     var projectiles = [];
 
     this.getTank = function() {
@@ -68,8 +66,7 @@ function Player(player_tank) {
 
     this.generateProjectile = function() {
         projectiles.push(new Projectile());
-        snd['shot'].play();
-        snd['shot'].currentTime = 0;
+        sounds.tank_shoot.play();
     };
 
     this.shootOn = function () {
