@@ -1,5 +1,6 @@
 var currentlyPressedKeys = {};
 var window_center = document.body.clientWidth / 2;
+var window_in_focus = true;
 
 function initInputEventHandler() {
     document.onkeydown = handleKeyDown;
@@ -7,6 +8,10 @@ function initInputEventHandler() {
     document.onmousedown = handleMouseDown;
     document.onmouseup = handleMouseUp;
     document.onmousemove = handleMouseMove;
+
+    // If the window goes out of focus, turn off mouse capture, and vice versa:
+    window.onblur = function() { window_in_focus = false; };
+    window.onfocus = function() { window_in_focus = true; };
 
     // Fix the center if the window is resized:
     window.onresize = function() { window_center = document.body.clientWidth / 2; };
@@ -85,10 +90,12 @@ function handleMouseMove(event) {
 }
 
 function handleMouse() {
-    if ( mouseInfo.looking_left ) {
-        player.rotateTankTurretLeft(mouseInfo.rotation_magnitude / mouseInfo.rotation_magnitude_divisor);
-    }
-    else if ( mouseInfo.looking_right ) {
-        player.rotateTankTurretRight(mouseInfo.rotation_magnitude / mouseInfo.rotation_magnitude_divisor);
+    if ( window_in_focus ) {
+        if ( mouseInfo.looking_left ) {
+            player.rotateTankTurretLeft(mouseInfo.rotation_magnitude / mouseInfo.rotation_magnitude_divisor);
+        }
+        else if ( mouseInfo.looking_right ) {
+            player.rotateTankTurretRight(mouseInfo.rotation_magnitude / mouseInfo.rotation_magnitude_divisor);
+        }
     }
 }
