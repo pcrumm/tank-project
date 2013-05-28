@@ -5,23 +5,17 @@ function TankBody(offset, y_rotation) {
               {x: 1.25, y: 0.5, z: 2},
               textures.metal
     );
+
+    // This is how far the tank body must be translated "up" after rotation to be on top of the terrain:
+    this.relative_vertical_offset = 0.25;
 }
 
 inheritPrototype(TankBody, Cube);
-
-TankBody.prototype.updateYOffset = function() {
-    var terrain_info = terrain.getMapHeightAndSlope(this.offset.x, this.offset.z);
-    this.offset.y = terrain_info.y;
-
-    this.rotation.x = terrain_info.slope.rotation_around_x;
-    this.rotation.z = terrain_info.slope.rotation_around_z;
-};
 
 TankBody.prototype.moveOnZAxis = function(units) {
     var y_rotation_in_rads = this.rotation.y * degreesToRadians;
     this.offset.x -= Math.sin(y_rotation_in_rads) * units;
     this.offset.z -= Math.cos(y_rotation_in_rads) * units;
-    this.updateYOffset();
 }
 
 // Overloading Shape.prototype's update():
@@ -34,6 +28,9 @@ TankBody.prototype.update = function() {
     mvRotate(this.rotation.x, [1, 0, 0]);
     mvRotate(this.rotation.z, [0, 0, 1]);
     mvRotate(this.rotation.y, [0, 1, 0]); // y must come after
+
+    // After rotating, just move a bit more up:
+    mvTranslate([0, this.relative_vertical_offset, 0]);
 
     updateMatrixUniforms();
 
