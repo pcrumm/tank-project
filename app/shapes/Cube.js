@@ -128,6 +128,16 @@ function Cube(offset, rotation, scale, texture) {
     this.offset = offset || {x: 0, y: 0, z: 0};
     this.rotation = rotation || {x: 0, y: 0, z: 0};
     this.scale = scale || {x: 1, y: 1, z: 1};
+
+    var loader = new THREE.JSONLoader();
+
+    loader.load( 'assets/simple_tank1.js', function ( collada ) {
+
+        console.log(collada);
+        // Shape.call(this, collada.vertices, normals, {texture: texture || textures.crate, texture_coords: texture_coords}, collada.faces);
+
+    } );
+
 }
 
 inheritPrototype(Cube, Shape);
