@@ -46,13 +46,13 @@ function start() {
         shapes = [
             terrain, 
             new Cube({x: 0, y: 2, z: 0}, {x: 0, y: 150, z: 0}, {x: 1, y: 1, z: 1}),
-            new Square({x: 0, y: 0 , z: 0}, {x: 0, y: 0, z: 0}, {x: 1000, y: 1, z: 1000}),
+            new Square({x: 330, y: 5, z: 330}, {x: 0, y: 0, z: 0}, {x: 1000, y: 1, z: 1000}), // TODO: dont use hardcoded values?
             new Cube({x: 0, y: 0, z: 0}, {x: 0, y: 0, z: 0}, {x: 1, y: 1, z: 1}),
             new Sphere({x: 0, y: 1, z: 0}, {x: 0, y: 0, z: 0}, {x: 1, y: 1, z: 1})
         ];
 
         tanks = [
-            new Tank({x: 0, y: 0.25, z: 0}, 0), // the player's tank
+            new Tank({x: 350, y: 15, z: 250}, 0), // the player's tank
             new Tank({x: -4, y: 0.25, z: -10}, 30)
         ];
         

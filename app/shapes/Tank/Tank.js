@@ -1,6 +1,8 @@
 function Tank(offset, y_rotation) {
 
     var body = new TankBody(offset, y_rotation);
+    body.updateYOffset();
+
     var turret = new TankTurret({x: offset.x, y: offset.y + 0.3, z: offset.z}, y_rotation);
 
     var setTurretOffset = function() {

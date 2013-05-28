@@ -254,29 +254,45 @@ function Terrain() {
 
     Shape.call(this, mapVertices, mapNormals, {texture_coords: texCoords, use_multitexture: true, multitexture: multitexture}, mapIndices);
 
-    var displacement = (dimScale*dimension)/2
+    this.displacement = (dimScale * dimension) / 2;
 
-    this.offset = {x: -displacement, y: -5+0*-heightScale/2, z: -displacement};
+    this.offset = {x: 0, y: 0, z: 0};
     this.rotation = {x: 0, y: 0, z: 0};
     this.scale = {x: 1, y: 1, z: 1};
 
+    var getY = function(x, z) {
+        // TODO: This is very inefficient and should be improved
+        for (var i = 0; i < mapVertices.length; i+=3) {
+            if ( mapVertices[i] === x && mapVertices[i+2] === z ) {
+                return mapVertices[i+1];
+            }
+        }
+
+        return null;
+    }
+
+    // This function returns the y value of the the Terrain at the given x and z coordinates,
+    // by way of bilinear interpolation
     this.heightMap = function(x, z) {
         var d = dimScale;
-
-        x = (x - this.offset.x) / d;
-        z = (z - this.offset.z) / d;
-
-        // Bilinear interpolation
 
         var x1 = Math.floor(x / d) * d;
         var z1 = Math.floor(z / d) * d;        
         var x2 = Math.ceil(x / d) * d;
         var z2 = Math.ceil(z / d) * d;
 
-        var h12 = mapVertices[getIndex(z2, x1) + 1];
-        var h22 = mapVertices[getIndex(z2, x2) + 1];
-        var h11 = mapVertices[getIndex(z1, x1) + 1];
-        var h21 = mapVertices[getIndex(z1, x2) + 1];
+        // x / d may have given 0, making x1 == x2 and z1 == z2. Fix this:
+        if ( x2 === x1 ) {
+            x2 += d;
+        }
+        if ( z2 === z1 ) {
+            z2 += d;
+        }
+
+        var h11 = getY(x1, z1);
+        var h12 = getY(x1, z2);
+        var h21 = getY(x2, z1);
+        var h22 = getY(x2, z2);
 
         var lhs = 1 / ((x2-x1) * (z2-z1));
         var rhs = h11 * (x2-x) * (z2-z) +
@@ -284,9 +300,8 @@ function Terrain() {
                   h12 * (x2-x) * (z-z1) +
                   h22 * (x-x1) * (z-z1);
 
-        return lhs * rhs + this.offset.y;
+        return lhs * rhs;
     };
 }
-
 
 inheritPrototype(Terrain, Shape);
