@@ -230,19 +230,22 @@ function Terrain() {
         }
 
         return null;
-    }
+    };
 
-    // This function returns the y value of the the Terrain at the given x and z coordinates,
-    // by way of bilinear interpolation
-    this.heightMap = function(x, z) {
+    // This function returns:
+    // * the y value of the the Terrain at the given x and z coordinates, with bilinear interpolation
+    // * the slope in the x and z direction of the terrain at the given x and z coordinates
+    this.getMapHeightAndSlope = function(x, z) {
         var d = dimScale;
 
+        // Find the x and z boundaries of the cell the given (x,z) are located in:
+        // (This square cell is defined by (x1,z1), (x1,z2), (x2,z1), (x2,z2))
         var x1 = Math.floor(x / d) * d;
         var z1 = Math.floor(z / d) * d;        
         var x2 = Math.ceil(x / d) * d;
         var z2 = Math.ceil(z / d) * d;
 
-        // x / d may have given 0, making x1 == x2 and z1 == z2. Fix this:
+        // x may have been too close in value to z, making x1 == x2 or z1 == z2 (that's bad). Fix this:
         if ( x2 === x1 ) {
             x2 += d;
         }
@@ -250,6 +253,7 @@ function Terrain() {
             z2 += d;
         }
 
+        // Find the y values of the points (x1,z1), (x1,z2), (x2,z1), (x2,z2), respectively:
         var h11 = getY(x1, z1);
         var h12 = getY(x1, z2);
         var h21 = getY(x2, z1);
@@ -260,8 +264,24 @@ function Terrain() {
                   h21 * (x-x1) * (z2-z) + 
                   h12 * (x2-x) * (z-z1) +
                   h22 * (x-x1) * (z-z1);
+        var y = lhs * rhs; // the final y value of the given (x,z)
 
-        return lhs * rhs;
+        // Now, find the slope of the terrain in the x and z direction at the given (x,z):
+        var run = d;
+
+        // This is the slope of the terrain in the positive x direction:
+        var risex = ((h21 + h22) / 2) - ((h11 + h12) / 2);
+        var slopex = risex / run;
+
+        // This is the slope of the terrain in the negative z direction.
+        var risez = ((h11 + h21) / 2) - ((h12 + h22) / 2);
+        var slopez = risez / run;
+
+        // Convert the slopes to angles of rotations around their perpendicular axes (in degrees):
+        var rotation_around_x = Math.atan(slopez) / degreesToRadians;
+        var rotation_around_z = Math.atan(slopex) / degreesToRadians;
+
+        return {y: y, slope: {rotation_around_x: rotation_around_x, rotation_around_z: rotation_around_z}};
     };
 }
 

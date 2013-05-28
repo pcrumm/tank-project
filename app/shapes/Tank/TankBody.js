@@ -10,7 +10,11 @@ function TankBody(offset, y_rotation) {
 inheritPrototype(TankBody, Cube);
 
 TankBody.prototype.updateYOffset = function() {
-    this.offset.y = terrain.heightMap(this.offset.x, this.offset.z);
+    var terrain_info = terrain.getMapHeightAndSlope(this.offset.x, this.offset.z);
+    this.offset.y = terrain_info.y;
+
+    this.rotation.x = terrain_info.slope.rotation_around_x;
+    this.rotation.z = terrain_info.slope.rotation_around_z;
 };
 
 TankBody.prototype.moveOnZAxis = function(units) {
@@ -21,15 +25,18 @@ TankBody.prototype.moveOnZAxis = function(units) {
 }
 
 // Overloading Shape.prototype's update():
-// (Rotation comes after translation, and only rotating around Y axis)
+// (Rotation comes after translation)
 TankBody.prototype.update = function() {
     mvPushMatrix();
-        
+
     mvTranslate([this.offset.x, this.offset.y, this.offset.z]);
-    mvRotate(this.rotation.y, [0, 1, 0]);
-    
+
+    mvRotate(this.rotation.x, [1, 0, 0]);
+    mvRotate(this.rotation.z, [0, 0, 1]);
+    mvRotate(this.rotation.y, [0, 1, 0]); // y must come after
+
     updateMatrixUniforms();
-    
+
     // Need to scale *after* updating the normals matrix (normals aren't normals if they get scaled)
     // After, only updating the modelview matrix necessary.
     mvScale(this.scale.x, this.scale.y, this.scale.z);
