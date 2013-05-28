@@ -10,24 +10,10 @@ function TerrainRegion(min, max) {
 
 var regions = [
     new TerrainRegion(0, 13),
-    new TerrainRegion(13, 28),
-    new TerrainRegion(28, 56),
-    new TerrainRegion(56, 70)
+    new TerrainRegion(0, 38),
+    new TerrainRegion(38, 57),
+    new TerrainRegion(57, 70)
 ];
-
-function initTerrainRegions() {
-    gl.uniform1f(shaderProgram.r1max, regions[0].max);
-    gl.uniform1f(shaderProgram.r1min, regions[0].min);
-
-    gl.uniform1f(shaderProgram.r2max, regions[1].max);
-    gl.uniform1f(shaderProgram.r2min, regions[1].min);
-
-    gl.uniform1f(shaderProgram.r3max, regions[2].max);
-    gl.uniform1f(shaderProgram.r3min, regions[2].min);
-
-    gl.uniform1f(shaderProgram.r4max, regions[3].max);
-    gl.uniform1f(shaderProgram.r4min, regions[3].min);
-}
 
 function getIndex(row, col) {
     //Gets an array index for the vertex or normal array
@@ -60,19 +46,7 @@ function Terrain() {
 /*----------------------------------------------------------------*/
 
     //Generates the terrain vertices and texture coordinates
-
-    var texOptions = [
-        [0, 0],
-        [dimScale, 0],
-        [dimScale, dimScale],
-        [0, dimScale]
-    ];
-
-    var texNum = 0;
-    var top = 1;
-
     for (var z = 0; z < dimension; z++)
-    {
         for (var x = 0; x < dimension; x++)
         {
             var xVal = x*dimScale;
@@ -83,7 +57,7 @@ function Terrain() {
             var dz = (((2 * z) / dimension) - 1);
             var d = (dx*dx)+(dz*dz);
 
-            var mask = height - (.4+.9*d)
+            var mask = height - (.5+.8*d)
 
             if (mask > 0.1)
                 height = height; //No change
@@ -92,35 +66,22 @@ function Terrain() {
                 height = 0.8 * height;
 
             else if (mask > -0.5)
-                height = 0.4 * height;
+                height = 0.5 * height;
 
             else if (mask > -0.1)
-                height = 0.1 * height;
-
-            else if (mask > -0.3)
-                height = 0.05 * height;
+                height = 0.2 * height;
 
             else
                 height = 0;
 
             mapVertices = mapVertices.concat([xVal, height * heightScale, zVal]);
 
-            //Sets the textures coordinates. As a set of squares along each row
-            //var index = texNum % 2;
-            //if (top)
-                //index += 2;
-
-            texCoords = texCoords.concat([x/dimension*12, z/dimension*12]);
-            texNum++;
+            texCoords = texCoords.concat([x/dimension*20, z/dimension*20]);
         }
-
-        top = !top;
-        texNum = 0;
-    }
 
     // Format the object holding Terrain's multiple objects, to be passed to Shape:
     var multitexture = [
-        {texture: textures.dirt,  uniform: shaderProgram.r1Tex},
+        {texture: textures.grass,  uniform: shaderProgram.r1Tex},
         {texture: textures.grass, uniform: shaderProgram.r2Tex},
         {texture: textures.rock,  uniform: shaderProgram.r3Tex},
         {texture: textures.snow,  uniform: shaderProgram.r4Tex}

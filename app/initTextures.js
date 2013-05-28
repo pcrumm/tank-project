@@ -19,14 +19,6 @@ function initTextures() {
     crate.image.src = 'assets/crate.gif';
     textures.crate = crate;
 
-    /*var grass = gl.createTexture();
-    grass.image = new Image();
-    grass.image.onload = function() {
-        handleLoadedTexture(grass);
-    };
-    grass.image.src = 'assets/grass_tile.jpg';
-    textures.grass = grass;*/
-
     var ocean = gl.createTexture();
     ocean.image = new Image();
     ocean.image.onload = function() {

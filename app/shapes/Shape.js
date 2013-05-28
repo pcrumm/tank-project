@@ -94,7 +94,7 @@ Shape.prototype.draw = function() {
         for (var i = 0; i < this.multitexture.length; i++) {
             gl.activeTexture(gl.TEXTURE0 + i);
             gl.bindTexture(gl.TEXTURE_2D, this.multitexture[i].texture);
-            gl.uniform1i(this.multitexture[i].uniform, 0);
+            gl.uniform1i(this.multitexture[i].uniform, i);
         }
     }
 

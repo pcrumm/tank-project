@@ -77,7 +77,7 @@
                     regionRange = regionMax - regionMin;
                     regionWeight = (regionRange - abs(height - regionMax)) / regionRange;
                     regionWeight = max(0.0, regionWeight);
-                    textureColor += regionWeight * texture2D(region1Texture, vec2(vTextureCoord.s, vTextureCoord.t));
+                    textureColor += regionWeight * texture2D(region1Texture, vec2(vTextureCoord.s, vTextureCoord.t)) * texture2D(region1Texture, vec2(4.0*vTextureCoord.s, 4.0*vTextureCoord.t));
 
                     //Region 2
                     regionMin = region2.min;
