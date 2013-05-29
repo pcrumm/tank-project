@@ -9,6 +9,7 @@ function TankTurret(offset, y_rotation) {
     // This is how far the tank turret must be translated "up" after rotation to be on top of the tank body:
     this.relative_vertical_offset = 0.55;
 }
+
 inheritPrototype(TankTurret, Cube);
 
 // Overloading Shape.prototype's update():

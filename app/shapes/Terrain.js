@@ -221,11 +221,15 @@ function Terrain() {
     this.rotation = {x: 0, y: 0, z: 0};
     this.scale = {x: 1, y: 1, z: 1};
 
+    var self = this;
     var getY = function(x, z) {
-        // TODO: This is very inefficient and should be improved
-        for (var i = 0; i < mapVertices.length; i+=3) {
-            if ( mapVertices[i] === x && mapVertices[i+2] === z ) {
-                return mapVertices[i+1];
+        // The first x element of mapVertices equal to the given x is:
+        var first_x = (x / dimScale) * 3;
+
+        // And all x elements equal to the given x are separated by "displacement" elements:
+        for (var i = first_x; i < mapVertices.length; i += self.displacement) {
+            if ( mapVertices[i+2] === z ) {
+                return mapVertices[i+1]; // return the associated y value
             }
         }
 

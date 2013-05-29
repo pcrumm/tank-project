@@ -46,7 +46,7 @@ function start() {
         shapes = [
             terrain, 
             new Cube({x: 0, y: 2, z: 0}, {x: 0, y: 150, z: 0}, {x: 1, y: 1, z: 1}),
-            new Square({x: 330, y: 5, z: 330}, {x: 0, y: 0, z: 0}, {x: 1000, y: 1, z: 1000}), // TODO: dont use hardcoded values?
+            new Square({x: terrain.displacement, y: 5, z: terrain.displacement}, {x: 0, y: 0, z: 0}, {x: 1000, y: 1, z: 1000}),
             new Cube({x: 0, y: 0, z: 0}, {x: 0, y: 0, z: 0}, {x: 1, y: 1, z: 1}),
             new Sphere({x: 0, y: 1, z: 0}, {x: 0, y: 0, z: 0}, {x: 1, y: 1, z: 1})
         ];
