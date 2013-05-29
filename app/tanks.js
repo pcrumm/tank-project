@@ -20,50 +20,41 @@ var degreesToRadians = Math.PI / 180.0;
 //
 function start() {
     var canvas = document.getElementById("glcanvas");
-    
     initWebGL(canvas); // Initialize the GL context
-    
+
     // Only continue if WebGL is available and working
     if ( gl ) {
         gl.clearColor(0.2, 0.7, 1.0, 1.0);  // Clear to sky blue
         gl.clearDepth(1.0);                 // Clear everything
         gl.enable(gl.DEPTH_TEST);           // Enable depth testing
         gl.depthFunc(gl.LEQUAL);            // Near things obscure far things
-        
+
         initShaders();
         initTextures();
         initSounds();
-        
-        // Set up to draw the scene periodically.
-        setInterval(drawScene, 15);
 
-
-        //Math.seedrandom("Lorem Ipsum");
         Math.seedrandom("I am Ozymandius, King of Kings");
-        
+
         terrain = new Terrain();
 
         shapes = [
-            terrain, 
-            new Cube({x: 0, y: 2, z: 0}, {x: 0, y: 150, z: 0}, {x: 1, y: 1, z: 1}),
+            terrain,
             new Square({x: terrain.displacement, y: 5, z: terrain.displacement}, {x: 0, y: 0, z: 0}, {x: 1000, y: 1, z: 1000}),
-            new Cube({x: 0, y: 0, z: 0}, {x: 0, y: 0, z: 0}, {x: 1, y: 1, z: 1}),
-            new Sphere({x: 0, y: 1, z: 0}, {x: 0, y: 0, z: 0}, {x: 1, y: 1, z: 1})
         ];
 
         tanks = [
             new Tank({x: 300, y: 15, z: 250}, 0), // the player's tank
             new Tank({x: -4, y: 0.25, z: -10}, 30)
         ];
-        
+
         player = new Player(tanks[0]);
-        
+
         shapes = shapes.concat(tanks);
-        
+
         multiplayer = new Multiplayer();
-        
+
         initInputEventHandler();
-        
+
         // Set up periodic updates:
         setInterval(drawScene, 30);
         setInterval(multiplayer.receiveTankUpdate, 30);
