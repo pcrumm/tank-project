@@ -2,7 +2,7 @@ function Player(player_tank) {
     var tank = player_tank;
 
     var camera = new Camera();
-    var camera_distance_from_tank = {above: 1.25, behind: 6};
+    var camera_distance_from_tank = {above: 2, behind: 6};
     
     var syncCameraAndTankTurretRotation = function() {
         var y_rotation_in_rads = tank.getTurretYRotation() * degreesToRadians;

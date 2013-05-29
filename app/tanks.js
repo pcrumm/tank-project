@@ -52,7 +52,7 @@ function start() {
         ];
 
         tanks = [
-            new Tank({x: 350, y: 15, z: 250}, 0), // the player's tank
+            new Tank({x: 300, y: 15, z: 250}, 0), // the player's tank
             new Tank({x: -4, y: 0.25, z: -10}, 30)
         ];
         
@@ -142,10 +142,10 @@ function drawScene() {
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
     
     // Establish the perspective with which we want to view the
-    // scene. Our field of view is 45 degrees, with a width/height
-    // ratio of 640:480, and we only want to see objects between 0.1 units
-    // and 100 units away from the camera.
-    perspectiveMatrix = makePerspective(45, 640.0/480.0, 0.1, 1000.0);
+    // scene. Our field of view is 60 degrees, with a width/height
+    // ratio of 800:450 (16:9), and we only want to see objects between 0.1 units
+    // and 500 units away from the camera.
+    perspectiveMatrix = makePerspective(60, 800.0/450.0, 0.1, 500.0);
     
     // Set the drawing position to the "identity" point, which is
     // the center of the scene.
