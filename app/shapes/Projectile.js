@@ -1,4 +1,5 @@
 var gravity = -9.81;
+var SHELLS_STAY_ON_GROUND = true;
 
 function Projectile(offset, velocity) {
     Sphere.call(this,
@@ -12,7 +13,9 @@ function Projectile(offset, velocity) {
     
     this.time = 0;
     this.initial_y = offset.y;
-    this.mass_constant = 0.3;
+    this.mass_constant = 2;
+
+    this.velocity.y = 5;
 
 }
 
@@ -29,6 +32,14 @@ Projectile.prototype.update = function() {
     this.offset.y = this.initial_y 
         + (this.velocity.y * this.time) 
         + (0.5 * gravity * this.mass_constant * this.time * this.time);
+
+    if(this.offset.y <= 0 && SHELLS_STAY_ON_GROUND)
+    {
+        this.offset.y = 0;
+        this.offset.x -= this.velocity.x;
+        this.offset.z -= this.velocity.z;
+    }
+
 
     Shape.prototype.update.call(this);
 
