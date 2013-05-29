@@ -45,7 +45,15 @@ function handleKeys() {
     if ( currentlyPressedKeys[83] ) { // S
         player.moveBackward();
     }
-
+    
+    //I need this for testing
+    if ( currentlyPressedKeys[38] ) { // Up Arrow
+        player.moveUp();
+    }
+    if ( currentlyPressedKeys[40] ) { // Left Arrow
+        player.moveDown();
+    }
+    
     // If any key was called that changed the player's tank's position or rotation, be sure to notify the server:
     if ( currentlyPressedKeys[65] || currentlyPressedKeys[68] || currentlyPressedKeys[87] || currentlyPressedKeys[83] ) {
         var player_tank = player.getTank();

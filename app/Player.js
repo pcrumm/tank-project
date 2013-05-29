@@ -2,11 +2,18 @@ function Player(player_tank) {
     var tank = player_tank;
 
     var camera = new Camera();
-    var camera_distance_from_tank = 6;
-    camera.offset.z = camera_distance_from_tank;
-    camera.offset.y = 1.5;
-
-    var units_to_move = 0.1;
+    var camera_distance_from_tank = {above: 2, behind: 6};
+    
+    var syncCameraAndTankTurretRotation = function() {
+        var y_rotation_in_rads = tank.getTurretYRotation() * degreesToRadians;
+        var tank_offset = tank.getOffset();
+        camera.offset.x = tank_offset.x + (Math.sin(y_rotation_in_rads) * camera_distance_from_tank.behind);
+        camera.offset.z = tank_offset.z + (Math.cos(y_rotation_in_rads) * camera_distance_from_tank.behind);
+        camera.offset.y = tank_offset.y + camera_distance_from_tank.above;
+    };
+    syncCameraAndTankTurretRotation(); // initial setup
+    
+    var units_to_move = 0.2;
     var units_to_rotate = 2;
 
     var fire_rate = 1; // shots per second
@@ -16,13 +23,6 @@ function Player(player_tank) {
 
     this.getTank = function() {
         return tank;
-    };
-
-    var syncCameraAndTankTurretRotation = function() {
-        var y_rotation_in_rads = tank.getTurretYRotation() * degreesToRadians;
-        var tank_offset = tank.getOffset();
-        camera.offset.x = tank_offset.x + (Math.sin(y_rotation_in_rads) * camera_distance_from_tank);
-        camera.offset.z = tank_offset.z + (Math.cos(y_rotation_in_rads) * camera_distance_from_tank);
     };
 
     this.moveForward = function() {
@@ -38,6 +38,14 @@ function Player(player_tank) {
 
         syncCameraAndTankTurretRotation();
     };
+    
+    this.moveDown = function() {
+        camera.moveOnYAxis(-units_to_move);
+    }
+
+    this.moveUp = function() {
+        camera.moveOnYAxis(units_to_move);
+    }
 
     this.rotateTankBodyLeft = function() {
         tank.rotateBodyOnYAxis(-units_to_rotate);
