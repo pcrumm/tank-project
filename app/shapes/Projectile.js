@@ -1,3 +1,5 @@
+var gravity = -9.81;
+
 function Projectile(offset, velocity) {
     Sphere.call(this,
                 offset,
@@ -7,6 +9,11 @@ function Projectile(offset, velocity) {
     );
 
     this.velocity = velocity;
+    
+    this.time = 0;
+    this.initial_y = offset.y;
+    this.mass_constant = 0.3;
+
 }
 
 inheritPrototype(Projectile, Sphere);
@@ -16,5 +23,14 @@ Projectile.prototype.update = function() {
     this.offset.y += this.velocity.y;
     this.offset.z += this.velocity.z;
 
+    // Basics physics equation:
+    // x = x_0 + v_0t + (1/2)at^2
+    this.time += 0.03;
+    this.offset.y = this.initial_y 
+        + (this.velocity.y * this.time) 
+        + (0.5 * gravity * this.mass_constant * this.time * this.time);
+
     Shape.prototype.update.call(this);
+
+    delete this;
 };
