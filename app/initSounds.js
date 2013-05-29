@@ -12,7 +12,8 @@ function initSounds() {
         sounds[key].play = function() {
             var self = this;
             self.currentTime = 0;
-            Audio.prototype.play.call(self)
+            self.volume=0.3;
+            Audio.prototype.play.call(self);
         }
     }
 }

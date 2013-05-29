@@ -58,6 +58,14 @@ function initTextures() {
     };
     snow.image.src = 'assets/snow.jpg';
     textures.snow = snow;
+
+    var projectile = gl.createTexture();
+    projectile.image = new Image();
+    projectile.image.onload = function() {
+        handleLoadedTexture(projectile);
+    };
+    projectile.image.src = 'assets/projectile.jpg';
+    textures.projectile = projectile;
 }
 
 function handleLoadedTexture(texture) {

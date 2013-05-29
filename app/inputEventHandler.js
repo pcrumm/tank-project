@@ -13,6 +13,9 @@ function initInputEventHandler() {
     window.onblur = function() { window_in_focus = false; };
     window.onfocus = function() { window_in_focus = true; };
 
+    window.onmouseout = function() { window_in_focus = false; };
+    window.onmouseover = function() { window_in_focus = true; };
+
     // Fix the center if the window is resized:
     window.onresize = function() { window_center = document.body.clientWidth / 2; };
 
