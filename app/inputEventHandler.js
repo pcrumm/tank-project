@@ -1,5 +1,6 @@
 var currentlyPressedKeys = {};
-var window_center = document.body.clientWidth / 2;
+var window_center_horizontal = document.body.clientWidth / 2;
+var canvas_center_vertical = document.getElementById("glcanvas").offsetTop + (document.getElementById("glcanvas").height / 2)
 var window_in_focus = true;
 
 function initInputEventHandler() {
@@ -17,7 +18,7 @@ function initInputEventHandler() {
     window.onmouseover = function() { window_in_focus = true; };
 
     // Fix the center if the window is resized:
-    window.onresize = function() { window_center = document.body.clientWidth / 2; };
+    window.onresize = function() { window_center_horizontal = document.body.clientWidth / 2; };
 
     setInterval(handleKeys, 30);
     setInterval(handleMouse, 30);
@@ -62,18 +63,18 @@ function handleKeys() {
 }
 
 var mouseInfo = {
-    center: window_center,
-    threshold_left:  function() { return window_center - 40 },
-    threshold_right: function() { return window_center + 40 },
-    threshold_up:    function() { return window_center + 50 },
-    threshold_down:  function() { return window_center - 30 },
+    threshold_left:  function() { return window_center_horizontal - 30 },
+    threshold_right: function() { return window_center_horizontal + 30 },
+    threshold_up:    function() { return canvas_center_vertical + 10 },
+    threshold_down:  function() { return canvas_center_vertical - 40 },
 
     looking_left:  false,
     looking_right: false,
     looking_up:    false,
     looking_down:  false,
 
-    rotation_magnitude: 0,
+    rotation_magnitude_horizontal: 0,
+    rotation_magnitude_vertical: 0,
     rotation_magnitude_divisor: 100
 };
 
@@ -92,12 +93,12 @@ function handleMouseMove(event) {
     if ( event.pageX < mouseInfo.threshold_left() ) {
         mouseInfo.looking_left  = true;
         mouseInfo.looking_right = false;
-        mouseInfo.rotation_magnitude = mouseInfo.threshold_left() - event.pageX;
+        mouseInfo.rotation_magnitude_horizontal = mouseInfo.threshold_left() - event.pageX;
     }
     else if ( event.pageX > mouseInfo.threshold_right() ) {
         mouseInfo.looking_left  = false;
         mouseInfo.looking_right = true;
-        mouseInfo.rotation_magnitude = event.pageX - mouseInfo.threshold_right();
+        mouseInfo.rotation_magnitude_horizontal = event.pageX - mouseInfo.threshold_right();
     }
     else {
         mouseInfo.looking_left  = false;
@@ -105,15 +106,15 @@ function handleMouseMove(event) {
     }
 
     // Handle vertical mouse movement:
-    if ( event.pageY < mouseInfo.threshold_down() ) {
-        mouseInfo.looking_down = true;
-        mouseInfo.looking_up   = false;
-        mouseInfo.rotation_magnitude = mouseInfo.threshold_down() - event.pageY;
-    }
-    else if ( event.pageY > mouseInfo.threshold_up() ) {
-        mouseInfo.looking_down = false;
+    if ( event.pageY > mouseInfo.threshold_up() ) {
         mouseInfo.looking_up   = true;
-        mouseInfo.rotation_magnitude = event.pageY - mouseInfo.threshold_up();
+        mouseInfo.looking_down = false;
+        mouseInfo.rotation_magnitude_vertical = event.pageY - mouseInfo.threshold_up();
+    }
+    else if ( event.pageY < mouseInfo.threshold_down() ) {
+        mouseInfo.looking_up   = false;
+        mouseInfo.looking_down = true;
+        mouseInfo.rotation_magnitude_vertical = mouseInfo.threshold_down() - event.pageY;
     }
     else {
         mouseInfo.looking_up   = false;
@@ -124,10 +125,17 @@ function handleMouseMove(event) {
 function handleMouse() {
     if ( window_in_focus ) {
         if ( mouseInfo.looking_left ) {
-            player.rotateTankTurretLeft(mouseInfo.rotation_magnitude / mouseInfo.rotation_magnitude_divisor);
+            player.rotateTankTurretLeft(mouseInfo.rotation_magnitude_horizontal / mouseInfo.rotation_magnitude_divisor);
         }
         else if ( mouseInfo.looking_right ) {
-            player.rotateTankTurretRight(mouseInfo.rotation_magnitude / mouseInfo.rotation_magnitude_divisor);
+            player.rotateTankTurretRight(mouseInfo.rotation_magnitude_horizontal / mouseInfo.rotation_magnitude_divisor);
+        }
+
+        if ( mouseInfo.looking_up ) {
+            player.moveTankBarrelUp(mouseInfo.rotation_magnitude_vertical / mouseInfo.rotation_magnitude_divisor);
+        }
+        else if ( mouseInfo.looking_down ) {
+            player.moveTankBarrelDown(mouseInfo.rotation_magnitude_vertical / mouseInfo.rotation_magnitude_divisor);
         }
     }
 }

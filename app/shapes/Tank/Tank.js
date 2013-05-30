@@ -6,10 +6,11 @@ function Tank(offset, y_rotation) {
         var terrain_info = terrain.getMapHeightAndSlope(body.offset.x, body.offset.z);
 
         body.offset.y = terrain_info.y;
-        turret.offset = body.offset;
+        turret.setOffset(body.offset);
 
-        body.rotation.x = turret.rotation.x = terrain_info.slope.rotation_around_x;
-        body.rotation.z = turret.rotation.z = terrain_info.slope.rotation_around_z;
+        body.rotation.x = terrain_info.slope.rotation_around_x;
+        body.rotation.z = terrain_info.slope.rotation_around_z;
+        turret.setRotation({x: body.rotation.x, y: null, z: body.rotation.z});
     };
     adaptToTerrain(); // initial setup
 
@@ -41,6 +42,10 @@ function Tank(offset, y_rotation) {
 
     this.rotateTurretOnYAxis = function(units) {
         turret.rotateOnYAxis(units);
+    };
+
+    this.rotateBarrelOnXAxis = function(units) {
+        turret.rotateBarrelOnXAxis(units);
     };
 
     this.update = function() {

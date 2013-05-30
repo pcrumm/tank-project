@@ -70,6 +70,14 @@ function Player(player_tank) {
         rotateTankTurretOnYAxis(units);
     };
 
+    this.moveTankBarrelUp = function(units) {
+        tank.rotateBarrelOnXAxis(-units);
+    };
+
+    this.moveTankBarrelDown = function(units) {
+        tank.rotateBarrelOnXAxis(units);
+    };
+
     this.generateProjectile = function() {
         var tank_offset = tank.getOffset();
 
