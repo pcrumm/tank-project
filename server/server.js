@@ -18,6 +18,15 @@ var game_data = []; // Store all of the ongoing game data here
 io.sockets.on('connection', function(socket) {
     // When a client emits "join", we'll respond with the data they need to get instantiated
     socket.on('client_join', function() {
+
+        // See if we have room for the client...
+        if (connected_tanks >= TANK_LIMIT)
+        {
+            socket.emit('server_full');
+            socket.disconnect();
+            return;
+        }
+
         var tank_id = game_data.length;
         var tank_uniq_id = socket.id;
         game_data[tank_id] = {

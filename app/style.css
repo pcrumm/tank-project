@@ -8,3 +8,18 @@ body {
 	display: block;
 	margin: 0 auto;
 }
+
+#server_full_error {
+    width: 600px;
+    margin: 0 auto;
+    text-align: center;
+    display: none;
+}
+
+#server_full_error h1 {
+    font-size: 80px;
+}
+
+#server_full_error p {
+    font-size: 30px;
+}

@@ -61,6 +61,12 @@ function Multiplayer() {
                     break;
                 }
         });
+
+        // Used to notify a client there's no room for them to join. At this point, they aren't connected
+        socket.on('server_full', function() {
+            $('#glcanvas').detach();
+            $('#server_full_error').show();
+        });
     });
 
     // Used to notify the server this client is disconnecting
