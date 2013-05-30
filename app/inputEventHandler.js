@@ -52,11 +52,15 @@ function handleKeys() {
 
 var mouseInfo = {
     center: window_center,
-    threshold_left:  function() { return window_center - 30},
-    threshold_right: function() { return window_center + 30},
+    threshold_left:  function() { return window_center - 40 },
+    threshold_right: function() { return window_center + 40 },
+    threshold_up:    function() { return window_center + 50 },
+    threshold_down:  function() { return window_center - 30 },
 
     looking_left:  false,
     looking_right: false,
+    looking_up:    false,
+    looking_down:  false,
 
     rotation_magnitude: 0,
     rotation_magnitude_divisor: 100
@@ -73,6 +77,7 @@ function handleMouseUp(event) {
 }
 
 function handleMouseMove(event) {
+    // Handle horizontal mouse movement:
     if ( event.pageX < mouseInfo.threshold_left() ) {
         mouseInfo.looking_left  = true;
         mouseInfo.looking_right = false;
@@ -86,6 +91,22 @@ function handleMouseMove(event) {
     else {
         mouseInfo.looking_left  = false;
         mouseInfo.looking_right = false;
+    }
+
+    // Handle vertical mouse movement:
+    if ( event.pageY < mouseInfo.threshold_down() ) {
+        mouseInfo.looking_down = true;
+        mouseInfo.looking_up   = false;
+        mouseInfo.rotation_magnitude = mouseInfo.threshold_down() - event.pageY;
+    }
+    else if ( event.pageY > mouseInfo.threshold_up() ) {
+        mouseInfo.looking_down = false;
+        mouseInfo.looking_up   = true;
+        mouseInfo.rotation_magnitude = event.pageY - mouseInfo.threshold_up();
+    }
+    else {
+        mouseInfo.looking_up   = false;
+        mouseInfo.looking_down = false;
     }
 }
 
