@@ -98,7 +98,7 @@ function Terrain() {
     ];
 
 /*----------------------------------------------------------------*/
-var max = -1;
+
     //Smoothes the vertices to remove some of the sharpness
     //Averages the point with the (up to) 8 points around it
     for (var z = 0; z < dimension; z++)
@@ -160,12 +160,9 @@ var max = -1;
 
             average /= times;
 
-            if (average > max)
-                max = average;
-
             mapVertices[getIndex(z,x)+1] = average;
         }
-console.log(max);
+
 /*----------------------------------------------------------------*/
 
     //Generates the normals
