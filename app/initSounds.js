@@ -11,9 +11,9 @@ function initSounds() {
         // Overloading play() allows for playing the file before it is done playing:
         sounds[key].play = function() {
             var self = this;
-            self.currentTime = 0;
-            self.volume=0.3;
+            self.volume = 0.3;
             Audio.prototype.play.call(self);
+            self.currentTime = 0;
         }
     }
 }
