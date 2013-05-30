@@ -226,8 +226,8 @@ function Terrain() {
         // The first x element of mapVertices equal to the given x is:
         var first_x = (x / dimScale) * 3;
 
-        // And all x elements equal to the given x are separated by "displacement" elements:
-        for (var i = first_x; i < mapVertices.length; i += self.displacement) {
+        // And all x elements equal to the given x are separated by dimension*3 elements:
+        for (var i = first_x; i < mapVertices.length; i += (dimension * 3)) {
             if ( mapVertices[i+2] === z ) {
                 return mapVertices[i+1]; // return the associated y value
             }
