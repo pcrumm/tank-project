@@ -13,6 +13,9 @@ function initInputEventHandler() {
     window.onblur = function() { window_in_focus = false; };
     window.onfocus = function() { window_in_focus = true; };
 
+    window.onmouseout = function() { window_in_focus = false; };
+    window.onmouseover = function() { window_in_focus = true; };
+
     // Fix the center if the window is resized:
     window.onresize = function() { window_center = document.body.clientWidth / 2; };
 
@@ -42,7 +45,15 @@ function handleKeys() {
     if ( currentlyPressedKeys[83] ) { // S
         player.moveBackward();
     }
-
+    
+    //I need this for testing
+    if ( currentlyPressedKeys[38] ) { // Up Arrow
+        player.moveUp();
+    }
+    if ( currentlyPressedKeys[40] ) { // Left Arrow
+        player.moveDown();
+    }
+    
     // If any key was called that changed the player's tank's position or rotation, be sure to notify the server:
     if ( currentlyPressedKeys[65] || currentlyPressedKeys[68] || currentlyPressedKeys[87] || currentlyPressedKeys[83] ) {
         var player_tank = player.getTank();

@@ -19,13 +19,45 @@ function initTextures() {
     crate.image.src = 'assets/crate.gif';
     textures.crate = crate;
 
+    var ocean = gl.createTexture();
+    ocean.image = new Image();
+    ocean.image.onload = function() {
+        handleLoadedTexture(ocean);
+    };
+    ocean.image.src = 'assets/ocean.png';
+    textures.ocean = ocean;
+
     var grass = gl.createTexture();
     grass.image = new Image();
     grass.image.onload = function() {
         handleLoadedTexture(grass);
     };
-    grass.image.src = 'assets/grass_tile.jpg';
+    grass.image.src = 'assets/grass.jpg';
     textures.grass = grass;
+
+    var rock = gl.createTexture();
+    rock.image = new Image();
+    rock.image.onload = function() {
+        handleLoadedTexture(rock);
+    };
+    rock.image.src = 'assets/rock.jpg';
+    textures.rock = rock;
+
+    var dirt = gl.createTexture();
+    dirt.image = new Image();
+    dirt.image.onload = function() {
+        handleLoadedTexture(dirt);
+    };
+    dirt.image.src = 'assets/dirt.jpg';
+    textures.dirt = dirt;
+
+    var snow = gl.createTexture();
+    snow.image = new Image();
+    snow.image.onload = function() {
+        handleLoadedTexture(snow);
+    };
+    snow.image.src = 'assets/snow.jpg';
+    textures.snow = snow;
 
     var projectile = gl.createTexture();
     projectile.image = new Image();

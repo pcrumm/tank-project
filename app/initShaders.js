@@ -34,6 +34,38 @@ function initShaders() {
     shaderProgram.pUniform  = gl.getUniformLocation(shaderProgram, "uPMatrix");
     shaderProgram.mvUniform = gl.getUniformLocation(shaderProgram, "uMVMatrix");
     shaderProgram.nUniform  = gl.getUniformLocation(shaderProgram, "uNMatrix");
+
+    //These are for the terrain multitexture
+    shaderProgram.r1max = gl.getUniformLocation(shaderProgram, "region1.max");
+    shaderProgram.r1min = gl.getUniformLocation(shaderProgram, "region1.min");
+
+    shaderProgram.r2max = gl.getUniformLocation(shaderProgram, "region2.max");
+    shaderProgram.r2min = gl.getUniformLocation(shaderProgram, "region2.min");
+
+    shaderProgram.r3max = gl.getUniformLocation(shaderProgram, "region3.max");
+    shaderProgram.r3min = gl.getUniformLocation(shaderProgram, "region3.min");
+
+    shaderProgram.r4max = gl.getUniformLocation(shaderProgram, "region4.max");
+    shaderProgram.r4min = gl.getUniformLocation(shaderProgram, "region4.min");
+
+    shaderProgram.r1Tex = gl.getUniformLocation(shaderProgram, "region1Texture");
+    shaderProgram.r2Tex = gl.getUniformLocation(shaderProgram, "region2Texture");
+    shaderProgram.r3Tex = gl.getUniformLocation(shaderProgram, "region3Texture");
+    shaderProgram.r4Tex = gl.getUniformLocation(shaderProgram, "region4Texture");
+
+    shaderProgram.multi = gl.getUniformLocation(shaderProgram, "multiTex");
+
+    gl.uniform1f(shaderProgram.r1max, regions[0].max);
+    gl.uniform1f(shaderProgram.r1min, regions[0].min);
+
+    gl.uniform1f(shaderProgram.r2max, regions[1].max);
+    gl.uniform1f(shaderProgram.r2min, regions[1].min);
+
+    gl.uniform1f(shaderProgram.r3max, regions[2].max);
+    gl.uniform1f(shaderProgram.r3min, regions[2].min);
+
+    gl.uniform1f(shaderProgram.r4max, regions[3].max);
+    gl.uniform1f(shaderProgram.r4min, regions[3].min);
 }
 
 //
