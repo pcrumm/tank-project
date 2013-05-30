@@ -10,8 +10,6 @@ function Tank(offset, y_rotation) {
 
         body.rotation.x = turret.rotation.x = terrain_info.slope.rotation_around_x;
         body.rotation.z = turret.rotation.z = terrain_info.slope.rotation_around_z;
-
-        console.log(terrain.getMapHeightAndSlope(1000, 1000));
     };
     adaptToTerrain(); // initial setup
 

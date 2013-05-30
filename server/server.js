@@ -22,7 +22,7 @@ io.sockets.on('connection', function(socket) {
         var tank_uniq_id = socket.id;
         game_data[tank_id] = {
             tank_id: tank_uniq_id,
-            position: {x: 10*tank_id, y: 0, z: 0},
+            position: {x: 300+(5*tank_id*Math.pow(-1,tank_id+1)), y: 0, z: 300+(5*tank_id*Math.pow(-1,tank_id))},
             rotation: 0
         };
 
