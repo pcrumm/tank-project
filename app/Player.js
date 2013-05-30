@@ -2,25 +2,27 @@ function Player(player_tank) {
     var tank = player_tank;
 
     var camera = new Camera();
-    var camera_distance_from_tank = 6;
-    camera.offset.z = camera_distance_from_tank;
-    camera.offset.y = 1.5;
-    var units_to_move = 0.1;
-    var units_to_rotate = 2;
-
-    var fire_rate = 5; // shots per second
-    var is_shooting = false;
-    var shot_interval;
-
-    this.getTank = function() {
-        return tank;
-    };
-
+    var camera_distance_from_tank = {above: 2, behind: 6};
+    
     var syncCameraAndTankTurretRotation = function() {
         var y_rotation_in_rads = tank.getTurretYRotation() * degreesToRadians;
         var tank_offset = tank.getOffset();
-        camera.offset.x = tank_offset.x + (Math.sin(y_rotation_in_rads) * camera_distance_from_tank);
-        camera.offset.z = tank_offset.z + (Math.cos(y_rotation_in_rads) * camera_distance_from_tank);
+        camera.offset.x = tank_offset.x + (Math.sin(y_rotation_in_rads) * camera_distance_from_tank.behind);
+        camera.offset.z = tank_offset.z + (Math.cos(y_rotation_in_rads) * camera_distance_from_tank.behind);
+        camera.offset.y = tank_offset.y + camera_distance_from_tank.above;
+    };
+    syncCameraAndTankTurretRotation(); // initial setup
+    
+    var units_to_move = 0.2;
+    var units_to_rotate = 2;
+
+    var fire_rate = 1; // shots per second
+    var is_shooting = false;
+    var shot_interval;
+    var shot_done = true;
+
+    this.getTank = function() {
+        return tank;
     };
 
     this.moveForward = function() {
@@ -36,6 +38,14 @@ function Player(player_tank) {
 
         syncCameraAndTankTurretRotation();
     };
+    
+    this.moveDown = function() {
+        camera.moveOnYAxis(-units_to_move);
+    }
+
+    this.moveUp = function() {
+        camera.moveOnYAxis(units_to_move);
+    }
 
     this.rotateTankBodyLeft = function() {
         tank.rotateBodyOnYAxis(-units_to_rotate);
@@ -61,14 +71,27 @@ function Player(player_tank) {
     };
 
     this.generateProjectile = function() {
-        console.log("bang");
+        var tank_offset = tank.getOffset();
+
+        var y_rotation_in_rads = tank.getTurretYRotation() * degreesToRadians;
+        var projectile_velocity = {x: -Math.sin(y_rotation_in_rads), y: 0, z: -Math.cos(y_rotation_in_rads)};
+
+        shapes.push(new Projectile({x: tank_offset.x, y: tank_offset.y + 0.3, z: tank_offset.z}, projectile_velocity));
+
+        sounds.tank_shoot.play();
     };
 
     this.shootOn = function () {
         if (!is_shooting)
         {
             is_shooting = true;
-            this.generateProjectile();
+            if (shot_done)
+            {
+                // prevents spamming to fire faster than fire_rate
+                shot_done = false;
+                this.generateProjectile();
+                setTimeout(function() {shot_done = true;}, 1000/fire_rate);
+            }
             shot_interval = setInterval(this.generateProjectile, 1000/fire_rate);
         }
     };

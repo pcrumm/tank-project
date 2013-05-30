@@ -26,8 +26,12 @@ function Multiplayer() {
         // Used to setup a new client on the server
         socket.on('welcome_client', function(tank_data) {
             tanks[0] = new Tank(tank_data.position, tank_data.rotation);
+            tanks[0].placeOnTerrain();
             tanks[0].id = tank_data.tank_id;
             player = new Player(tanks[0]);
+
+            // Let the server know the tank's new position in light of the adjustment above
+            socket.emit('update_tank_position', tanks[0].id, tanks[0].getOffset(), tanks[0].getBodyYRotation());
         });
 
         // Used to add a new third-party tank.

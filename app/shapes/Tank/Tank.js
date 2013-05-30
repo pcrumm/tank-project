@@ -1,11 +1,19 @@
 function Tank(offset, y_rotation) {
-
     var body = new TankBody(offset, y_rotation);
-    var turret = new TankTurret({x: offset.x, y: offset.y + 0.3, z: offset.z}, y_rotation);
+    var turret = new TankTurret(offset, y_rotation);
 
-    var setTurretOffset = function() {
-        turret.offset = {x: body.offset.x, y: body.offset.y + 0.3, z: body.offset.z};
+    adaptToTerrain = function() {
+        var terrain_info = terrain.getMapHeightAndSlope(body.offset.x, body.offset.z);
+
+        body.offset.y = terrain_info.y;
+        turret.offset = body.offset;
+
+        body.rotation.x = turret.rotation.x = terrain_info.slope.rotation_around_x;
+        body.rotation.z = turret.rotation.z = terrain_info.slope.rotation_around_z;
+
+        console.log(terrain.getMapHeightAndSlope(1000, 1000));
     };
+    adaptToTerrain(); // initial setup
 
     this.getOffset = function() {
         return body.offset;
@@ -26,7 +34,11 @@ function Tank(offset, y_rotation) {
 
     this.moveOnZAxis = function(units) {
         body.moveOnZAxis(units);
-        setTurretOffset();
+        adaptToTerrain();
+    };
+
+    this.placeOnTerrain = function() {
+        adaptToTerrain();
     };
 
     this.rotateBodyOnYAxis = function(units) {
