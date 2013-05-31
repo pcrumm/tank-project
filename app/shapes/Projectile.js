@@ -26,8 +26,8 @@ Projectile.prototype.checkForCollisions = function() {
     var terrain_height = (terrain.getMapHeightAndSlope(this.offset.x, this.offset.z)).y;
     if ( this.offset.y <= terrain_height ) {
         // Hit or below water:
-        if ( this.offset.y <= 5 ) {
-            this.offset.y = 5;
+        if ( this.offset.y <= terrain.displacement.vertical ) {
+            this.offset.y = terrain.displacement.vertical;
         }
         else {
             this.offset.y = terrain_height;
