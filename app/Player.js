@@ -70,14 +70,16 @@ function Player(player_tank) {
         rotateTankTurretOnYAxis(units);
     };
 
+    this.moveTankBarrelUp = function(units) {
+        tank.rotateBarrelOnXAxis(-units);
+    };
+
+    this.moveTankBarrelDown = function(units) {
+        tank.rotateBarrelOnXAxis(units);
+    };
+
     this.generateProjectile = function() {
-        var tank_offset = tank.getOffset();
-
-        var y_rotation_in_rads = tank.getTurretYRotation() * degreesToRadians;
-        var projectile_velocity = {x: -Math.sin(y_rotation_in_rads), y: 0, z: -Math.cos(y_rotation_in_rads)};
-
-        shapes.push(new Projectile({x: tank_offset.x, y: tank_offset.y + 0.3, z: tank_offset.z}, projectile_velocity));
-
+        tank.generateProjectile();
         sounds.tank_shoot.play();
     };
 
