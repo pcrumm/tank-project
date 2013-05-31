@@ -9,9 +9,9 @@ function TerrainRegion(min, max) {
 }
 
 var regions = [
-    new TerrainRegion(0, 13),
-    new TerrainRegion(0, 38),
-    new TerrainRegion(38, 57),
+    new TerrainRegion(0, 8),
+    new TerrainRegion(8, 30),
+    new TerrainRegion(30, 45),
     new TerrainRegion(57, 70)
 ];
 
@@ -37,7 +37,8 @@ function getNoise(generator, xVal, zVal) {
 
 function Terrain() {
     //Returns a shape object holding the map;
-    var dimScale = 6;
+    var dimScale = 3;
+    var stepSize = .0025;
     var mapNormals = [];
     var mapIndices = [];
     var texCoords = [];
@@ -51,13 +52,13 @@ function Terrain() {
         {
             var xVal = x*dimScale;
             var zVal = z*dimScale;
-            var height = getNoise(generator, xVal*.004, zVal*.004);
+            var height = getNoise(generator, xVal*stepSize, zVal*stepSize);
 
             var dx = (((2 * x) / dimension) - 1);
             var dz = (((2 * z) / dimension) - 1);
             var d = (dx*dx)+(dz*dz);
 
-            var mask = height - (.5+.8*d)
+            var mask = height - (.4+.6*d)
 
             if (mask > 0.1)
                 height = height; //No change
@@ -65,11 +66,20 @@ function Terrain() {
             else if (mask > 0)
                 height = 0.8 * height;
 
-            else if (mask > -0.5)
-                height = 0.5 * height;
+            else if (mask > -.07)
+                height *= 0.65;
 
             else if (mask > -0.1)
-                height = 0.2 * height;
+                height = 0.5 * height;
+
+            else if (mask > -0.2)
+                height *= 0.4;
+
+            else if (mask > -0.3)
+                height = 0.3 * height;
+
+            else if (mask > -0.5)
+                height *= 0.05;
 
             else
                 height = 0;
@@ -81,7 +91,7 @@ function Terrain() {
 
     // Format the object holding Terrain's multiple objects, to be passed to Shape:
     var multitexture = [
-        {texture: textures.grass,  uniform: shaderProgram.r1Tex},
+        {texture: textures.dirt,  uniform: shaderProgram.r1Tex},
         {texture: textures.grass, uniform: shaderProgram.r2Tex},
         {texture: textures.rock,  uniform: shaderProgram.r3Tex},
         {texture: textures.snow,  uniform: shaderProgram.r4Tex}

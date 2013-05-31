@@ -136,7 +136,7 @@ function drawScene() {
     // scene. Our field of view is 60 degrees, with a width/height
     // ratio of 800:450 (16:9), and we only want to see objects between 0.1 units
     // and 500 units away from the camera.
-    perspectiveMatrix = makePerspective(60, 800.0/450.0, 0.1, 500.0);
+    perspectiveMatrix = makePerspective(60, 800.0/450.0, 1, 500.0);
     
     // Set the drawing position to the "identity" point, which is
     // the center of the scene.
