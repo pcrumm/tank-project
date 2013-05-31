@@ -2,8 +2,8 @@
 
 ## Overview
 
-The application is currently dirt simple. When you open up index.html, you can move around with WASD,
-and rotate around with the left and right arrow keys.
+The application is ~~currently~~ no longer dirt simple. When you open up index.html, you can move around with WASD,
+and rotate the camera with the mouse. Click to shoot.
 
 ### General Guidelines
 
