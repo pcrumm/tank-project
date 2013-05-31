@@ -40,6 +40,7 @@ function start() {
         shapes = [
             terrain,
             new Square({x: terrain.displacement, y: 5, z: terrain.displacement}, {x: 0, y: 0, z: 0}, {x: 1000, y: 1, z: 1000}),
+            new Sphere({x: terrain.displacement, y: 0, z: terrain.displacement} , {x: 0, y: 0, z: 0}, {x: 300, y: 300, z: 300}, textures.sky),
         ];
 
         tanks = [

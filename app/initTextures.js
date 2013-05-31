@@ -75,6 +75,15 @@ function initTextures() {
     };
     projectile.image.src = 'assets/projectile.jpg';
     textures.projectile = projectile;
+
+
+    var sky = gl.createTexture();
+    sky.image = new Image();
+    sky.image.onload = function() {
+        handleLoadedTexture(sky);
+    };
+    sky.image.src = 'assets/sky.jpg';
+    textures.sky = sky;
 }
 
 function handleLoadedTexture(texture) {
