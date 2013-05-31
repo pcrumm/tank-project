@@ -8,7 +8,7 @@ function TankBarrel(offset, y_rotation) {
 
     this.relative_vertical_offset = 0.55;
     this.relative_forward_offset = -0.6125;
-    this.firing_angle = 0;
+    this.firing_angle = 30;
 }
 
 inheritPrototype(TankBarrel, Cube);

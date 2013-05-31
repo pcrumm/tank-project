@@ -34,7 +34,7 @@ TankTurret.prototype.rotateOnYAxis = function(units) {
 TankTurret.prototype.rotateBarrelOnXAxis = function(units) {
     var new_angle = this.barrel.firing_angle + units;
 
-    if ( new_angle < 45 && new_angle > 0 ) {
+    if ( new_angle < 45 && new_angle > 10 ) {
         this.barrel.firing_angle = new_angle;
     }
 };

@@ -1,6 +1,4 @@
 var gravity = -9.81;
-//var gravity = 0;
-var SHELLS_STAY_ON_GROUND = true;
 
 function Projectile(offset, velocity) {
     Sphere.call(this,
@@ -29,10 +27,11 @@ Projectile.prototype.update = function() {
         (this.velocity.y * this.time) +
         (0.5 * gravity * this.mass_constant * this.time * this.time);
 
-    if (this.offset.y <= 0 && SHELLS_STAY_ON_GROUND) {
-        this.offset.y = 0;
-        this.offset.x -= this.velocity.x;
-        this.offset.z -= this.velocity.z;
+    var terrain_height = (terrain.getMapHeightAndSlope(this.offset.x, this.offset.z)).y;
+    if ( this.offset.y <= terrain_height && this.time > 0.03 ) {
+        this.offset.y = terrain_height;
+
+        this.update = Shape.prototype.update; // No more physics updates necessary
     }
 
     Shape.prototype.update.call(this);
