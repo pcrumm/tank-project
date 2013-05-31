@@ -21,11 +21,15 @@ TankBody.prototype.moveOnZAxis = function(units) {
     
     var y_rotation_in_rads = this.rotation.y * degreesToRadians;
 
-    var new_offset = {
-        x: this.offset.x - Math.sin(y_rotation_in_rads) * units,
-        y: this.offset.y,
-        z: this.offset.z - Math.cos(y_rotation_in_rads) * units
-    };
+    var new_offset = {};
+    new_offset.x = this.offset.x - Math.sin(y_rotation_in_rads) * units;
+    new_offset.z = this.offset.z - Math.cos(y_rotation_in_rads) * units;
+    new_offset.y = terrain.getMapHeightAndSlope(new_offset.x, new_offset.z).y;
+
+    // Tanks aren't submarines. TO DO: Don't use hard coded value
+    if (new_offset.y <= 5) {
+        return;
+    }
 
     for (var i = 0; i < tanks.length; i++) {
         if (tanks[i] == this.tank)
