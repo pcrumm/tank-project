@@ -28,8 +28,16 @@ Projectile.prototype.update = function() {
         (0.5 * gravity * this.mass_constant * this.time * this.time);
 
     var terrain_height = (terrain.getMapHeightAndSlope(this.offset.x, this.offset.z)).y;
+
+    // Check for terrain (or water) collision:
     if ( this.offset.y <= terrain_height && this.time > 0.03 ) {
-        this.offset.y = terrain_height;
+        // Hit or below water:
+        if ( this.offset.y <= 5 ) {
+            this.offset.y = 5;
+        }
+        else {
+            this.offset.y = terrain_height;
+        }
 
         this.update = Shape.prototype.update; // No more physics updates necessary
     }
