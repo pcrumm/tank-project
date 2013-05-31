@@ -16,6 +16,44 @@ function Projectile(offset, velocity) {
 
 inheritPrototype(Projectile, Sphere);
 
+Projectile.prototype.checkForCollisions = function() {
+    // Only check for collisions after a little bit:
+    if ( this.time < 0.06 ) {
+        return;
+    }
+
+    // Check for terrain (or water) collision:
+    var terrain_height = (terrain.getMapHeightAndSlope(this.offset.x, this.offset.z)).y;
+    if ( this.offset.y <= terrain_height ) {
+        // Hit or below water:
+        if ( this.offset.y <= 5 ) {
+            this.offset.y = 5;
+        }
+        else {
+            this.offset.y = terrain_height;
+        }
+
+        this.update = Shape.prototype.update; // No more physics updates necessary
+        return;
+    }
+
+    // Check for collisions with a tank:
+    var tank_bounding_sphere_radius = 1.1;
+    for (var i = 0; i < tanks.length; i++) {
+        var tank_offset = tanks[i].getOffset();
+        var distance_between_centers = Math.sqrt(
+            Math.pow(tank_offset.x - this.offset.x, 2) +
+            Math.pow(tank_offset.y - this.offset.y, 2) +
+            Math.pow(tank_offset.z - this.offset.z, 2)
+        );
+
+        if ( distance_between_centers < (tank_bounding_sphere_radius + this.scale.x) ) {
+            this.update = Shape.prototype.update; // No more physics updates necessary
+            return;
+        }
+    }
+};
+
 Projectile.prototype.update = function() {
     this.offset.x += this.velocity.x;
     this.offset.z += this.velocity.z;
@@ -27,20 +65,7 @@ Projectile.prototype.update = function() {
         (this.velocity.y * this.time) +
         (0.5 * gravity * this.mass_constant * this.time * this.time);
 
-    var terrain_height = (terrain.getMapHeightAndSlope(this.offset.x, this.offset.z)).y;
-
-    // Check for terrain (or water) collision:
-    if ( this.offset.y <= terrain_height && this.time > 0.03 ) {
-        // Hit or below water:
-        if ( this.offset.y <= 5 ) {
-            this.offset.y = 5;
-        }
-        else {
-            this.offset.y = terrain_height;
-        }
-
-        this.update = Shape.prototype.update; // No more physics updates necessary
-    }
+    this.checkForCollisions();
 
     Shape.prototype.update.call(this);
 };
