@@ -43,8 +43,8 @@ function start() {
         ];
 
         tanks = [
-            new Tank({x: 300, y: 15, z: 250}, 0), // the player's tank
-            new Tank({x: -4, y: 0.25, z: -10}, 30)
+            new Tank({x: 130, y: null, z: 170}, 0), // the player's tank
+            new Tank({x: 140, y: null, z: 180}, 30)
         ];
 
         player = new Player(tanks[0]);
