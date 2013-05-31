@@ -8,6 +8,7 @@ function Projectile(offset, velocity) {
                 textures.projectile
     );
 
+    this.is_alive = true;
     this.velocity = velocity;
     this.time = 0;
     this.initial_y = offset.y;
@@ -34,6 +35,7 @@ Projectile.prototype.checkForCollisions = function() {
         }
 
         this.update = Shape.prototype.update; // No more physics updates necessary
+        this.is_alive = false;
         return;
     }
 
@@ -49,6 +51,7 @@ Projectile.prototype.checkForCollisions = function() {
 
         if ( distance_between_centers < (tank_bounding_sphere_radius + this.scale.x) ) {
             this.update = Shape.prototype.update; // No more physics updates necessary
+            this.is_alive = false;
             return;
         }
     }

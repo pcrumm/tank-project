@@ -7,6 +7,7 @@ var shaderProgram;
 
 var shapes;
 var tanks;
+var projectiles;
 var player;
 var multiplayer;
 var terrain;
@@ -47,6 +48,8 @@ function start() {
             new Tank({x: 130, y: null, z: 170}, 0), // the player's tank
             new Tank({x: 130, y: null, z: 160}, 30)
         ];
+
+        projectiles = [];
 
         player = new Player(tanks[0]);
 
@@ -132,22 +135,30 @@ function bindInputEvents() {
 function drawScene() {
     // Clear the canvas before we start drawing on it.
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-    
+
     // Establish the perspective with which we want to view the
     // scene. Our field of view is 60 degrees, with a width/height
     // ratio of 800:450 (16:9), and we only want to see objects between 0.1 units
     // and 500 units away from the camera.
     perspectiveMatrix = makePerspective(60, 800.0/450.0, 1, 500.0);
-    
+
     // Set the drawing position to the "identity" point, which is
     // the center of the scene.
     loadIdentity();
-    
+
     // Save the current matrix.
     mvPushMatrix();
     
     player.update();
-    
+
+    // Remove projectiles if they are no longer active:
+    for (i = 0; i < projectiles.length; i++) {
+        if ( projectiles[i].is_alive === false ) {
+            shapes.splice(shapes.indexOf(projectiles[i]), 1);
+            projectiles.splice(i, 1);
+        }
+    }
+
     for (var i = 0; i < shapes.length; i++) {
         shapes[i].draw();
     }
