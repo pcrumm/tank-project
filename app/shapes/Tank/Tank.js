@@ -1,6 +1,8 @@
 function Tank(offset, y_rotation) {
-    var body = new TankBody(offset, y_rotation);
+    var body = new TankBody(offset, y_rotation, this);
     var turret = new TankTurret(offset, y_rotation);
+
+    var self = this;
 
     var adaptToTerrain = function() {
         var terrain_info = terrain.getMapHeightAndSlope(body.offset.x, body.offset.z);
@@ -26,11 +28,6 @@ function Tank(offset, y_rotation) {
         return turret.rotation.y;
     };
 
-    this.moveOnXAxis = function(units) {
-        body.moveOnXAxis(units);
-        setTurretOffset();
-    };
-
     this.moveOnZAxis = function(units) {
         body.moveOnZAxis(units);
         adaptToTerrain();
@@ -52,6 +49,7 @@ function Tank(offset, y_rotation) {
         turret.generateProjectile();
     };
 
+    // TO DO: Does this ever get called?
     this.update = function() {
         body.update();
         turret.update();
@@ -61,4 +59,5 @@ function Tank(offset, y_rotation) {
         body.draw();
         turret.draw();
     };
+
 }
