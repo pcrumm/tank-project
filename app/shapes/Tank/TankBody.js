@@ -26,14 +26,15 @@ TankBody.prototype.moveOnZAxis = function(units) {
     new_offset.z = this.offset.z - Math.cos(y_rotation_in_rads) * units;
     new_offset.y = terrain.getMapHeightAndSlope(new_offset.x, new_offset.z).y;
 
-    // Tanks aren't submarines. TO DO: Don't use hard coded value
-    if (new_offset.y <= 5) {
+    // Tanks aren't submarines:
+    if ( new_offset.y <= terrain.displacement.vertical ) {
         return;
     }
 
     for (var i = 0; i < tanks.length; i++) {
-        if (tanks[i] == this.tank)
+        if ( tanks[i] === this.tank ) {
             continue;
+        }
 
         var tank_offset = tanks[i].getOffset();
         var distance_between_centers =

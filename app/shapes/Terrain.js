@@ -228,7 +228,10 @@ function Terrain() {
 
     Shape.call(this, mapVertices, mapNormals, {texture_coords: texCoords, use_multitexture: true, multitexture: multitexture}, mapIndices);
 
-    this.displacement = (dimScale * dimension) / 2;
+    this.displacement = {
+        horizontal: (dimScale * dimension) / 2,
+        vertical: 5 // the level the water will be at
+    };
 
     this.offset = {x: 0, y: 0, z: 0};
     this.rotation = {x: 0, y: 0, z: 0};
