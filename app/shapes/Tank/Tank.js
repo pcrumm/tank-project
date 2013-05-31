@@ -48,6 +48,10 @@ function Tank(offset, y_rotation) {
         turret.rotateBarrelOnXAxis(units);
     };
 
+    this.generateProjectile = function() {
+        turret.generateProjectile();
+    };
+
     this.update = function() {
         body.update();
         turret.update();

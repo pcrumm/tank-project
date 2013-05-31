@@ -39,6 +39,19 @@ TankTurret.prototype.rotateBarrelOnXAxis = function(units) {
     }
 };
 
+TankTurret.prototype.generateProjectile = function() {
+    var y_rotation_in_rads = this.rotation.y * degreesToRadians;
+    var runx = -Math.sin(y_rotation_in_rads);
+    var runz = -Math.cos(y_rotation_in_rads);
+
+    var rise = Math.sin(this.barrel.firing_angle * degreesToRadians) * 50;
+
+    var initial_projectile_offset = {x: this.offset.x, y: this.offset.y, z: this.offset.z};
+    var projectile_velocity = {x: runx, y: rise, z: runz};
+
+    shapes.push(new Projectile(initial_projectile_offset, projectile_velocity));
+};
+
 TankTurret.prototype.draw = function() {
     Shape.prototype.draw.call(this);
 
