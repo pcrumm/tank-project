@@ -10,9 +10,10 @@ function TerrainRegion(min, max) {
 
 var regions = [
     new TerrainRegion(0, 8),
-    new TerrainRegion(8, 30),
-    new TerrainRegion(30, 45),
-    new TerrainRegion(57, 70)
+    new TerrainRegion(5, 18),
+    new TerrainRegion(14, 42),
+    new TerrainRegion(38, 54),
+    new TerrainRegion(51, 70)
 ];
 
 function getIndex(row, col) {
@@ -39,6 +40,7 @@ function Terrain() {
     //Returns a shape object holding the map;
     var dimScale = 3;
     var stepSize = .0025;
+    var tilingFactor = 20;
     var mapNormals = [];
     var mapIndices = [];
     var texCoords = [];
@@ -58,7 +60,7 @@ function Terrain() {
             var dz = (((2 * z) / dimension) - 1);
             var d = (dx*dx)+(dz*dz);
 
-            var mask = height - (.4+.6*d)
+            var mask = height - (.4+.8*d)
 
             if (mask > 0.1)
                 height = height; //No change
@@ -86,15 +88,16 @@ function Terrain() {
 
             mapVertices = mapVertices.concat([xVal, height * heightScale, zVal]);
 
-            texCoords = texCoords.concat([x/dimension*20, z/dimension*20]);
+            texCoords = texCoords.concat([(x/dimension)*tilingFactor, (z/dimension)*tilingFactor]);
         }
 
     // Format the object holding Terrain's multiple objects, to be passed to Shape:
     var multitexture = [
-        {texture: textures.dirt,  uniform: shaderProgram.r1Tex},
-        {texture: textures.grass, uniform: shaderProgram.r2Tex},
-        {texture: textures.rock,  uniform: shaderProgram.r3Tex},
-        {texture: textures.snow,  uniform: shaderProgram.r4Tex}
+        {texture: textures.sand,  uniform: shaderProgram.r1Tex},
+        {texture: textures.dirt,  uniform: shaderProgram.r2Tex},
+        {texture: textures.grass, uniform: shaderProgram.r3Tex},
+        {texture: textures.rock,  uniform: shaderProgram.r4Tex},
+        {texture: textures.snow,  uniform: shaderProgram.r5Tex}
     ];
 
 /*----------------------------------------------------------------*/

@@ -48,10 +48,14 @@ function initShaders() {
     shaderProgram.r4max = gl.getUniformLocation(shaderProgram, "region4.max");
     shaderProgram.r4min = gl.getUniformLocation(shaderProgram, "region4.min");
 
+    shaderProgram.r5max = gl.getUniformLocation(shaderProgram, "region5.max");
+    shaderProgram.r5min = gl.getUniformLocation(shaderProgram, "region5.min");
+
     shaderProgram.r1Tex = gl.getUniformLocation(shaderProgram, "region1Texture");
     shaderProgram.r2Tex = gl.getUniformLocation(shaderProgram, "region2Texture");
     shaderProgram.r3Tex = gl.getUniformLocation(shaderProgram, "region3Texture");
     shaderProgram.r4Tex = gl.getUniformLocation(shaderProgram, "region4Texture");
+    shaderProgram.r5Tex = gl.getUniformLocation(shaderProgram, "region5Texture");
 
     shaderProgram.multi = gl.getUniformLocation(shaderProgram, "multiTex");
 
@@ -66,6 +70,9 @@ function initShaders() {
 
     gl.uniform1f(shaderProgram.r4max, regions[3].max);
     gl.uniform1f(shaderProgram.r4min, regions[3].min);
+
+    gl.uniform1f(shaderProgram.r5max, regions[4].max);
+    gl.uniform1f(shaderProgram.r5min, regions[4].min);
 }
 
 //
