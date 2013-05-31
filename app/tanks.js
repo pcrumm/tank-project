@@ -33,7 +33,7 @@ function start() {
         initTextures();
         initSounds();
 
-        Math.seedrandom("I am Ozymandius, King of Kings");
+        Math.seedrandom("I am Ozymandius, King of asdasdaac");
 
         terrain = new Terrain();
 
