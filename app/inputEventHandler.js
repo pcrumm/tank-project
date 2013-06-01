@@ -62,8 +62,6 @@ function handleKeys() {
 
     if ( currentlyPressedKeys[32] ) { // Spacebar
         player.shootOn();
-    }
-    else {
         player.shootOff();
     }
 
