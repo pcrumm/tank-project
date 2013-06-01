@@ -49,7 +49,9 @@ TankTurret.prototype.generateProjectile = function() {
     var initial_projectile_offset = {x: this.offset.x, y: this.offset.y, z: this.offset.z};
     var projectile_velocity = {x: runx, y: rise, z: runz};
 
-    shapes.push(new Projectile(initial_projectile_offset, projectile_velocity, player.getTank().id));
+    var p = new Projectile(initial_projectile_offset, projectile_velocity, player.getTank().id)
+    projectiles.push(p);
+    shapes.push(p);
 };
 
 TankTurret.prototype.draw = function() {
