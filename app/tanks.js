@@ -33,13 +33,14 @@ function start() {
         initTextures();
         initSounds();
 
-        Math.seedrandom("I am Ozymandius, King of Kings");
+        Math.seedrandom("I am Ozymandius, King of asdasdaac");
 
         terrain = new Terrain();
 
         shapes = [
             terrain,
-            new Square({x: terrain.displacement, y: 5, z: terrain.displacement}, {x: 0, y: 0, z: 0}, {x: 1000, y: 1, z: 1000}),
+            new Square({x: terrain.displacement.horizontal, y: terrain.displacement.vertical, z: terrain.displacement.horizontal}, {x: 0, y: 0, z: 0}, {x: 1000, y: 1, z: 1000}),
+            new Sphere({x: terrain.displacement.horizontal, y: 0, z: terrain.displacement.horizontal} , {x: 0, y: 0, z: 0}, {x: 300, y: 300, z: 300}, textures.sky),
         ];
 
         tanks = [];
@@ -47,7 +48,7 @@ function start() {
         multiplayer.initConnection();
 
         player = new Player(new Tank({x: 300, y: 15, z: 250}, 0)); // To prevent an error later
-        
+
         initInputEventHandler();
 
         // Set up periodic updates:
@@ -131,7 +132,7 @@ function drawScene() {
     // scene. Our field of view is 60 degrees, with a width/height
     // ratio of 800:450 (16:9), and we only want to see objects between 0.1 units
     // and 500 units away from the camera.
-    perspectiveMatrix = makePerspective(60, 800.0/450.0, 0.1, 500.0);
+    perspectiveMatrix = makePerspective(60, 800.0/450.0, 1, 500.0);
     
     // Set the drawing position to the "identity" point, which is
     // the center of the scene.

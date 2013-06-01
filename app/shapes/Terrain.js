@@ -9,10 +9,11 @@ function TerrainRegion(min, max) {
 }
 
 var regions = [
-    new TerrainRegion(0, 13),
-    new TerrainRegion(0, 38),
-    new TerrainRegion(38, 57),
-    new TerrainRegion(57, 70)
+    new TerrainRegion(0, 8),
+    new TerrainRegion(5, 18),
+    new TerrainRegion(14, 42),
+    new TerrainRegion(38, 54),
+    new TerrainRegion(51, 70)
 ];
 
 function getIndex(row, col) {
@@ -37,7 +38,9 @@ function getNoise(generator, xVal, zVal) {
 
 function Terrain() {
     //Returns a shape object holding the map;
-    var dimScale = 6;
+    var dimScale = 3;
+    var stepSize = .0025;
+    var tilingFactor = 20;
     var mapNormals = [];
     var mapIndices = [];
     var texCoords = [];
@@ -51,13 +54,13 @@ function Terrain() {
         {
             var xVal = x*dimScale;
             var zVal = z*dimScale;
-            var height = getNoise(generator, xVal*.004, zVal*.004);
+            var height = getNoise(generator, xVal*stepSize, zVal*stepSize);
 
             var dx = (((2 * x) / dimension) - 1);
             var dz = (((2 * z) / dimension) - 1);
             var d = (dx*dx)+(dz*dz);
 
-            var mask = height - (.5+.8*d)
+            var mask = height - (.4+.8*d)
 
             if (mask > 0.1)
                 height = height; //No change
@@ -65,26 +68,36 @@ function Terrain() {
             else if (mask > 0)
                 height = 0.8 * height;
 
-            else if (mask > -0.5)
-                height = 0.5 * height;
+            else if (mask > -.07)
+                height *= 0.65;
 
             else if (mask > -0.1)
-                height = 0.2 * height;
+                height = 0.5 * height;
+
+            else if (mask > -0.2)
+                height *= 0.4;
+
+            else if (mask > -0.3)
+                height = 0.3 * height;
+
+            else if (mask > -0.5)
+                height *= 0.05;
 
             else
                 height = 0;
 
             mapVertices = mapVertices.concat([xVal, height * heightScale, zVal]);
 
-            texCoords = texCoords.concat([x/dimension*20, z/dimension*20]);
+            texCoords = texCoords.concat([(x/dimension)*tilingFactor, (z/dimension)*tilingFactor]);
         }
 
     // Format the object holding Terrain's multiple objects, to be passed to Shape:
     var multitexture = [
-        {texture: textures.grass,  uniform: shaderProgram.r1Tex},
-        {texture: textures.grass, uniform: shaderProgram.r2Tex},
-        {texture: textures.rock,  uniform: shaderProgram.r3Tex},
-        {texture: textures.snow,  uniform: shaderProgram.r4Tex}
+        {texture: textures.sand,  uniform: shaderProgram.r1Tex},
+        {texture: textures.dirt,  uniform: shaderProgram.r2Tex},
+        {texture: textures.grass, uniform: shaderProgram.r3Tex},
+        {texture: textures.rock,  uniform: shaderProgram.r4Tex},
+        {texture: textures.snow,  uniform: shaderProgram.r5Tex}
     ];
 
 /*----------------------------------------------------------------*/
@@ -215,7 +228,10 @@ function Terrain() {
 
     Shape.call(this, mapVertices, mapNormals, {texture_coords: texCoords, use_multitexture: true, multitexture: multitexture}, mapIndices);
 
-    this.displacement = (dimScale * dimension) / 2;
+    this.displacement = {
+        horizontal: (dimScale * dimension) / 2,
+        vertical: 5 // the level the water will be at
+    };
 
     this.offset = {x: 0, y: 0, z: 0};
     this.rotation = {x: 0, y: 0, z: 0};
@@ -226,8 +242,8 @@ function Terrain() {
         // The first x element of mapVertices equal to the given x is:
         var first_x = (x / dimScale) * 3;
 
-        // And all x elements equal to the given x are separated by "displacement" elements:
-        for (var i = first_x; i < mapVertices.length; i += self.displacement) {
+        // And all x elements equal to the given x are separated by dimension*3 elements:
+        for (var i = first_x; i < mapVertices.length; i += (dimension * 3)) {
             if ( mapVertices[i+2] === z ) {
                 return mapVertices[i+1]; // return the associated y value
             }

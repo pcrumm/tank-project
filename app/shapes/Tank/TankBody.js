@@ -1,4 +1,4 @@
-function TankBody(offset, y_rotation) {
+function TankBody(offset, y_rotation, tank) {
     Cube.call(this,
               offset || {x: 0, y: 0.25, z: 0},
               {x: 0, y: y_rotation || 0, z: 0},
@@ -8,14 +8,46 @@ function TankBody(offset, y_rotation) {
 
     // This is how far the tank body must be translated "up" after rotation to be on top of the terrain:
     this.relative_vertical_offset = 0.25;
+    this.tank = tank;
 }
 
 inheritPrototype(TankBody, Cube);
 
 TankBody.prototype.moveOnZAxis = function(units) {
+
+    // Rudimentary bounding-sphere collision against other tanks
+    
+    var tank_bounding_sphere_radius_2 = 4; // Squared
+    
     var y_rotation_in_rads = this.rotation.y * degreesToRadians;
-    this.offset.x -= Math.sin(y_rotation_in_rads) * units;
-    this.offset.z -= Math.cos(y_rotation_in_rads) * units;
+
+    var new_offset = {};
+    new_offset.x = this.offset.x - Math.sin(y_rotation_in_rads) * units;
+    new_offset.z = this.offset.z - Math.cos(y_rotation_in_rads) * units;
+    new_offset.y = terrain.getMapHeightAndSlope(new_offset.x, new_offset.z).y;
+
+    // Tanks aren't submarines:
+    if ( new_offset.y <= terrain.displacement.vertical ) {
+        return;
+    }
+
+    for (var i = 0; i < tanks.length; i++) {
+        if ( tanks[i] === this.tank ) {
+            continue;
+        }
+
+        var tank_offset = tanks[i].getOffset();
+        var distance_between_centers =
+            Math.pow(tank_offset.x - new_offset.x, 2) +
+            Math.pow(tank_offset.y - new_offset.y, 2) +
+            Math.pow(tank_offset.z - new_offset.z, 2);
+
+        if ( distance_between_centers < (tank_bounding_sphere_radius_2) ) {
+            return;
+        }
+    }
+
+    this.offset = new_offset;
 }
 
 // Overloading Shape.prototype's update():

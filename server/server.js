@@ -2,7 +2,7 @@ var express = require('express'); // This stops some error complaining
 
 var app = express()
   , http = require('http')
-  , server = http.createServer(app).listen(8080, 511, console.log('Listening on :8080'))
+  , server = http.createServer(app).listen(8081, 511, console.log('Listening on :8080'))
   , io = require('socket.io').listen(server);
 
   var connected_tanks = 0;
@@ -31,7 +31,7 @@ io.sockets.on('connection', function(socket) {
         var tank_uniq_id = socket.id;
         game_data[tank_id] = {
             tank_id: tank_uniq_id,
-            position: {x: 300+(5*tank_id*Math.pow(-1,tank_id+1)), y: 0, z: 300+(5*tank_id*Math.pow(-1,tank_id))},
+            position: {x: 150+(5*tank_id*Math.pow(-1,tank_id+1)), y: 0, z: 150+(5*tank_id*Math.pow(-1,tank_id))},
             rotation: 0
         };
 

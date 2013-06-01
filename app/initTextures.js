@@ -59,6 +59,15 @@ function initTextures() {
     snow.image.src = 'assets/snow.jpg';
     textures.snow = snow;
 
+    var sand = gl.createTexture();
+    sand.image = new Image();
+    sand.image.onload = function() {
+        handleLoadedTexture(sand);
+    };
+    sand.image.src = 'assets/sand.jpg';
+    textures.sand = sand;
+
+
     var projectile = gl.createTexture();
     projectile.image = new Image();
     projectile.image.onload = function() {
@@ -66,6 +75,15 @@ function initTextures() {
     };
     projectile.image.src = 'assets/projectile.jpg';
     textures.projectile = projectile;
+
+
+    var sky = gl.createTexture();
+    sky.image = new Image();
+    sky.image.onload = function() {
+        handleLoadedTexture(sky);
+    };
+    sky.image.src = 'assets/sky.jpg';
+    textures.sky = sky;
 }
 
 function handleLoadedTexture(texture) {

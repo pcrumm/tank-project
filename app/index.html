@@ -26,6 +26,7 @@
         <script src="shapes/Projectile.js" type="text/javascript"></script>
         <script src="shapes/Tank/TankBody.js" type="text/javascript"></script>
         <script src="shapes/Tank/TankTurret.js" type="text/javascript"></script>
+        <script src="shapes/Tank/TankBarrel.js" type="text/javascript"></script>
         <script src="shapes/Tank/Tank.js" type="text/javascript"></script>
         <script src="tanks.js" type="text/javascript"></script>
 
@@ -50,16 +51,21 @@
             uniform TerrainRegion region2;
             uniform TerrainRegion region3;
             uniform TerrainRegion region4;
+            uniform TerrainRegion region5;
 
             uniform sampler2D region1Texture;
             uniform sampler2D region2Texture;
             uniform sampler2D region3Texture;
             uniform sampler2D region4Texture;
+            uniform sampler2D region5Texture;
+
+            bool isBetween(float height, float min, float max)
+            {
+                return (height >= min && height <= max);
+            }
 
             void main(void)
             {
-                float regionMin = 0.0;
-                float regionMax = 0.0;
                 float regionRange = 0.0;
                 float regionWeight = 0.0;
 
@@ -72,37 +78,112 @@
 
                 else
                 {
-                    //Region 1
-                    regionMin = region1.min;
-                    regionMax = region1.max;
-                    regionRange = regionMax - regionMin;
-                    regionWeight = (regionRange - abs(height - regionMax)) / regionRange;
-                    regionWeight = max(0.0, regionWeight);
-                    textureColor += regionWeight * texture2D(region1Texture, vec2(vTextureCoord.s, vTextureCoord.t)) * texture2D(region1Texture, vec2(4.0*vTextureCoord.s, 4.0*vTextureCoord.t));
+                    if (height <= region1.max)
+                    {
+                        if (height < region2.min)
+                            regionWeight = 1.0;
+
+                        else
+                        {
+                            regionRange = region1.max - region2.min;
+                            regionWeight = (regionRange - abs(height - region2.min)) / regionRange;
+                        }
+                    }
+
+                    else
+                        regionWeight = 0.0;
+
+                    textureColor += regionWeight * texture2D(region1Texture, vec2(vTextureCoord.s, vTextureCoord.t));
 
                     //Region 2
-                    regionMin = region2.min;
-                    regionMax = region2.max;
-                    regionRange = regionMax - regionMin;
-                    regionWeight = (regionRange - abs(height - regionMax)) / regionRange;
-                    regionWeight = max(0.0, regionWeight);
+                    if (isBetween(height, region2.min, region2.max))
+                    {
+                        if (height <= region1.max)
+                        {
+                            regionRange = region1.max - region2.min;
+                            regionWeight = (regionRange - abs(region1.max - height)) / regionRange;
+                        }
+
+                        else if (height >= region3.min)
+                        {
+                            regionRange = region2.max - region3.min;
+                            regionWeight = (regionRange - abs(height - region3.min)) / regionRange;
+                        }
+
+                        else
+                            regionWeight = 1.0;
+                    }
+
+                    else
+                        regionWeight = 0.0;
+
                     textureColor += regionWeight * texture2D(region2Texture, vec2(vTextureCoord.s, vTextureCoord.t));
 
                     //Region 3
-                    regionMin = region3.min;
-                    regionMax = region3.max;
-                    regionRange = regionMax - regionMin;
-                    regionWeight = (regionRange - abs(height - regionMax)) / regionRange;
-                    regionWeight = max(0.0, regionWeight);
+                    if (isBetween(height, region3.min, region3.max))
+                    {
+                        if (height <= region2.max)
+                        {
+                            regionRange = region2.max - region3.min;
+                            regionWeight = (regionRange - abs(region2.max - height)) / regionRange;
+                        }
+
+                        else if (height >= region4.min)
+                        {
+                            regionRange = region3.max - region4.min;
+                            regionWeight = (regionRange - abs(height - region4.min)) / regionRange;
+                        }
+
+                        else
+                            regionWeight = 1.0;
+                    }
+
+                    else
+                        regionWeight = 0.0;
+
                     textureColor += regionWeight * texture2D(region3Texture, vec2(vTextureCoord.s, vTextureCoord.t));
 
                     //Region 4
-                    regionMin = region4.min;
-                    regionMax = region4.max;
-                    regionRange = regionMax - regionMin;
-                    regionWeight = (regionRange - abs(height - regionMax)) / regionRange;
-                    regionWeight = max(0.0, regionWeight);
+                    if (isBetween(height, region4.min, region4.max))
+                    {
+                        if (height <= region3.max)
+                        {
+                            regionRange = region3.max - region4.min;
+                            regionWeight = (regionRange - abs(region3.max - height)) / regionRange;
+                        }
+
+                        else if (height >= region5.min)
+                        {
+                            regionRange = region4.max - region5.min;
+                            regionWeight = (regionRange - abs(height - region5.min)) / regionRange;
+                        }
+
+                        else
+                            regionWeight = 1.0;
+                    }
+
+                    else
+                        regionWeight = 0.0;
+
                     textureColor += regionWeight * texture2D(region4Texture, vec2(vTextureCoord.s, vTextureCoord.t));
+
+                    //Region 5
+                    if (height >= region5.min)
+                    {
+                        if (height <= region4.max)
+                        {
+                            regionRange = region4.max - region5.min;
+                            regionWeight = (regionRange - abs(region4.max - height)) / regionRange;
+                        }
+
+                        else
+                            regionWeight = 1.0;
+                    }
+
+                    else
+                        regionWeight = 0.0;
+
+                    textureColor += regionWeight * texture2D(region5Texture, vec2(vTextureCoord.s, vTextureCoord.t));
                 }
 
                 gl_FragColor = vec4(textureColor.rgb * vLightWeighting, textureColor.a);
