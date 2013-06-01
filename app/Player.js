@@ -103,7 +103,7 @@ function Player(player_tank) {
             shot_interval = setInterval(this.generateProjectile, 1000/fire_rate);
         }
     };
-    
+
     this.shootOff = function () {
         if (is_shooting)
         {

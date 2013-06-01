@@ -44,18 +44,14 @@ function start() {
             new Sphere({x: terrain.displacement.horizontal, y: 0, z: terrain.displacement.horizontal} , {x: 0, y: 0, z: 0}, {x: 300, y: 300, z: 300}, textures.sky),
         ];
 
-        tanks = [
-            new Tank({x: 130, y: null, z: 170}, 0), // the player's tank
-            new Tank({x: 130, y: null, z: 160}, 30)
-        ];
+        tanks = [];
 
         projectiles = [];
 
-        player = new Player(tanks[0]);
-
-        shapes = shapes.concat(tanks);
-
         multiplayer = new Multiplayer();
+        multiplayer.initConnection();
+
+        player = new Player(new Tank({x: 300, y: 15, z: 250}, 0)); // To prevent an error later
 
         initInputEventHandler();
 
@@ -159,10 +155,44 @@ function drawScene() {
         }
     }
 
-    for (var i = 0; i < shapes.length; i++) {
-        shapes[i].draw();
-    }
+    items = shapes.concat(tanks); // Since a tank may have been added...
+    for (var i = 0; i < items.length; i++)
+        items[i].draw();
 
     // Restore the original matrix
     mvPopMatrix();
 }
+
+//
+// updateTank
+// Moves the given tank to the given orientation.
+//
+function updateTank(tank_id, tank_position, tank_rotation)
+{
+    for (var i = 0; i < tanks.length; i++) {
+        if ( tanks[i].id == tank_id ) {
+            tanks[i].setPositionAndRotation(tank_position, tank_rotation);
+            tanks[i].adaptToTerrain();
+            return true;
+        }
+    }
+}
+
+// randString
+// Generates a random 24 character string
+//
+function randString()
+{
+    var text = "";
+    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+    for( var i=0; i < 24; i++ )
+        text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+    return text;
+}
+
+// Array Remove - By John Resig (MIT Licensed)
+Array.prototype.remove = function(offset) {
+  this.splice(this.indexOf(offset, 1));
+};
