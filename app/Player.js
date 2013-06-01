@@ -2,7 +2,7 @@ function Player(player_tank) {
     var tank = player_tank;
 
     var camera = new Camera();
-    var camera_distance_from_tank = {above: 2, behind: 6};
+    var camera_distance_from_tank = {above: 1.5, behind: 2};
     
     var syncCameraAndTankTurretRotation = function() {
         var y_rotation_in_rads = tank.getTurretYRotation() * degreesToRadians;
@@ -47,19 +47,25 @@ function Player(player_tank) {
         camera.moveOnYAxis(units_to_move);
     }
 
+    var rotateTankTurretOnYAxis = function(units) {
+        if ( tank.rotateTurretOnYAxis(units) ) {
+            camera.rotateOnYAxis(units);
+            syncCameraAndTankTurretRotation();
+        }
+    };
+
+    var rotateTankBody = function(units) {
+        if ( ! tank.rotateBodyOnYAxis(units) ) {
+            rotateTankTurretOnYAxis(units);
+        }
+    }
+
     this.rotateTankBodyLeft = function() {
-        tank.rotateBodyOnYAxis(-units_to_rotate);
+        rotateTankBody(-units_to_rotate);
     };
 
     this.rotateTankBodyRight = function() {
-        tank.rotateBodyOnYAxis(units_to_rotate);
-    };
-
-    var rotateTankTurretOnYAxis = function(units) {
-        tank.rotateTurretOnYAxis(units);
-        camera.rotateOnYAxis(units);
-
-        syncCameraAndTankTurretRotation();
+        rotateTankBody(units_to_rotate);
     };
 
     this.rotateTankTurretLeft = function(units) {
@@ -71,11 +77,11 @@ function Player(player_tank) {
     };
 
     this.moveTankBarrelUp = function(units) {
-        tank.rotateBarrelOnXAxis(-units);
+        tank.rotateBarrelOnXAxis(units);
     };
 
     this.moveTankBarrelDown = function(units) {
-        tank.rotateBarrelOnXAxis(units);
+        tank.rotateBarrelOnXAxis(-units);
     };
 
     this.generateProjectile = function() {

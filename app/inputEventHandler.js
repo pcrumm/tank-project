@@ -1,6 +1,5 @@
 var currentlyPressedKeys = {};
 var window_center_horizontal = document.body.clientWidth / 2;
-var canvas_center_vertical = document.getElementById("glcanvas").offsetTop + (document.getElementById("glcanvas").height / 2)
 var window_in_focus = true;
 
 function initInputEventHandler() {
@@ -47,14 +46,27 @@ function handleKeys() {
         player.moveBackward();
     }
     
-    //I need this for testing
-    if ( currentlyPressedKeys[38] ) { // Up Arrow
-        player.moveUp();
+    if ( currentlyPressedKeys[37] ) { // Left Arrow
+        player.rotateTankTurretLeft(3);
     }
-    if ( currentlyPressedKeys[40] ) { // Left Arrow
-        player.moveDown();
+    if ( currentlyPressedKeys[39] ) { // Right Arrow
+        player.rotateTankTurretRight(3);
     }
-    
+
+    if ( currentlyPressedKeys[38] || currentlyPressedKeys[81] ) { // Up Arrow and Q
+        player.moveTankBarrelUp(1);
+    }
+    if ( currentlyPressedKeys[40] || currentlyPressedKeys[69] ) { // Down Arrow and E
+        player.moveTankBarrelDown(1);
+    }
+
+    if ( currentlyPressedKeys[32] ) { // Spacebar
+        player.shootOn();
+    }
+    else {
+        player.shootOff();
+    }
+
     // If any key was called that changed the player's tank's position or rotation, be sure to notify the server:
     if ( currentlyPressedKeys[65] || currentlyPressedKeys[68] || currentlyPressedKeys[87] || currentlyPressedKeys[83] ) {
         var player_tank = player.getTank();
@@ -63,18 +75,13 @@ function handleKeys() {
 }
 
 var mouseInfo = {
-    threshold_left:  function() { return window_center_horizontal - 30 },
-    threshold_right: function() { return window_center_horizontal + 30 },
-    threshold_up:    function() { return canvas_center_vertical + 10 },
-    threshold_down:  function() { return canvas_center_vertical - 40 },
+    threshold_left:  function() { return window_center_horizontal - 50 },
+    threshold_right: function() { return window_center_horizontal + 50 },
 
     looking_left:  false,
     looking_right: false,
-    looking_up:    false,
-    looking_down:  false,
 
     rotation_magnitude_horizontal: 0,
-    rotation_magnitude_vertical: 0,
     rotation_magnitude_divisor: 100
 };
 
@@ -104,22 +111,6 @@ function handleMouseMove(event) {
         mouseInfo.looking_left  = false;
         mouseInfo.looking_right = false;
     }
-
-    // Handle vertical mouse movement:
-    if ( event.pageY > mouseInfo.threshold_up() ) {
-        mouseInfo.looking_up   = true;
-        mouseInfo.looking_down = false;
-        mouseInfo.rotation_magnitude_vertical = event.pageY - mouseInfo.threshold_up();
-    }
-    else if ( event.pageY < mouseInfo.threshold_down() ) {
-        mouseInfo.looking_up   = false;
-        mouseInfo.looking_down = true;
-        mouseInfo.rotation_magnitude_vertical = mouseInfo.threshold_down() - event.pageY;
-    }
-    else {
-        mouseInfo.looking_up   = false;
-        mouseInfo.looking_down = false;
-    }
 }
 
 function handleMouse() {
@@ -129,13 +120,6 @@ function handleMouse() {
         }
         else if ( mouseInfo.looking_right ) {
             player.rotateTankTurretRight(mouseInfo.rotation_magnitude_horizontal / mouseInfo.rotation_magnitude_divisor);
-        }
-
-        if ( mouseInfo.looking_up ) {
-            player.moveTankBarrelUp(mouseInfo.rotation_magnitude_vertical / mouseInfo.rotation_magnitude_divisor);
-        }
-        else if ( mouseInfo.looking_down ) {
-            player.moveTankBarrelDown(mouseInfo.rotation_magnitude_vertical / mouseInfo.rotation_magnitude_divisor);
         }
     }
 }
