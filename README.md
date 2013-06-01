@@ -2,8 +2,11 @@
 
 ## Overview
 
-The application is ~~currently~~ no longer dirt simple. When you open up index.html, you can move around with WASD,
-and rotate the camera with the mouse. Click to shoot.
+There are currently two control schemes:
+
+* With mouse: WASD to move, Up & Down Arrow to aim, mouse to rotate camera, left mouse button to shoot.
+
+* Without mouse: WASD to move, Up & Down Arrow to aim, Left & Right Arrow to rotate camera, spacebar to shoot.
 
 ### General Guidelines
 
