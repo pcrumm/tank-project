@@ -128,7 +128,7 @@ function Terrain() {
                 times += 1;
             }
 
-            if (z+1 < dimension - 1)
+            if (z+1 < dimension)
             {
                 average += mapVertices[getIndex(z+1, x)+1];
                 times += 1;
@@ -146,13 +146,13 @@ function Terrain() {
                 times += 1;
             }
 
-            if (x-1 >= 0 && z+1 > dimension-1)
+            if (x-1 >= 0 && z+1 < dimension)
             {
                 average += mapVertices[getIndex(z+1, x-1)+1];
                 times += 1;
             }
 
-            if (x+1 < dimension-1 && z+1 < dimension-1)
+            if (x+1 < dimension-1 && z+1 < dimension)
             {
                 average += mapVertices[getIndex(z+1, x+1)+1];
                 times += 1;
@@ -175,7 +175,7 @@ function Terrain() {
             var current = getVec3(z,x);
             var sum = $V([0,0,0]);
 
-            if (z+1 < dimension && x+1 < dimension)
+            if (z + 1 < dimension && x+1 < dimension)
                 sum = sum.add((getVec3(z, x+1).subtract(current)).cross(getVec3(z+1, x).subtract(current)));
 
             if (z+1 < dimension && x > 0)
