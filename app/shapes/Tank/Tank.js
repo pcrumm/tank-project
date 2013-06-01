@@ -4,7 +4,6 @@ function Tank(offset, y_rotation) {
 
     this.adaptToTerrain = function() {
         var terrain_info = terrain.getMapHeightAndSlope(body.offset.x, body.offset.z);
-        console.log('Terrain: ' + JSON.stringify(terrain_info));
         body.offset.y = terrain_info.y;
         turret.offset = body.offset;
 

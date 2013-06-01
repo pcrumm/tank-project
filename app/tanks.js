@@ -160,7 +160,7 @@ function updateTank(tank_id, tank_position, tank_rotation)
     for (var i = 0; i < tanks.length; i++) {
         if ( tanks[i].id == tank_id ) {
             tanks[i].setPositionAndRotation(tank_position, tank_rotation);
-            tank[i].adaptToTerrain();
+            tanks[i].adaptToTerrain();
             return true;
         }
     }
