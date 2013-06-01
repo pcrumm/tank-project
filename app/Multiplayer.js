@@ -19,8 +19,8 @@ function Multiplayer() {
         socket.emit('projectile_fired', offset, velocity, tank_id, proj_id);
     };
 
-    this.tankHit = function(tank_id) {
-        // socket.emit('tank_hit', tank_id);
+    this.tankHit = function(tank_id, proj_id) {
+        socket.emit('projectile_hit', tank_id, proj_id);
     };
 
     // Sets up a connection with our node server. Returns the tank's unique identifier.
@@ -82,6 +82,15 @@ function Multiplayer() {
                 return;
 
             shapes.push(new Projectile(offset, velocity, tank_id, proj_id));
+        });
+
+        // Used to let us know we're dead...
+        socket.on('killed', function(tank_id) {
+            if (player.getTank().id != tank_id)
+                return;
+
+            $('#glcanvas').detach();
+            $('#client_dead').show();
         });
     });
 

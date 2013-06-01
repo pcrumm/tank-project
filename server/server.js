@@ -7,8 +7,10 @@ var app = express()
 
   var connected_tanks = 0;
   var TANK_LIMIT = 20; // The maximum number of allowed clients
+
   var DEFAULT_HEALTH = 100; // The default health for each tank
   var HIT_DAMAGE = 35; // The amount of damage each hit will cause
+  var HIT_SCORE = 100; // The number of points scored on each hit
 
 // Serve all of the static files in our directory
 app.use('/lib', express.static(__dirname + '/../app/lib'));
@@ -17,6 +19,7 @@ app.use(express.static(__dirname + '/../app'));
 
 var game_data = []; // Store all of the ongoing game data here
 var projectiles = []; // Stores all projectiles
+var hits = []; // Projectile hits
 
 io.sockets.on('connection', function(socket) {
     // When a client emits "join", we'll respond with the data they need to get instantiated
@@ -36,7 +39,8 @@ io.sockets.on('connection', function(socket) {
             tank_id: tank_uniq_id,
             position: {x: 150+(5*tank_id*Math.pow(-1,tank_id+1)), y: 0, z: 150+(5*tank_id*Math.pow(-1,tank_id))},
             rotation: 0,
-            health: DEFAULT_HEALTH
+            health: DEFAULT_HEALTH,
+            score: 0
         };
 
         console.log('Hello, ' + tank_id);
@@ -99,10 +103,58 @@ io.sockets.on('connection', function(socket) {
             speed: velocity,
             creator: tank_id,
             created: new Date(),
-            id: proj_id
+            id: proj_id,
+            hits: 0,
+            logged: false
         };
         // Let everyone else know
         socket.broadcast.emit('fire_projectile', offset, velocity, tank_id, proj_id);
+    });
+
+    socket.on('projectile_hit', function(tank_id, proj_id) {
+        if (projectiles[proj_id] === null)
+            return;
+
+        projectiles[proj_id].hits++;
+
+        // If more than half the clients report a hit, it counts
+        if (projectiles[proj_id].hits >= (connected_tanks / 2))
+        {
+            if (projectiles[proj_id].logged)
+                return;
+
+            projectiles[proj_id].logged = true;
+
+            hit_tank = get_tank_by_id(tank_id);
+            if (hit_tank === null)
+                return;
+
+            hit_tank.health -= HIT_DAMAGE;
+            console.log(tank_id + ' has been hit! Health reduced to ' + hit_tank.health);
+
+            proj_creator = projectiles[proj_id].creator;
+
+            // Remove this projectile from the list so we don't double-count
+            for (var i = 0; i < projectiles.length; i++)
+            {
+                if (projectiles[i].id == proj_id)
+                    projectiles.splice(i, 1);
+            }
+
+            // Deal with a kill
+            if (hit_tank.health <= 0)
+            {
+                // Increment the score for the killer
+                killer = get_tank_by_id(proj_creator);
+                killer.score += HIT_SCORE;
+
+                // Let this tank know it's dead...
+                socket.broadcast.emit('killed', tank_id);
+
+                // Kill it on everyone else
+                socket.broadcast.emit('remove_tank', tank_id);
+            }
+        }
     });
 
 });
@@ -113,8 +165,9 @@ function get_tank_by_id(tank_id)
    {
        if (game_data[i].tank_id == tank_id)
         return game_data[i];
-       return null;
    }
+
+   return null;
 }
 
 // Clean up any projectiles that are more than half a second old

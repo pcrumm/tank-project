@@ -53,7 +53,7 @@ Projectile.prototype.checkForCollisions = function() {
 
         if ( distance_between_centers < (tank_bounding_sphere_radius + this.scale.x) ) {
             this.update = Shape.prototype.update; // No more physics updates necessary
-            //Multiplayer.tankHit(tank[i].id);
+            multiplayer.tankHit(tanks[i].id, this.id);
             return;
         }
     }
