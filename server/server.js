@@ -7,6 +7,8 @@ var app = express()
 
   var connected_tanks = 0;
   var TANK_LIMIT = 20; // The maximum number of allowed clients
+  var DEFAULT_HEALTH = 100; // The default health for each tank
+  var HIT_DAMAGE = 35; // The amount of damage each hit will cause
 
 // Serve all of the static files in our directory
 app.use('/lib', express.static(__dirname + '/../app/lib'));
@@ -14,6 +16,7 @@ app.use('/shapes', express.static(__dirname + '/../app/shapes'));
 app.use(express.static(__dirname + '/../app'));
 
 var game_data = []; // Store all of the ongoing game data here
+var projectiles = []; // Stores all projectiles
 
 io.sockets.on('connection', function(socket) {
     // When a client emits "join", we'll respond with the data they need to get instantiated
@@ -32,7 +35,8 @@ io.sockets.on('connection', function(socket) {
         game_data[tank_id] = {
             tank_id: tank_uniq_id,
             position: {x: 150+(5*tank_id*Math.pow(-1,tank_id+1)), y: 0, z: 150+(5*tank_id*Math.pow(-1,tank_id))},
-            rotation: 0
+            rotation: 0,
+            health: DEFAULT_HEALTH
         };
 
         console.log('Hello, ' + tank_id);
@@ -85,4 +89,44 @@ io.sockets.on('connection', function(socket) {
 
         socket.broadcast.emit('remove_tank', tank_id);
     });
+
+    // When a client tells us a projectile is fired
+    socket.on('projectile_fired', function(offset, velocity, tank_id, proj_id) {
+        clean_projectiles(); // Prevent memory bloating
+
+        projectiles[proj_id] = {
+            position: offset,
+            speed: velocity,
+            creator: tank_id,
+            created: new Date(),
+            id: proj_id
+        };
+        // Let everyone else know
+        socket.broadcast.emit('fire_projectile', offset, velocity, tank_id, proj_id);
+    });
+
 });
+
+function get_tank_by_id(tank_id)
+{
+   for (var i = 0; i < game_data.length; i++)
+   {
+       if (game_data[i].tank_id == tank_id)
+        return game_data[i];
+       return null;
+   }
+}
+
+// Clean up any projectiles that are more than half a second old
+function clean_projectiles()
+{
+    var now = new Date();
+    for (var i = 0; i < projectiles.length; i++)
+    {
+        if (now - projectiles[i].created > 500)
+        {
+            projectiles.splice(i, 1);
+            i = 1;
+        }
+    }
+}

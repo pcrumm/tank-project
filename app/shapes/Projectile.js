@@ -1,6 +1,6 @@
 var gravity = -9.81;
 
-function Projectile(offset, velocity) {
+function Projectile(offset, velocity, tank_id, proj_id) {
     Sphere.call(this,
                 offset,
                 {x: 0, y: 0, z: 0},
@@ -12,6 +12,10 @@ function Projectile(offset, velocity) {
     this.time = 0;
     this.initial_y = offset.y;
     this.mass_constant = 2;
+    this.owner = tank_id;
+    this.id = proj_id || randString();
+
+    multiplayer.fire(offset, velocity, tank_id, this.id);
 }
 
 inheritPrototype(Projectile, Sphere);
@@ -49,6 +53,7 @@ Projectile.prototype.checkForCollisions = function() {
 
         if ( distance_between_centers < (tank_bounding_sphere_radius + this.scale.x) ) {
             this.update = Shape.prototype.update; // No more physics updates necessary
+            //Multiplayer.tankHit(tank[i].id);
             return;
         }
     }

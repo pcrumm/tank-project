@@ -15,6 +15,14 @@ function Multiplayer() {
         return false;
     };
 
+    this.fire = function(offset, velocity, tank_id, proj_id) {
+        socket.emit('projectile_fired', offset, velocity, tank_id, proj_id);
+    };
+
+    this.tankHit = function(tank_id) {
+        // socket.emit('tank_hit', tank_id);
+    };
+
     // Sets up a connection with our node server. Returns the tank's unique identifier.
     this.initConnection = function() {
         socket.emit('client_join');
@@ -66,6 +74,14 @@ function Multiplayer() {
         socket.on('server_full', function() {
             $('#glcanvas').detach();
             $('#server_full_error').show();
+        });
+
+        // Used to notify a client to draw a projectile. Ignore if we're the owner
+        socket.on('fire_projectile', function(offset, velocity, tank_id, proj_id) {
+            if (player.getTank().id == tank_id)
+                return;
+
+            shapes.push(new Projectile(offset, velocity, tank_id, proj_id));
         });
     });
 

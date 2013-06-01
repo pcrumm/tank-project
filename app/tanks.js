@@ -167,6 +167,20 @@ function updateTank(tank_id, tank_position, tank_rotation)
     }
 }
 
+// randString
+// Generates a random 24 character string
+//
+function randString()
+{
+    var text = "";
+    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+    for( var i=0; i < 24; i++ )
+        text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+    return text;
+}
+
 // Array Remove - By John Resig (MIT Licensed)
 Array.prototype.remove = function(offset) {
   this.splice(this.indexOf(offset, 1));
