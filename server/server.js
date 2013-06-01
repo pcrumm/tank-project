@@ -2,7 +2,7 @@ var express = require('express'); // This stops some error complaining
 
 var app = express()
   , http = require('http')
-  , server = http.createServer(app).listen(8081, 511, console.log('Listening on :8080'))
+  , server = http.createServer(app).listen(8080, 511, console.log('Listening on :8080'))
   , io = require('socket.io').listen(server);
 
   var connected_tanks = 0;
