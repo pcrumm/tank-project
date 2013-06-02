@@ -62,7 +62,6 @@ Projectile.prototype.checkForCollisions = function() {
             this.is_alive = false;
             var e = new Explosion(this.offset);
             explosions.push(e);
-            shapes.push(e);
             return;
         }
     }

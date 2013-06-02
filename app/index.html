@@ -197,11 +197,12 @@
 
                     else
                         textureColor.a = alpha;
+
+                    gl_FragColor = textureColor;
                 }
 
-
-                gl_FragColor = vec4(textureColor.rgb * vLightWeighting, textureColor.a);
-
+                else
+                    gl_FragColor = vec4(textureColor.rgb * vLightWeighting, textureColor.a);
             }
         </script>
 

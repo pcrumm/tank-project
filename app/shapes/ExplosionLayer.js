@@ -29,7 +29,7 @@ function ExplosionLayer(offset, rotation, scale, texCoords) {
                                         0.25, 0.25
                                       ];
 
-    Shape.call(this, vertices, normals, {texture: textures.explosion, texture_coords: texture_coords, use_alpha: true}, vertex_indices);
+    Shape.call(this, vertices, normals, {texture: textures.explosion, texture_coords: texture_coords, use_alpha: 1.0}, vertex_indices);
 
     this.offset = offset || {x: 0, y: 0, z: 0};
     this.rotation = rotation || {x: 0, y: 0, z: 0};
@@ -38,17 +38,23 @@ function ExplosionLayer(offset, rotation, scale, texCoords) {
 
 inheritPrototype(ExplosionLayer, Shape);
 
-ExplosionLayer.prototype.update = function(info) {
-    if (!(info.texCoords === 0))
-        Shape.prototype.setTexCoords.call(info.texCoords);
+ExplosionLayer.prototype.update = function(texCoords, rotation, scale) {
+    if (texCoords)
+        Shape.prototype.setTexCoords.call(texCoords);
 
-    if (info.scaling) {
-        this.scale.x += info.scaling;
-        this.scale.y += info.scaling;
-        this.scale.z += info.scaling;
-    }
+    mvPushMatrix();
+
+    //mvRotate(rotation.x, [1, 0, 0]);
+    //mvRotate(rotation.y, [0, 1, 0]);
+    //mvRotate(rotation.z, [0, 0, 1]);
+
+    // Need to scale *after* updating the normals matrix (normals aren't normals if they get scaled)
+    // After, only updating the modelview matrix necessary.
+    //mvScale(scale.x, scale.y, scale.z);
 
     Shape.prototype.update.call(this);
+
+    mvPopMatrix();
 };
 /*
 ExplosionLayer.prototype.draw = function() {

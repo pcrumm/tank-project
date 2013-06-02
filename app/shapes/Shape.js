@@ -46,7 +46,7 @@ function Shape (vertices, normals, texture_info, vertex_indices) {
 
     this.alpha = 0;
     if ( texture_info.use_alpha === true)
-        this.alpha = texture_info.alpha;
+        this.alpha = texture_info.use_alpha;
 
     // Build the element array buffer; this specifies the indices
     // into the vertex array for each face's vertices.

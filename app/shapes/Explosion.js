@@ -14,14 +14,15 @@ function Explosion(offset, rotation) {
 
     this.texCol++;
 
-    this.near= new ExplosionLayer({x: 0, y: 0, z: 2}, {x: 0, y: 0, z:  0}, {x: 1, y: 1, z: 1}, texture_coords);
-    this.mid = new ExplosionLayer({x: 0, y: 0, z: 1}, {x: 0, y: 0, z: 45}, {x: 2, y: 2, z: 1}, texture_coords);
-    this.far = new ExplosionLayer({x: 0, y: 0, z: 0}, {x: 0, y: 0, z:-80}, {x: 3, y: 3, z: 1}, texture_coords);
-
     this.offset = offset || {x: 0, y: 0, z: 0};
     this.rotation = rotation || {x: 0, y: 0, z: 0};
     this.scaling = {x: 1, y: 1, z: 1};
     this.alpha = 1.0;
+
+    this.near= new ExplosionLayer({x: this.offset.x, y: this.offset.y, z: this.offset.z+.4}, {x: 0, y: 0, z:  0}, {x: 1, y: 1, z: 1}, texture_coords);
+    this.mid = new ExplosionLayer({x: this.offset.x, y: this.offset.y, z: this.offset.z+.2}, {x: 0, y: 0, z: 45}, {x: 2, y: 2, z: 1}, texture_coords);
+    this.far = new ExplosionLayer({x: this.offset.x, y: this.offset.y, z: this.offset.z}, {x: 0, y: 0, z:-80}, {x: 3, y: 3, z: 1}, texture_coords);
+
     this.fadeFrames = 8;
 }
 
@@ -46,18 +47,21 @@ Explosion.prototype.update = function() {
                 this.texCol = 0;
         }
 
-        this.near.update({texCoords: newCoords});
-        this.mid.update ({texCoords: newCoords});
-        this.far.update ({texCoords: newCoords});
+        this.near.update(newCoords, this.offset, this.rotation, this.scaling);
+        this.mid.update (newCoords, this.offset, this.rotation, this.scaling);
+        this.far.update (newCoords, this.offset, this.rotation, this.scaling);
     }
 
     else if (this.fadeFrames > 0)
     {
         //Makes the last frame expand and fade away
-        this.near.update({scaling: .25});
-        this.mid.update({scaling:  .25});
-        this.far.update({scaling:  .25});
-        this.alpha -= 0.12;
+        this.scaling.x += .25;
+        this.scaling.y += .25;
+        this.scaling.z += .25;
+        this.near.update(null, this.rotation, this.scaling);
+        this.mid.update (null, this.rotation, this.scaling);
+        this.far.update (null, this.rotation, this.scaling);
+        //this.alpha -= 0.12;
         this.fadeFrames--;
     }
 
