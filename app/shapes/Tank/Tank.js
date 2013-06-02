@@ -23,19 +23,10 @@ function Tank(offset, y_rotation) {
 
     this.getTurretRotation = function() {
         return turret.rotation;
-    }
-
-    this.getBodyRotation = function() {
-        return body.rotation;
     };
 
     this.moveOnZAxis = function(units) {
         body.moveOnZAxis(units);
-        this.adaptToTerrain();
-    };
-
-    // TODO: replace calls to this with adaptToTerrain()
-    this.placeOnTerrain = function() {
         this.adaptToTerrain();
     };
 
@@ -45,12 +36,6 @@ function Tank(offset, y_rotation) {
 
     this.rotateTurretOnYAxis = function(units) {
         turret.rotateOnYAxis(units);
-    };
-
-    // TODO: probably add adaptToTerrain() to the end of this function
-    this.setPositionAndRotation = function(pos, y_rot) {
-        body.offset = pos;
-        body.rotation.y = y_rot;
     };
 
     this.rotateBarrelOnXAxis = function(units) {
