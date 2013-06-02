@@ -1,46 +1,42 @@
-function Camera() {
-    this.offset = {
+function Camera(tank) {
+    var position = {
         x: 0,
         y: 0,
         z: 0
     };
-    
-    this.rotation = {
+
+    var rotation = {
+        x: 0,
         y: 0
     };
     var cameraRotYUniform = gl.getUniformLocation(shaderProgram, "uCameraRotY");
-    
-    this.moveOnXAxis = function(units) {
-        var yRotationInRadians = this.rotation.y * degreesToRadians;
-        this.offset.x += Math.cos(yRotationInRadians) * units;
-        this.offset.z += Math.sin(yRotationInRadians) * units;
+
+    var distance_from_tank = 3;
+    var angle_above_tank = 35;
+
+    this.syncWithTank = function() {
+        var tank_offset = tank.getOffset();
+        var tank_turret_rotation = tank.getTurretRotation();
+
+        rotation.y = -tank_turret_rotation.y;
+
+        rotation.x = ( tank_turret_rotation.x * Math.cos(rotation.y * degreesToRadians) ) +
+                     ( tank_turret_rotation.z * Math.sin(rotation.y * degreesToRadians) );
+
+        var yaw = (rotation.y + 90) * degreesToRadians;
+        var pitch = ((rotation.x - angle_above_tank) * degreesToRadians);
+
+        position.x = tank_offset.x + (Math.cos(yaw) * Math.cos(pitch) * distance_from_tank);
+        position.y = tank_offset.y - (Math.sin(pitch) * distance_from_tank);
+        position.z = tank_offset.z + (Math.sin(yaw) * Math.cos(pitch) * distance_from_tank);
     };
-    
-    this.moveOnZAxis = function(units) {
-        var yRotationInRadians = this.rotation.y * degreesToRadians;
-        this.offset.x += Math.sin(yRotationInRadians) * units;
-        this.offset.z -= Math.cos(yRotationInRadians) * units;
-    };
-    
-    this.moveOnYAxis = function(units) {
-        this.offset.y += units;
-    };
-    
-    this.rotateOnYAxis = function(units) {
-        this.rotation.y += units;
-        
-        if ( this.rotation.y > 360.0 ) {
-            this.rotation.y -= 360.0;
-        }
-        if ( this.rotation.y < -360.0 ) {
-            this.rotation.y += 360.0;
-        }
-    }
+    this.syncWithTank(); // initial setup
     
     this.update = function () {
-        mvRotate(this.rotation.y, [0, 1, 0]);
-        mvTranslate([-this.offset.x, -this.offset.y, -this.offset.z]);
-        
-        gl.uniform1f(cameraRotYUniform, this.rotation.y);
+        mvRotate(-rotation.x, [1, 0, 0]);
+        mvRotate(rotation.y, [0, 1, 0]);
+        mvTranslate([-position.x, -position.y, -position.z]);
+
+        gl.uniform1f(cameraRotYUniform, rotation.y);
     }
 }
