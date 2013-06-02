@@ -34,7 +34,7 @@ function Multiplayer() {
         // Used to setup a new client on the server
         socket.on('welcome_client', function(tank_data) {
             tanks[0] = new Tank(tank_data.position, tank_data.rotation);
-            tanks[0].placeOnTerrain();
+            tanks[0].adaptToTerrain();
             tanks[0].id = tank_data.tank_id;
             player = new Player(tanks[0]);
 

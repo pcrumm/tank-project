@@ -2,11 +2,7 @@
 
 ## Overview
 
-There are currently two control schemes:
-
-* With mouse: WASD to move, Up & Down Arrow to aim, mouse to rotate camera, left mouse button to shoot.
-
-* Without mouse: WASD to move, Up & Down Arrow to aim, Left & Right Arrow to rotate camera, spacebar to shoot.
+The control scheme: WASD to move, Up & Down Arrow to aim, Left & Right Arrow to rotate camera, spacebar to shoot.
 
 ### General Guidelines
 
@@ -37,3 +33,9 @@ First, download and install node.js from http://nodejs.org/
 Once you've done so, open a terminal window and run the following from the root directory of this repository:
 
     cd server && npm install
+
+Once that's done, you can actually run the game with:
+
+    node server.js
+
+And then navigate to localhost:8080.

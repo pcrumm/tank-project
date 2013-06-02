@@ -1,17 +1,6 @@
 function Player(player_tank) {
     var tank = player_tank;
-
-    var camera = new Camera();
-    var camera_distance_from_tank = {above: 1.5, behind: 2};
-    
-    var syncCameraAndTankTurretRotation = function() {
-        var y_rotation_in_rads = tank.getTurretYRotation() * degreesToRadians;
-        var tank_offset = tank.getOffset();
-        camera.offset.x = tank_offset.x + (Math.sin(y_rotation_in_rads) * camera_distance_from_tank.behind);
-        camera.offset.z = tank_offset.z + (Math.cos(y_rotation_in_rads) * camera_distance_from_tank.behind);
-        camera.offset.y = tank_offset.y + camera_distance_from_tank.above;
-    };
-    syncCameraAndTankTurretRotation(); // initial setup
+    var camera = new Camera(tank);
     
     var units_to_move = 0.2;
     var units_to_rotate = 2;
@@ -26,46 +15,26 @@ function Player(player_tank) {
     };
 
     this.moveForward = function() {
-        camera.moveOnZAxis(units_to_move);
         tank.moveOnZAxis(units_to_move);
-
-        syncCameraAndTankTurretRotation();
+        camera.syncWithTank();
     };
 
     this.moveBackward = function() {
-        camera.moveOnZAxis(-units_to_move);
         tank.moveOnZAxis(-units_to_move);
-
-        syncCameraAndTankTurretRotation();
+        camera.syncWithTank();
     };
-    
-    this.moveDown = function() {
-        camera.moveOnYAxis(-units_to_move);
-    }
-
-    this.moveUp = function() {
-        camera.moveOnYAxis(units_to_move);
-    }
 
     var rotateTankTurretOnYAxis = function(units) {
-        if ( tank.rotateTurretOnYAxis(units) ) {
-            camera.rotateOnYAxis(units);
-            syncCameraAndTankTurretRotation();
-        }
+        tank.rotateTurretOnYAxis(units);
+        camera.syncWithTank();
     };
 
-    var rotateTankBody = function(units) {
-        if ( ! tank.rotateBodyOnYAxis(units) ) {
-            rotateTankTurretOnYAxis(units);
-        }
-    }
-
     this.rotateTankBodyLeft = function() {
-        rotateTankBody(-units_to_rotate);
+        tank.rotateBodyOnYAxis(-units_to_rotate);
     };
 
     this.rotateTankBodyRight = function() {
-        rotateTankBody(units_to_rotate);
+        tank.rotateBodyOnYAxis(units_to_rotate);
     };
 
     this.rotateTankTurretLeft = function(units) {
