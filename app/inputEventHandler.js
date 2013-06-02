@@ -68,7 +68,7 @@ function handleKeys() {
     // If any key was called that changed the player's tank's position or rotation, be sure to notify the server:
     if ( currentlyPressedKeys[65] || currentlyPressedKeys[68] || currentlyPressedKeys[87] || currentlyPressedKeys[83] ) {
         var player_tank = player.getTank();
-        multiplayer.sendTankUpdate(player_tank.id, player_tank.offset, player_tank.rotation);
+        multiplayer.sendTankUpdate(player_tank.id, player_tank.getOffset(), player_tank.getBodyYRotation());
     };
 }
 

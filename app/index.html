@@ -3,7 +3,7 @@
     <head>
         <title>Tank Project</title>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-
+        <script src="/socket.io/socket.io.js"></script>
         <link rel="stylesheet" type="text/css" href="style.css">
 
         <script src="lib/sylvester.min.js" type="text/javascript"></script>
@@ -11,6 +11,7 @@
         <script src="lib/glUtils.js" type="text/javascript"></script>
         <script src="lib/matrixUtils.js" type="text/javascript"></script>
         <script src="lib/simplexNoise.js" type="text/javascript"></script>
+        <script src="lib/jquery.min.js" type="text/javascript"></script>
         <script src="initShaders.js" type="text/javascript"></script>
         <script src="initTextures.js" type="text/javascript"></script>
         <script src="initSounds.js" type="text/javascript"></script>
@@ -237,7 +238,16 @@
         <canvas id="glcanvas" width="800" height="450">
             Your browser doesn't appear to support the HTML5 <code>&lt;canvas&gt;</code> element.
         </canvas>
-        
+
+        <div id="server_full_error">
+            <h1>Oh, Snap :(</h1>
+            <p>The server is currently full. Please try again in a little while.</p>
+        </div>
+
+        <div id="client_dead">
+            <h1>Oh, Snap :(</h1>
+            <p>You died... Good try!</p>
+        </div>
         <script src="inputEventHandler.js" type="text/javascript"></script>
     </body>
 </html>
