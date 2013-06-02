@@ -86,47 +86,6 @@ function initWebGL(canvas) {
     }
 }
 
-// bindInputEvents()
-//
-// Bind events for the application, e.g. keyboard or mouse interaction
-//
-function bindInputEvents() {
-    document.addEventListener('keydown', function(event) {        
-        switch ( event.keyCode ) {
-            case 65: // A
-                camera.moveOnXAxis(-1);
-                break;
-            case 68: // D
-                camera.moveOnXAxis(1);
-                break;
-                
-            case 87: // W
-                camera.moveOnZAxis(1);
-                break;
-            case 83: // S
-                camera.moveOnZAxis(-1);
-                break;
-                
-            case 37: // Left Arrow
-                camera.rotateOnYAxis(-2);
-                break;
-            case 39: // Right Arrow
-                camera.rotateOnYAxis(2);
-                break;
-
-            //I put these in for testing purposes
-
-            case 40:
-                camera.moveOnYAxis(2);
-                break;
-
-            case 38:
-                camera.moveOnYAxis(-2);
-                break;
-        };
-    });
-}
-
 
 // drawScene()
 //
