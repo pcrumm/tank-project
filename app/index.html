@@ -23,6 +23,8 @@
         <script src="shapes/Cube.js" type="text/javascript"></script>
         <script src="shapes/Sphere.js" type="text/javascript"></script>
         <script src="shapes/Terrain.js" type="text/javascript"></script>
+        <script src="shapes/Explosion.js" type="text/javascript"></script>
+        <script src="shapes/ExplosionLayer.js" type="text/javascript"></script>
         <script src="shapes/Projectile.js" type="text/javascript"></script>
         <script src="shapes/Tank/TankBody.js" type="text/javascript"></script>
         <script src="shapes/Tank/TankTurret.js" type="text/javascript"></script>
@@ -46,6 +48,7 @@
             uniform sampler2D uSampler;
 
             uniform int multiTex;
+            uniform float alpha;
 
             uniform TerrainRegion region1;
             uniform TerrainRegion region2;
@@ -75,6 +78,7 @@
                 {
                     textureColor = texture2D(uSampler, vec2(vTextureCoord.s, vTextureCoord.t));
                 }
+
 
                 else
                 {
@@ -186,7 +190,18 @@
                     textureColor += regionWeight * texture2D(region5Texture, vec2(vTextureCoord.s, vTextureCoord.t));
                 }
 
+                if (alpha != 0.0)
+                {
+                    if (textureColor.rgb == vec3(0.0, 0.0, 0.0))
+                        textureColor.a = 0.0;
+
+                    else
+                        textureColor.a = alpha;
+                }
+
+
                 gl_FragColor = vec4(textureColor.rgb * vLightWeighting, textureColor.a);
+
             }
         </script>
 

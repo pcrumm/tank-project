@@ -40,6 +40,9 @@ Projectile.prototype.checkForCollisions = function() {
 
         this.update = Shape.prototype.update; // No more physics updates necessary
         this.is_alive = false;
+        var e = new Explosion(this.offset);
+        explosions.push(e);
+        shapes.push(e);
         return;
     }
 
@@ -57,6 +60,9 @@ Projectile.prototype.checkForCollisions = function() {
             this.update = Shape.prototype.update; // No more physics updates necessary
             multiplayer.tankHit(tanks[i].id, this.id);
             this.is_alive = false;
+            var e = new Explosion(this.offset);
+            explosions.push(e);
+            shapes.push(e);
             return;
         }
     }

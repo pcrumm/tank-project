@@ -11,6 +11,7 @@ var projectiles;
 var player;
 var multiplayer;
 var terrain;
+var explosions;
 
 var degreesToRadians = Math.PI / 180.0;
 
@@ -47,6 +48,8 @@ function start() {
         tanks = [];
 
         projectiles = [];
+
+        explosions = [];
 
         multiplayer = new Multiplayer();
         multiplayer.initConnection();
@@ -152,6 +155,14 @@ function drawScene() {
         if ( projectiles[i].is_alive === false ) {
             shapes.splice(shapes.indexOf(projectiles[i]), 1);
             projectiles.splice(i, 1);
+        }
+    }
+
+    // Remove finished explosions
+    for (var i = 0; i < explosions.length; i++) {
+        if (explosions[i].fadeFrames <= 0) {
+            shapes.splice(shapes.indexOf(explosions[i]), 1);
+            explosions.splice(i, 1);
         }
     }
 
