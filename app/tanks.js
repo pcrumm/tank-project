@@ -109,12 +109,12 @@ function drawScene() {
     // Remove projectiles if they are no longer active:
     for (i = 0; i < projectiles.length; i++) {
         if ( projectiles[i].is_alive === false ) {
-            shapes.splice(shapes.indexOf(projectiles[i]), 1);
             projectiles.splice(i, 1);
         }
     }
 
     items = shapes.concat(tanks); // Since a tank may have been added...
+    items = items.concat(projectiles);
     for (var i = 0; i < items.length; i++)
         items[i].draw();
 

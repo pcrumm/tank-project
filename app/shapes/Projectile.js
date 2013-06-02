@@ -15,8 +15,6 @@ function Projectile(offset, velocity, tank_id, proj_id) {
     this.mass_constant = 2;
     this.owner = tank_id;
     this.id = proj_id || randString();
-
-    multiplayer.fire(offset, velocity, tank_id, this.id);
 }
 
 inheritPrototype(Projectile, Sphere);

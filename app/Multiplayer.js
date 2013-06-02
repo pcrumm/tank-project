@@ -81,7 +81,7 @@ function Multiplayer() {
             if (player.getTank().id == tank_id)
                 return;
 
-            shapes.push(new Projectile(offset, velocity, tank_id, proj_id));
+            projectiles.push(new Projectile(offset, velocity, tank_id, proj_id));
         });
 
         // Used to let us know we're dead...
