@@ -44,7 +44,7 @@ function start() {
             new Sphere({x: terrain.displacement.horizontal, y: 0, z: terrain.displacement.horizontal} , {x: 0, y: 0, z: 0}, {x: 300, y: 300, z: 300}, textures.sky),
         ];
 
-        shapes[2].lighting = false;
+        shapes[1].lighting = shapes[2].lighting = false;
 
         tanks = [];
 
