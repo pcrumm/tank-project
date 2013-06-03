@@ -97,7 +97,7 @@ function Multiplayer() {
         socket.on('hit', function(tank_id) {
             if (player.getTank().id != tank_id)
                 return;
-
+            player.playerHit();
         });
     });
 

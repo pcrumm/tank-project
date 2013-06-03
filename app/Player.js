@@ -10,6 +10,9 @@ function Player(player_tank) {
     var shot_interval;
     var shot_done = true;
 
+    var red_amt = 0.0;
+    var flash_red = false;
+
     this.getTank = function() {
         return tank;
     };
@@ -81,7 +84,29 @@ function Player(player_tank) {
         }
     };
 
+    this.playerHit = function() {
+        red_amt = 0.0;
+        flash_red = true;
+    };
+
     this.update = function() {
+        if(flash_red)
+        {
+            if(red_amt > 0.5)
+                flash_red = false;
+            else 
+            {
+                red_amt += 0.03;
+            }
+        }
+        else if (!flash_red && red_amt > 0)
+        {
+            red_amt -= 0.06;
+            if(red_amt < 0.0)
+                red_amt = 0.0
+        }
+
+        gl.uniform1f(shaderProgram.red_amt, red_amt);
         camera.update();
     };
 }
