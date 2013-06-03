@@ -6,8 +6,8 @@ function showGame()
 		marginTop: '-50'
 	}, 500, function(){
 		$('#intro').hide();
-		$('#glcanvas').css('display','block');
-		$('#glcanvas').animate({
+		$('#gameplay').css('display','block');
+		$('#gameplay').animate({
 			opacity:1.0,
 			marginTop:0,
 		}, 500);
