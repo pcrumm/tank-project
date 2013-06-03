@@ -12,19 +12,19 @@ function Emitter(offset, rotation, num_particles, acceleration, lifespan) {
 
     var pull = acceleration; //Change of the velocity of the particle
     var fade;
-    var velocity = {x: 0, y: 0, z: 0};
-    var p;
+    var x;
+    var y;
+    var z;
 
     for (var i = 0; i < num_particles; i++) {
         fade = getRandInRange(0, 99)/1000 + .003;
 
         //Set a velocity that does not go into the terrain
-        velocity.x = getRandInRange(0, .5) - .25 + .0005;
-        velocity.y = getRandInRange(0, .5) - .25 + .0005;
-        velocity.z = getRandInRange(0, .5) - .25 + .0005;
+        x = getRandInRange(0, 1) - .5 + .05;
+        y = getRandInRange(0, 1) - .5 + .05;
+        z = getRandInRange(0, 1) - .5 + .05;
 
-        p = new Particle(offset, velocity, pull, fade, lifespan)
-        this.particles.push(p);
+        this.particles.push(new Particle(offset, {x: x, y: y, z: z}, pull, fade, lifespan));
     }
 }
 
