@@ -89,6 +89,8 @@ function Multiplayer() {
 
             $('#glcanvas').detach();
             $('#client_dead').show();
+
+            socket.disconnect();
         });
     });
 
