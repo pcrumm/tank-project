@@ -12,7 +12,7 @@ function Projectile(offset, velocity, tank_id, proj_id) {
     this.velocity = velocity;
     this.time = 0;
     this.initial_y = offset.y;
-    this.mass_constant = 2;
+    this.mass_constant = 5;
     this.owner = tank_id;
     this.id = proj_id || randString();
 }
