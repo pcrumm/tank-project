@@ -1,6 +1,5 @@
 function showGame()
 {
-	//alert("I NEED TO SHOW MAH GAME");
 	$('#intro').animate({
 		opacity:0.0,
 		marginTop: '-50'
