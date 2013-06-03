@@ -131,14 +131,14 @@ function drawScene() {
         items[i].draw();
 
     //Emitters must be drawn after all opaque objects
-    gl.enable(gl.BLEND);
-    gl.depthMask(false);
+    //gl.enable(gl.BLEND);
+    //gl.depthMask(false);
 
     for (var i = 0; i <emitters.length; i++)
         emitters[i].draw();
 
-    gl.disable(gl.BLEND);
-    gl.depthMask(true);
+    //gl.disable(gl.BLEND);
+    //gl.depthMask(true);
 
     // Restore the original matrix
     mvPopMatrix();

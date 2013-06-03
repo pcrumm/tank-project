@@ -1,4 +1,12 @@
-function Particle(offset, velocity, pull, fade_rate, lifetime) {
+function toSize(vec, size) {
+
+    var scale = size || 1;
+    var len = Math.sqrt(Math.pow(vec.x, 2) + Math.pow(vec.y, 2) + Math.pow(vec.z, 2));
+
+    return temp =  {x: scale*vec.x/len, y: scale*vec.y/len, z: scale*vec.z/len};
+}
+
+function Particle(offset, velocity, pull, fade_rate) {
     var vertices = [
         -0.25,-0.25, 0.0,
          0.25,-0.25, 0.0,
@@ -33,12 +41,15 @@ function Particle(offset, velocity, pull, fade_rate, lifetime) {
     this.offset = offset || {x: 0, y: 0, z: 0};
     this.scale = {x: 1, y: 1, z: 1};
     this.rotation = {x: 0, y: 0, z: 0}; //This will be change each frame by billboarding
+    this.alpha = 1.0;
 
     this.alive = 1.0;
     this.velocity = velocity || {x: 1, y: 1, z: 1};
+    this.velocity = toSize(this.velocity, .05);
     this.pull = pull || {x: 0.0, y: 0.0, z: 0.0};
-    this.lifetime = lifetime || 1; //Number of frames the particle is full power
-    this.fade_rate = fade_rate || 1.0; //How fast the particle fades after it dies
+    this.fade_rate = .1;//fade_rate || 1.0; //How fast the particle fades after it dies
+
+    console.log(this.velocity);
 }
 
 inheritPrototype(Particle, Shape);
@@ -53,24 +64,13 @@ Particle.prototype.update = function() {
     this.velocity.z += this.pull.z;
 
     if (this.alive) {
+        this.alpha -= this.fade_rate;
 
-        if (this.lifetime > 0)
-            this.lifetime--;
-
-        else {
-            this.alpha -= this.fade_rate;
-
-            if (this.alpha <= 0) {
-                this.alpha = 1.0;
+        if (this.alpha <= 0) {
+                this.alpha = 0.0;
                 this.alive = false;
-            }
         }
     }
 
     Shape.prototype.update.call(this);
-};
-
-Particle.prototype.draw = function() {
-    //console.log(this.velocity);
-    Shape.prototype.draw.call(this);
 };
