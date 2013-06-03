@@ -150,10 +150,10 @@ io.sockets.on('connection', function(socket) {
                 killer.score += HIT_SCORE;
 
                 // Let this tank know it's dead...
-                socket.broadcast.emit('killed', tank_id);
+                io.sockets.emit('killed', tank_id);
 
                 // Kill it on everyone else
-                socket.broadcast.emit('remove_tank', tank_id);
+                io.sockets.emit('remove_tank', tank_id);
             }
         }
     });
