@@ -9,6 +9,11 @@ function initInputEventHandler() {
 
 function handleKeyDown(event) {
     currentlyPressedKeys[event.keyCode] = true;
+
+    // Prevent any of the arrow keys or spacebar from making the window scroll:
+    if ( [32, 37, 38, 39, 40].indexOf(event.keyCode) > -1 ) {
+        event.preventDefault();
+    }
 }
 
 function handleKeyUp(event) {

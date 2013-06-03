@@ -3,20 +3,20 @@ var textures = {};
 function initTextures() {
     // Please note: Image dimensions must be a power of 2!
     
-    var metal = gl.createTexture();
-    metal.image = new Image();
-    metal.image.onload = function() {
-        handleLoadedTexture(metal);
+    var camo = gl.createTexture();
+    camo.image = new Image();
+    camo.image.onload = function() {
+        handleLoadedTexture(camo);
     };
-    metal.image.src = 'assets/rust.jpg';
-    textures.metal = metal;
+    camo.image.src = 'assets/images/camo.gif';
+    textures.camo = camo;
 
     var crate = gl.createTexture();
     crate.image = new Image();
     crate.image.onload = function() {
         handleLoadedTexture(crate);
     };
-    crate.image.src = 'assets/crate.gif';
+    crate.image.src = 'assets/images/crate.gif';
     textures.crate = crate;
 
     var ocean = gl.createTexture();
@@ -24,7 +24,7 @@ function initTextures() {
     ocean.image.onload = function() {
         handleLoadedTexture(ocean);
     };
-    ocean.image.src = 'assets/ocean.png';
+    ocean.image.src = 'assets/images/ocean.png';
     textures.ocean = ocean;
 
     var grass = gl.createTexture();
@@ -32,7 +32,7 @@ function initTextures() {
     grass.image.onload = function() {
         handleLoadedTexture(grass);
     };
-    grass.image.src = 'assets/grass.jpg';
+    grass.image.src = 'assets/images/grass.jpg';
     textures.grass = grass;
 
     var rock = gl.createTexture();
@@ -40,7 +40,7 @@ function initTextures() {
     rock.image.onload = function() {
         handleLoadedTexture(rock);
     };
-    rock.image.src = 'assets/rock.jpg';
+    rock.image.src = 'assets/images/rock.jpg';
     textures.rock = rock;
 
     var dirt = gl.createTexture();
@@ -48,7 +48,7 @@ function initTextures() {
     dirt.image.onload = function() {
         handleLoadedTexture(dirt);
     };
-    dirt.image.src = 'assets/dirt.jpg';
+    dirt.image.src = 'assets/images/dirt.jpg';
     textures.dirt = dirt;
 
     var snow = gl.createTexture();
@@ -56,7 +56,7 @@ function initTextures() {
     snow.image.onload = function() {
         handleLoadedTexture(snow);
     };
-    snow.image.src = 'assets/snow.jpg';
+    snow.image.src = 'assets/images/snow.jpg';
     textures.snow = snow;
 
     var sand = gl.createTexture();
@@ -64,7 +64,7 @@ function initTextures() {
     sand.image.onload = function() {
         handleLoadedTexture(sand);
     };
-    sand.image.src = 'assets/sand.jpg';
+    sand.image.src = 'assets/images/sand.jpg';
     textures.sand = sand;
 
 
@@ -73,7 +73,7 @@ function initTextures() {
     projectile.image.onload = function() {
         handleLoadedTexture(projectile);
     };
-    projectile.image.src = 'assets/projectile.jpg';
+    projectile.image.src = 'assets/images/projectile.jpg';
     textures.projectile = projectile;
 
 
@@ -82,7 +82,7 @@ function initTextures() {
     sky.image.onload = function() {
         handleLoadedTexture(sky);
     };
-    sky.image.src = 'assets/sky.jpg';
+    sky.image.src = 'assets/images/sky.jpg';
     textures.sky = sky;
 
 
@@ -91,7 +91,7 @@ function initTextures() {
     explosion.image.onload = function() {
         handleLoadedTexture(explosion);
     };
-    explosion.image.src = 'assets/explosion.jpg';
+    explosion.image.src = 'assets/images/explosion.jpg';
     textures.explosion = explosion;
 
 }

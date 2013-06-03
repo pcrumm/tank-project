@@ -3,7 +3,7 @@ function TankTurret(offset, y_rotation) {
               offset,
               {x: 0, y: y_rotation || 0, z: 0},
               {x: 0.75, y: 0.25, z: 0.75},
-              textures.metal
+              {texture: textures.camo}
     );
 
     // This is how far the tank turret must be translated "up" after rotation to be on top of the tank body:
