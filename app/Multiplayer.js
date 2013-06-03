@@ -92,6 +92,13 @@ function Multiplayer() {
             $('#glcanvas').detach();
             $('#client_dead').show();
         });
+
+        // Let us know when we're hit
+        socket.on('hit', function(tank_id) {
+            if (player.getTank().id != tank_id)
+                return;
+
+        });
     });
 
     // Used to notify the server this client is disconnecting
