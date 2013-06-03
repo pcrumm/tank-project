@@ -44,6 +44,10 @@ function Shape (vertices, normals, texture_info, vertex_indices) {
         this.multitexture = texture_info.multitexture;
     }
 
+    this.alpha = 0;
+    if ( texture_info.use_alpha === true)
+        this.alpha = texture_info.use_alpha;
+
     // Build the element array buffer; this specifies the indices
     // into the vertex array for each face's vertices.
     this.vertices_index_buffer = gl.createBuffer();
@@ -62,6 +66,7 @@ Shape.prototype.update = function() {
     mvTranslate([this.offset.x, this.offset.y, this.offset.z]);
 
     gl.uniform1i(shaderProgram.multi, this.multiTex);
+    gl.uniform1f(shaderProgram.alpha, this.alpha);
 
     updateMatrixUniforms();
 
@@ -102,3 +107,10 @@ Shape.prototype.draw = function() {
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.vertices_index_buffer);
     gl.drawElements(gl.TRIANGLES, this.vertices_index_buffer.length, gl.UNSIGNED_SHORT, 0);
 };
+
+Shape.prototype.setTexCoords = function(texCoords) {
+    if (texCoords) {
+        gl.bindBuffer(gl.ARRAY_BUFFER, this.vertex_texture_coords_buffer);
+        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(texCoords), gl.STATIC_DRAW);
+    }
+}

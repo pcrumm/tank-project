@@ -58,6 +58,7 @@ function initShaders() {
     shaderProgram.r5Tex = gl.getUniformLocation(shaderProgram, "region5Texture");
 
     shaderProgram.multi = gl.getUniformLocation(shaderProgram, "multiTex");
+    shaderProgram.alpha = gl.getUniformLocation(shaderProgram, "alpha");
 
     gl.uniform1f(shaderProgram.r1max, regions[0].max);
     gl.uniform1f(shaderProgram.r1min, regions[0].min);

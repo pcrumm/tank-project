@@ -11,6 +11,7 @@ var projectiles;
 var player;
 var multiplayer;
 var terrain;
+var explosions;
 
 var degreesToRadians = Math.PI / 180.0;
 
@@ -47,6 +48,8 @@ function start() {
         tanks = [];
 
         projectiles = [];
+
+        explosions = [];
 
         multiplayer = new Multiplayer();
         multiplayer.initConnection();
@@ -113,10 +116,21 @@ function drawScene() {
         }
     }
 
+    // Remove finished explosions
+    for (var i = 0; i < explosions.length; i++) {
+        if (explosions[i].fadeFrames <= 0) {
+            explosions.splice(i, 1);
+        }
+    }
+
     items = shapes.concat(tanks); // Since a tank may have been added...
     items = items.concat(projectiles);
     for (var i = 0; i < items.length; i++)
         items[i].draw();
+
+    //Explosions must be drawn after all opaque objects
+    for (var i = 0; i <explosions.length; i++)
+        explosions[i].draw();
 
     // Restore the original matrix
     mvPopMatrix();
