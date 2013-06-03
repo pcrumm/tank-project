@@ -39,6 +39,7 @@ io.sockets.on('connection', function(socket) {
             tank_id: tank_uniq_id,
             position: {x: 150+(5*tank_id*Math.pow(-1,tank_id+1)), y: 0, z: 150+(5*tank_id*Math.pow(-1,tank_id))},
             rotation: 0,
+            turret_rotation: 0,
             health: DEFAULT_HEALTH,
             score: 0
         };
@@ -63,13 +64,14 @@ io.sockets.on('connection', function(socket) {
     });
 
     // When a client tells us that its player has moved
-    socket.on('update_tank_position', function(tank_id, tank_position, tank_rotation) {
+    socket.on('update_tank_position', function(tank_id, tank_position, tank_rotation, tank_turret_rotation) {
         for (var i = 0; i < game_data.length; i++)
         {
             if (game_data[i].tank_id == tank_id)
             {
                 game_data[i].position = tank_position;
                 game_data[i].rotation = tank_rotation;
+                game_data[i].turret_rotation = tank_turret_rotation;
 
                 socket.broadcast.emit('tank_did_move', game_data[i]);
             }
