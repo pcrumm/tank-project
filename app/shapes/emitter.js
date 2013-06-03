@@ -2,16 +2,38 @@ function getRandInRange(min, max) {
     return (Math.random() * (max - min)) + min;
 }
 
-var vel = [
-    {x: 0, y:1, z:0},
-    {x: 50, y:1, z:-50},
-    {x: 50, y:1, z:50},
-    {x: -50, y:1, z:-50},
-    {x: -50, y:1, z:50},
-];
+function copy(obj) {
+    //Makes a copy of an object.
+    //Code from stackoverflow.com/questions/728360
+    //WHY IS THIS SO COMPLICATED.
 
-function Emitter(offset, rotation, num_particles, acceleration) {
-    var o = offset || {x: 0, y: 0, z: 0};
+    if (null == obj || "object" != typeof obj)
+        return obj;
+
+    if (obj instanceof Array) {
+        var clone = [];
+        for (var i = 0, len = obj.length; i < len; i++) {
+            clone[i] = copy(obj[i]);
+        }
+
+        return clone;
+    }
+
+
+    if (obj instanceof Object) {
+        var clone = {};
+        for (var i in obj) {
+            if (obj.hasOwnProperty(i))
+                clone[i] = copy(obj[i]);
+        }
+
+        return clone;
+    }
+}
+
+function Emitter(offset, rotation, num_particles, acceleration, maxSpeed) {
+    this.offset = offset || {x: 0, y: 0, z: 0};
+
     this.rotation = rotation || {x: 0, y: 0, z: 0};
     num_particles = num_particles || 100;
     this.alive = true;
@@ -20,24 +42,20 @@ function Emitter(offset, rotation, num_particles, acceleration) {
 
     var pull = acceleration; //Change of the velocity of the particle
     var fade;
-    var x;
-    var y;
-    var z;
+    var speed = maxSpeed || 1;
+    var vX, vY, vZ;
 
     for (var i = 0; i < num_particles; i++) {
-        fade = getRandInRange(0, 99)/1000 + .003;
+        fade = getRandInRange(0, 99)/1000 + .03;
 
         //Set a velocity that does not go into the terrain
-        x = getRandInRange(0, 1) - .5 + .001;
-        y = getRandInRange(0, 1) - .5 + .001;
-        z = getRandInRange(0, 1) - .5 + .001;
+        //A small value is added to make sure each particle has some speed
+        vX = getRandInRange(0, speed) - (.5 * speed) + .005;
+        vY = getRandInRange(0, speed) - (.5 * speed) + .005;
+        vZ = getRandInRange(0, speed) - (.5 * speed) + .005;
 
-        this.particles.push(new Particle(o, vel[i], pull, fade));
+        this.particles.push(new Particle(copy(this.offset), {x: vX, y: vY, z: vZ}, pull, fade));
     }
-
-    for(var i = 0; i < temp.length; i++)
-        console.log(temp[i]);
-    console.log("SLKNASOIDAS:MADNCMA:");
 }
 
 Emitter.prototype.draw = function() {

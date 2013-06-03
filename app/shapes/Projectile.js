@@ -38,8 +38,7 @@ Projectile.prototype.checkForCollisions = function() {
 
         this.update = Shape.prototype.update; // No more physics updates necessary
         this.is_alive = false;
-        var temp = {x: this.offset.x, y: this.offset.y, z: this.offset.z};
-        var e = new Emitter(temp, this.rotation, 5, {x: 0, y: -0.00, z: 0});
+        var e = new Emitter(this.offset, this.rotation, 100, {x: 0, y: -0.02, z: 0}, 1.8);
         emitters.push(e);
         return;
     }
@@ -58,8 +57,7 @@ Projectile.prototype.checkForCollisions = function() {
             this.update = Shape.prototype.update; // No more physics updates necessary
             multiplayer.tankHit(tanks[i].id, this.id);
             this.is_alive = false;
-            var temp = {x: this.offset.x, y: this.offset.y, z: this.offset.z};
-            var e = new Emitter(temp, this.rotation, 5, {x: 0, y: -0.00, z: 0});
+            var e = new Emitter(this.offset, this.rotation, 100, {x: 0, y: -0.02, z: 0}, 1.8);
             emitters.push(e);
             return;
         }
