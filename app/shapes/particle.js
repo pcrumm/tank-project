@@ -69,3 +69,8 @@ Particle.prototype.update = function() {
 
     Shape.prototype.update.call(this);
 };
+
+Particle.prototype.draw = function() {
+    //console.log(this.velocity);
+    Shape.prototype.draw.call(this);
+};

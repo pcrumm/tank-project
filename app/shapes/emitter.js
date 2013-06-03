@@ -1,5 +1,5 @@
 function getRandInRange(min, max) {
-    return (Math.random * (max - min)) + min;
+    return (Math.random() * (max - min)) + min;
 }
 
 function Emitter(offset, rotation, num_particles, acceleration, lifespan) {
@@ -11,22 +11,21 @@ function Emitter(offset, rotation, num_particles, acceleration, lifespan) {
     this.particles = [];
 
     var pull = acceleration; //Change of the velocity of the particle
+    var fade;
+    var velocity = {x: 0, y: 0, z: 0};
+    var p;
 
     for (var i = 0; i < num_particles; i++) {
-        var fade = getRandInRange(0, 99)/1000 + .003;
+        fade = getRandInRange(0, 99)/1000 + .003;
 
         //Set a velocity that does not go into the terrain
-        var velocity = {};
-        velocity.x = getRandInRange(0, 10) - 5;
-        velocity.y = getRandInRange(0, 10) - 5;
-        velocity.z = getRandInRange(0, 10) - 5;
+        velocity.x = getRandInRange(0, .5) - .25 + .0005;
+        velocity.y = getRandInRange(0, .5) - .25 + .0005;
+        velocity.z = getRandInRange(0, .5) - .25 + .0005;
 
-        var p = new Particle(offset, velocity, pull, fade, lifespan)
+        p = new Particle(offset, velocity, pull, fade, lifespan)
         this.particles.push(p);
     }
-
-    console.log(this.particles[0].offset);
-    console.log(this.particles[0].velocity);
 }
 
 Emitter.prototype.draw = function() {
