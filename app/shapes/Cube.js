@@ -1,5 +1,5 @@
 // Cube: a 1x1x1 unit cube
-function Cube(offset, rotation, scale, texture) {
+function Cube(offset, rotation, scale, texture_info) {
     var vertices = [
         // Front face
         -0.5, -0.5,  0.5,
@@ -76,42 +76,43 @@ function Cube(offset, rotation, scale, texture) {
         -1.0,  0.0,  0.0
     ];
 
+    var tiling_factor = texture_info.tiling_factor || 1.0;
     var texture_coords = [
         // Front face
-        0.0, 0.0,
-        1.0, 0.0,
-        1.0, 1.0,
-        0.0, 1.0,
+        0.0,           0.0,
+        tiling_factor, 0.0,
+        tiling_factor, tiling_factor,
+        0.0,           tiling_factor,
 
         // Back face
-        1.0, 0.0,
-        1.0, 1.0,
-        0.0, 1.0,
-        0.0, 0.0,
+        tiling_factor,  0.0,
+        tiling_factor, tiling_factor,
+        0.0,           tiling_factor,
+        0.0,           0.0,
 
         // Top face
-        0.0, 1.0,
-        0.0, 0.0,
-        1.0, 0.0,
-        1.0, 1.0,
+        0.0,           tiling_factor,
+        0.0,           0.0,
+        tiling_factor, 0.0,
+        tiling_factor, tiling_factor,
 
         // Bottom face
-        1.0, 1.0,
-        0.0, 1.0,
-        0.0, 0.0,
-        1.0, 0.0,
+        tiling_factor, tiling_factor,
+        0.0,           tiling_factor,
+        0.0,           0.0,
+        tiling_factor, 0.0,
 
         // Right face
-        1.0, 0.0,
-        1.0, 1.0,
-        0.0, 1.0,
-        0.0, 0.0,
+        tiling_factor, 0.0,
+        tiling_factor, tiling_factor,
+        0.0,           tiling_factor,
+        0.0,           0.0,
 
         // Left face
-        0.0, 0.0,
-        1.0, 0.0,
-        1.0, 1.0,
-        0.0, 1.0,
+        0.0,           0.0,
+        tiling_factor, 0.0,
+        tiling_factor, tiling_factor,
+        0.0,           tiling_factor,
     ];
 
     var vertex_indices = [
@@ -123,7 +124,7 @@ function Cube(offset, rotation, scale, texture) {
         20, 21, 22,     20, 22, 23  // left
     ];
 
-    Shape.call(this, vertices, normals, {texture: texture || textures.crate, texture_coords: texture_coords}, vertex_indices);
+    Shape.call(this, vertices, normals, {texture: texture_info.texture || textures.crate, texture_coords: texture_coords}, vertex_indices);
 
     this.offset = offset || {x: 0, y: 0, z: 0};
     this.rotation = rotation || {x: 0, y: 0, z: 0};
