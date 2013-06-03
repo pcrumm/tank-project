@@ -9,7 +9,6 @@ function showGame()
 		$('#gameplay').css('display','block');
 		$('#gameplay').animate({
 			opacity:1.0,
-			marginTop:0,
 		}, 500);
 	});
 }

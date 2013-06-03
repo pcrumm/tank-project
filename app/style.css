@@ -52,7 +52,6 @@ img#tanks-logo {
 
 #gameplay {
     display: none;
-    margin-top:100px;
     opacity:0;
 }
 
@@ -78,18 +77,46 @@ img#tanks-logo {
     font-size: 30px;
 }
 
+#instructions-container {
+    width:800px;
+    margin-left:auto;
+    margin-right:auto;
+    display:block;
+}
+
 #instructions {
-    width: 720px;
+    width: 520px;
     margin: 0 auto;
     padding: 40px;
     background: #eee;
     border-radius: 5px;
+    float:right;
+    margin-bottom:20px;
 }
 
 #instructions h2 {
     text-align: center;
     font-weight: normal;
     margin: 0 0 10px 0;
+    font-family: "Bebas Neue";
+    font-size: 42px;
+    line-height: 9px;
+}
+
+#inside-logo {
+    float:left;
+    width:200px;
+    margin-top:30px;
+}
+#inside-logo img {
+    width:90%;
+}
+
+#credits {
+    font-size: 10px;
+    color: #333;
+    line-height: 11px;
+    opacity: 0.7;
 }
 
 p {
@@ -119,7 +146,7 @@ p {
 }
 
 #space {
-    width: 400px;
+    width: 200px;
     margin: 47px 10px 0 10px;
 }
 

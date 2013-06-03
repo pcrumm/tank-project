@@ -254,26 +254,32 @@
             <canvas id="glcanvas" width="800" height="450">
                 Your browser doesn't appear to support the HTML5 <code>&lt;canvas&gt;</code> element.
             </canvas>
-            <div id="instructions">
-                <h2>How to play</h2>
-                <div class="keyset">
-                    <h3>Move</h3>
-                    <p>
-                        <span class="key">W</span><br />
-                        <span class="key">A</span><span class="key">S</span><span class="key">D</span>
-                    </p>
-                </div>
-                <div class="keyset">
-                    <h3>Fire</h3>
-                    <p><span class="key" id="space">&nbsp;</span></p>
-                </div>
-                <div class="keyset">
-                    <h3>Aim</h3>
-                    <p><span class="key">&uarr;</span><br /><span class="key">&larr;</span><span class="key">&darr;</span><span class="key">&rarr;</span></p>
-                </div>
-                <div class="clear"></div>
-                <p class="last">Shoot each other.</p>
-            </div><!-- end #instructions -->
+            <div id="instructions-container">
+                <div id="inside-logo">
+                    <img src="assets/tanks-logo.png" />
+                    <p id="credits">Created by Kasey Carrothers, Phillip K. Crumm III, Ryan Hansberry, Byron Lutz, and David Voong for CS 174A.</p>
+                </div><!-- end #inside-logo -->
+                <div id="instructions">
+                    <h2>How to play</h2>
+
+                    <div class="keyset">
+                        <h3>Move</h3>
+                        <p>
+                            <span class="key">W</span><br />
+                            <span class="key">A</span><span class="key">S</span><span class="key">D</span>
+                        </p>
+                    </div>
+                    <div class="keyset">
+                        <h3>Fire</h3>
+                        <p><span class="key" id="space">&nbsp;</span></p>
+                    </div>
+                    <div class="keyset">
+                        <h3>Aim</h3>
+                        <p><span class="key">&uarr;</span><br /><span class="key">&larr;</span><span class="key">&darr;</span><span class="key">&rarr;</span></p>
+                    </div>
+                    <div class="clear"></div>
+                </div><!-- end #instructions -->
+            </div><!-- end #instructions-container -->
         </div><!-- end div#gameplay -->
 
         <div id="server_full_error">
