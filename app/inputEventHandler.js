@@ -31,10 +31,10 @@ function handleKeys() {
     }
     
     if ( currentlyPressedKeys[37] ) { // Left Arrow
-        player.rotateTankTurretLeft(1);
+        player.rotateTankTurretLeft(2);
     }
     if ( currentlyPressedKeys[39] ) { // Right Arrow
-        player.rotateTankTurretRight(1);
+        player.rotateTankTurretRight(2);
     }
 
     if ( currentlyPressedKeys[38] || currentlyPressedKeys[81] ) { // Up Arrow and Q

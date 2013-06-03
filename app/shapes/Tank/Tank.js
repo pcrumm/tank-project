@@ -47,8 +47,8 @@ function Tank(offset, y_rotation) {
         turret.rotateBarrelOnXAxis(units);
     };
 
-    this.generateProjectile = function() {
-        turret.generateProjectile();
+    this.generateProjectile = function(relative_pitch) {
+        turret.generateProjectile(relative_pitch);
     };
 
     this.draw = function() {

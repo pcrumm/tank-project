@@ -39,12 +39,13 @@ TankTurret.prototype.rotateBarrelOnXAxis = function(units) {
     }
 };
 
-TankTurret.prototype.generateProjectile = function() {
+TankTurret.prototype.generateProjectile = function(relative_pitch) {
     var y_rotation_in_rads = this.rotation.y * degreesToRadians;
     var runx = -Math.sin(y_rotation_in_rads);
     var runz = -Math.cos(y_rotation_in_rads);
 
-    var rise = Math.sin(this.barrel.firing_angle * degreesToRadians) * 30;
+    var firing_angle = relative_pitch + this.barrel.firing_angle;
+    var rise = Math.sin(firing_angle * degreesToRadians) * 40;
 
     var initial_projectile_offset = {x: this.offset.x, y: this.offset.y, z: this.offset.z};
     var projectile_velocity = {x: runx, y: rise, z: runz};
@@ -54,7 +55,6 @@ TankTurret.prototype.generateProjectile = function() {
     multiplayer.fire(p.offset, p.velocity, p.owner, p.id);
 
     projectiles.push(p);
-    //shapes.push(p);
 };
 
 TankTurret.prototype.draw = function() {

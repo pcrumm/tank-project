@@ -54,7 +54,8 @@ function Player(player_tank) {
     };
 
     this.generateProjectile = function() {
-        tank.generateProjectile();
+        var tank_pitch = camera.getPitch();
+        tank.generateProjectile(tank_pitch);
         sounds.tank_shoot.play();
     };
 
