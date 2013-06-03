@@ -71,7 +71,8 @@ function Multiplayer() {
         // Used to notify a client there's no room for them to join. At this point, they aren't connected
         socket.on('server_full', function() {
             $('#glcanvas').detach();
-            $('#server_full_error').show();
+            $('#instructions').hide();
+            $('#server_full_error').fadeIn('slow');
         });
 
         // Used to notify a client to draw a projectile. Ignore if we're the owner
@@ -88,7 +89,8 @@ function Multiplayer() {
                 return;
 
             $('#glcanvas').detach();
-            $('#client_dead').show();
+            $('#instructions').hide();
+            $('#client_dead').fadeIn('slow');
         });
     });
 
