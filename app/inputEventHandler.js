@@ -9,6 +9,11 @@ function initInputEventHandler() {
 
 function handleKeyDown(event) {
     currentlyPressedKeys[event.keyCode] = true;
+
+    // Prevent any of the arrow keys or spacebar from making the window scroll:
+    if ( [32, 37, 38, 39, 40].indexOf(event.keyCode) > -1 ) {
+        event.preventDefault();
+    }
 }
 
 function handleKeyUp(event) {
@@ -31,10 +36,10 @@ function handleKeys() {
     }
     
     if ( currentlyPressedKeys[37] ) { // Left Arrow
-        player.rotateTankTurretLeft(1);
+        player.rotateTankTurretLeft(2);
     }
     if ( currentlyPressedKeys[39] ) { // Right Arrow
-        player.rotateTankTurretRight(1);
+        player.rotateTankTurretRight(2);
     }
 
     if ( currentlyPressedKeys[38] || currentlyPressedKeys[81] ) { // Up Arrow and Q
@@ -50,8 +55,9 @@ function handleKeys() {
     }
 
     // If any key was called that changed the player's tank's position or rotation, be sure to notify the server:
-    if ( currentlyPressedKeys[65] || currentlyPressedKeys[68] || currentlyPressedKeys[87] || currentlyPressedKeys[83] ) {
+    if ( currentlyPressedKeys[65] || currentlyPressedKeys[68] || currentlyPressedKeys[87]
+       || currentlyPressedKeys[83] || currentlyPressedKeys[37] || currentlyPressedKeys[39] ) {
         var player_tank = player.getTank();
-        multiplayer.sendTankUpdate(player_tank.id, player_tank.getOffset(), player_tank.getBodyYRotation());
+        multiplayer.sendTankUpdate(player_tank.id, player_tank.getOffset(), player_tank.getBodyYRotation(), player_tank.getTurretRotation().y);
     };
 }

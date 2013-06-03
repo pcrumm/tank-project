@@ -13,9 +13,10 @@ function Tank(offset, y_rotation) {
     };
     this.adaptToTerrain(); // initial setup
 
-    this.setPositionAndRotation = function(pos, y_rot) {
+    this.setPositionAndRotation = function(pos, y_rot, turret_y_rot) {
         body.offset = pos;
         body.rotation.y = y_rot;
+        turret.setRotation({x: null, y: turret_y_rot, z: null});
     };
     
     this.getOffset = function() {
@@ -47,13 +48,12 @@ function Tank(offset, y_rotation) {
         turret.rotateBarrelOnXAxis(units);
     };
 
-    this.generateProjectile = function() {
-        turret.generateProjectile();
+    this.generateProjectile = function(relative_pitch) {
+        turret.generateProjectile(relative_pitch);
     };
 
     this.draw = function() {
         body.draw();
         turret.draw();
     };
-
 }

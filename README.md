@@ -21,7 +21,9 @@ go to Develop->Enable WebGL.
 * Firefox: Works, but slow.
 
 For Windows:
-* ?
+* Chrome (Recommended)
+* Firefox
+* IE11
 
 ### Setup
 #### Requirements
@@ -39,3 +41,10 @@ Once that's done, you can actually run the game with:
     node server.js
 
 And then navigate to localhost:8080.
+
+## Advanced Topics
+We have implemented the following advanced topics:
+* Projectile physics (tank projectiles)
+* Terrain generation (generated from a random seed)
+* Multitexturing (terrain generation based on height)
+* Collision detection (projectiles vs. tanks)

@@ -46,6 +46,8 @@ function start() {
             new Sphere({x: terrain.displacement.horizontal, y: 0, z: terrain.displacement.horizontal} , {x: 0, y: 0, z: 0}, {x: 300, y: 300, z: 300}, textures.sky),
         ];
 
+        shapes[1].lighting = shapes[2].lighting = false;
+
         tanks = [];
 
         projectiles = [];
@@ -61,7 +63,9 @@ function start() {
 
         // Set up periodic updates:
         setInterval(drawScene, 30);
-        setInterval(multiplayer.receiveTankUpdate, 30);
+        setInterval("multiplayer.receiveTankUpdate", 30);
+
+        showGame();
     }
 }
 
@@ -148,11 +152,11 @@ function drawScene() {
 // updateTank
 // Moves the given tank to the given orientation.
 //
-function updateTank(tank_id, tank_position, tank_rotation)
+function updateTank(tank_id, tank_position, tank_rotation, tank_turret_rotation)
 {
     for (var i = 0; i < tanks.length; i++) {
         if ( tanks[i].id == tank_id ) {
-            tanks[i].setPositionAndRotation(tank_position, tank_rotation);
+            tanks[i].setPositionAndRotation(tank_position, tank_rotation, tank_turret_rotation);
             tanks[i].adaptToTerrain();
             return true;
         }

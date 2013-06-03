@@ -3,16 +3,14 @@ function Multiplayer() {
     var time_since_last_sent_update = new Date();
 
     // Client calls this to indicate to the server that a tank's position/rotation has changed:
-    this.sendTankUpdate = function(tank_id, tank_position, tank_rotation) {
+    this.sendTankUpdate = function(tank_id, tank_position, tank_rotation, tank_turret_rotation) {
         var now = new Date();
 
+        // Only send an update if 30ms or more have elapsed since last update:
         if ( (now - time_since_last_sent_update) > 30 ) {
-            socket.emit('update_tank_position', tank_id, tank_position, tank_rotation);
+            socket.emit('update_tank_position', tank_id, tank_position, tank_rotation, tank_turret_rotation);
             time_since_last_sent_update = new Date();
-            return true;
         }
-
-        return false;
     };
 
     this.fire = function(offset, velocity, tank_id, proj_id) {
@@ -56,7 +54,7 @@ function Multiplayer() {
         socket.on('tank_did_move', function(tank_data) {
             if (tanks[0].id != tank_data.tank_id) // Ignore self reports
             {
-                updateTank(tank_data.tank_id, tank_data.position, tank_data.rotation);
+                updateTank(tank_data.tank_id, tank_data.position, tank_data.rotation, tank_data.turret_rotation);
             }
         });
 
@@ -73,7 +71,8 @@ function Multiplayer() {
         // Used to notify a client there's no room for them to join. At this point, they aren't connected
         socket.on('server_full', function() {
             $('#glcanvas').detach();
-            $('#server_full_error').show();
+            $('#instructions').hide();
+            $('#server_full_error').fadeIn('slow');
         });
 
         // Used to notify a client to draw a projectile. Ignore if we're the owner
@@ -90,7 +89,10 @@ function Multiplayer() {
                 return;
 
             $('#glcanvas').detach();
-            $('#client_dead').show();
+            $('#instructions').hide();
+            $('#client_dead').fadeIn('slow');
+
+            socket.disconnect();
         });
 
         // Let us know when we're hit

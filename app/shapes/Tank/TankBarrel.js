@@ -3,7 +3,7 @@ function TankBarrel(offset, y_rotation) {
               offset,
               {x: 0, y: y_rotation || 0, z: 0},
               {x: 0.2, y: 0.2, z: 1.25},
-              textures.metal
+              {texture: textures.camo, tiling_factor: 1.5}
     );
 
     this.relative_vertical_offset = 0.55;

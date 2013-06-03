@@ -62,6 +62,7 @@ function initShaders() {
     shaderProgram.use_alpha = gl.getUniformLocation(shaderProgram, "use_alpha");
 
     shaderProgram.red_amt = gl.getUniformLocation(shaderProgram, "red_amt");
+    shaderProgram.lighting = gl.getUniformLocation(shaderProgram, "lightingOn");
 
     gl.uniform1f(shaderProgram.r1max, regions[0].max);
     gl.uniform1f(shaderProgram.r1min, regions[0].min);

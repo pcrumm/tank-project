@@ -6,7 +6,7 @@ var app = express()
   , io = require('socket.io').listen(server);
 
   var connected_tanks = 0;
-  var TANK_LIMIT = 20; // The maximum number of allowed clients
+  var TANK_LIMIT = 10; // The maximum number of allowed clients
 
   var DEFAULT_HEALTH = 100; // The default health for each tank
   var HIT_DAMAGE = 35; // The amount of damage each hit will cause
@@ -37,8 +37,9 @@ io.sockets.on('connection', function(socket) {
         var tank_uniq_id = socket.id;
         game_data[tank_id] = {
             tank_id: tank_uniq_id,
-            position: {x: 150+(5*tank_id*Math.pow(-1,tank_id+1)), y: 0, z: 150+(5*tank_id*Math.pow(-1,tank_id))},
+            position: {x: 150+(2.5*tank_id*Math.pow(-1,tank_id+1)), y: 0, z: 150+(2.5*tank_id*Math.pow(-1,tank_id))},
             rotation: 0,
+            turret_rotation: 0,
             health: DEFAULT_HEALTH,
             score: 0
         };
@@ -63,13 +64,14 @@ io.sockets.on('connection', function(socket) {
     });
 
     // When a client tells us that its player has moved
-    socket.on('update_tank_position', function(tank_id, tank_position, tank_rotation) {
+    socket.on('update_tank_position', function(tank_id, tank_position, tank_rotation, tank_turret_rotation) {
         for (var i = 0; i < game_data.length; i++)
         {
             if (game_data[i].tank_id == tank_id)
             {
                 game_data[i].position = tank_position;
                 game_data[i].rotation = tank_rotation;
+                game_data[i].turret_rotation = tank_turret_rotation;
 
                 socket.broadcast.emit('tank_did_move', game_data[i]);
             }
@@ -151,10 +153,10 @@ io.sockets.on('connection', function(socket) {
                 killer.score += HIT_SCORE;
 
                 // Let this tank know it's dead...
-                socket.broadcast.emit('killed', tank_id);
+                io.sockets.emit('killed', tank_id);
 
                 // Kill it on everyone else
-                socket.broadcast.emit('remove_tank', tank_id);
+                io.sockets.emit('remove_tank', tank_id);
             }
         }
     });

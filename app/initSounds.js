@@ -1,7 +1,7 @@
 var sounds = {
-    tank_idle:  {filename: 'assets/tank-idle2.ogg'},
-    tank_move:  {filename: 'assets/tank-move.ogg'},
-    tank_shoot: {filename: 'assets/tank-shoot.ogg'}
+    tank_idle:  {filename: 'assets/sounds/tank-idle2.ogg'},
+    tank_move:  {filename: 'assets/sounds/tank-move.ogg'},
+    tank_shoot: {filename: 'assets/sounds/tank-shoot.ogg'}
 };
 
 function initSounds() {
@@ -12,7 +12,7 @@ function initSounds() {
         sounds[key].play = function() {
             var self = this;
             self.volume = 0.3;
-            Audio.prototype.play.call(self);
+            HTMLAudioElement.prototype.play.call(self);
             self.currentTime = 0;
         }
     }

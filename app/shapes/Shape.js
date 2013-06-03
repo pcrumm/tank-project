@@ -56,6 +56,8 @@ function Shape (vertices, normals, texture_info, vertex_indices) {
     this.vertices_index_buffer.length = vertex_indices.length; // necessary when drawing later
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.vertices_index_buffer);
     gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(vertex_indices), gl.STATIC_DRAW);
+
+    this.lighting = true;
 }
 
 Shape.prototype.update = function() {
@@ -105,6 +107,9 @@ Shape.prototype.draw = function() {
             gl.uniform1i(this.multitexture[i].uniform, i);
         }
     }
+
+
+    gl.uniform1i(shaderProgram.lighting, this.lighting);
 
     // Draw the cube.
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.vertices_index_buffer);
