@@ -59,7 +59,7 @@ function start() {
 
         // Set up periodic updates:
         setInterval(drawScene, 30);
-        setInterval(multiplayer.receiveTankUpdate, 30);
+        setInterval("multiplayer.receiveTankUpdate", 30);
     }
 }
 
