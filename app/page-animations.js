@@ -1,5 +1,6 @@
 function showGame()
 {
+	setTimeout(function() {
 	$('#intro').animate({
 		opacity:0.0,
 		marginTop: '-50'
@@ -9,7 +10,7 @@ function showGame()
 		$('#gameplay').animate({
 			opacity:1.0,
 		}, 500);
-	});
+	})}, 1000);
 }
 
 $(document).ready(function() {
