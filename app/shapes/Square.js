@@ -22,10 +22,10 @@ function Square(offset, rotation, scale) {
 
     // TODO: Have a way to specify these, i.e. not hardcode 1000
     var texture_coords = [
-        0,    1000,
-        0,    0,
-        1000, 0,
-        1000, 1000
+        0,   100,
+        0,   0,
+        100, 0,
+        100, 100
     ];
 
     Shape.call(this, vertices, normals, {texture: textures.ocean, texture_coords: texture_coords}, vertex_indices);

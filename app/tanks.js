@@ -11,7 +11,7 @@ var projectiles;
 var player;
 var multiplayer;
 var terrain;
-var explosions;
+var emitters;
 
 var degreesToRadians = Math.PI / 180.0;
 
@@ -30,6 +30,7 @@ function start() {
         gl.clearDepth(1.0);                 // Clear everything
         gl.enable(gl.DEPTH_TEST);           // Enable depth testing
         gl.depthFunc(gl.LEQUAL);            // Near things obscure far things
+        gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
 
         initShaders();
         initTextures();
@@ -49,7 +50,7 @@ function start() {
 
         projectiles = [];
 
-        explosions = [];
+        emitters = [];
 
         multiplayer = new Multiplayer();
         multiplayer.initConnection();
@@ -116,10 +117,11 @@ function drawScene() {
         }
     }
 
-    // Remove finished explosions
-    for (var i = 0; i < explosions.length; i++) {
-        if (explosions[i].fadeFrames <= 0) {
-            explosions.splice(i, 1);
+    // Clean up emitters
+    for (var i = 0; i < emitters.length; i++) {
+        emitters[i].clean();
+        if (emitters[i].alive === false) {
+            emitters.splice(i, 1);
         }
     }
 
@@ -128,9 +130,15 @@ function drawScene() {
     for (var i = 0; i < items.length; i++)
         items[i].draw();
 
-    //Explosions must be drawn after all opaque objects
-    for (var i = 0; i <explosions.length; i++)
-        explosions[i].draw();
+    //Emitters must be drawn after all opaque objects
+    //gl.enable(gl.BLEND);
+    //gl.depthMask(false);
+
+    for (var i = 0; i <emitters.length; i++)
+        emitters[i].draw();
+
+    //gl.disable(gl.BLEND);
+    //gl.depthMask(true);
 
     // Restore the original matrix
     mvPopMatrix();

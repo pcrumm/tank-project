@@ -23,8 +23,8 @@
         <script src="shapes/Cube.js" type="text/javascript"></script>
         <script src="shapes/Sphere.js" type="text/javascript"></script>
         <script src="shapes/Terrain.js" type="text/javascript"></script>
-        <script src="shapes/Explosion.js" type="text/javascript"></script>
-        <script src="shapes/ExplosionLayer.js" type="text/javascript"></script>
+        <script src="shapes/particle.js" type="text/javascript"></script>
+        <script src="shapes/emitter.js" type="text/javascript"></script>
         <script src="shapes/Projectile.js" type="text/javascript"></script>
         <script src="shapes/Tank/TankBody.js" type="text/javascript"></script>
         <script src="shapes/Tank/TankTurret.js" type="text/javascript"></script>
@@ -48,6 +48,7 @@
             uniform sampler2D uSampler;
 
             uniform int multiTex;
+            uniform int use_alpha;
             uniform float alpha;
 
             uniform TerrainRegion region1;
@@ -190,9 +191,10 @@
                     textureColor += regionWeight * texture2D(region5Texture, vec2(vTextureCoord.s, vTextureCoord.t));
                 }
 
-                if (alpha != 0.0)
+                if (use_alpha != 0)
                 {
-                    if (textureColor.rgb == vec3(0.0, 0.0, 0.0))
+                    //Make black(plus wiggle room) transparent
+                    if (textureColor.r < 15.0 && textureColor.g < 15.0 && textureColor.b < 15.0)
                         textureColor.a = 0.0;
 
                     else
