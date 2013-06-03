@@ -12,7 +12,6 @@ function initSounds() {
         sounds[key].play = function() {
             var self = this;
             self.volume = 0.3;
-            console.log(Audio);
             HTMLAudioElement.prototype.play.call(self);
             self.currentTime = 0;
         }
