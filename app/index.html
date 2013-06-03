@@ -46,6 +46,7 @@
             uniform sampler2D uSampler;
 
             uniform int multiTex;
+            uniform int lightingOn;
 
             uniform TerrainRegion region1;
             uniform TerrainRegion region2;
@@ -186,7 +187,11 @@
                     textureColor += regionWeight * texture2D(region5Texture, vec2(vTextureCoord.s, vTextureCoord.t));
                 }
 
-                gl_FragColor = vec4(textureColor.rgb * vLightWeighting, textureColor.a);
+                if (lightingOn == 1)
+                    gl_FragColor = vec4(textureColor.rgb * vLightWeighting, textureColor.a);
+                else
+                    gl_FragColor = vec4(textureColor.rgb, textureColor.a);
+                    
             }
         </script>
 
@@ -200,6 +205,7 @@
             uniform mediump mat4 uPMatrix;
 
             uniform mediump float uCameraRotY;
+            uniform mediump float uCameraRotX;
 
             varying vec3 vLightWeighting;
             varying vec2 vTextureCoord;
