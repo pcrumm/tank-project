@@ -60,6 +60,8 @@ function initShaders() {
     shaderProgram.multi = gl.getUniformLocation(shaderProgram, "multiTex");
     shaderProgram.alpha = gl.getUniformLocation(shaderProgram, "alpha");
 
+    shaderProgram.red_amt = gl.getUniformLocation(shaderProgram, "red_amt");
+
     gl.uniform1f(shaderProgram.r1max, regions[0].max);
     gl.uniform1f(shaderProgram.r1min, regions[0].min);
 
@@ -74,6 +76,8 @@ function initShaders() {
 
     gl.uniform1f(shaderProgram.r5max, regions[4].max);
     gl.uniform1f(shaderProgram.r5min, regions[4].min);
+
+    gl.uniform1f(shaderProgram.red_amt, 0.0);
 }
 
 //

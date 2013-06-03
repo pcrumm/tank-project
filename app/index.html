@@ -62,6 +62,8 @@
             uniform sampler2D region4Texture;
             uniform sampler2D region5Texture;
 
+            uniform float red_amt;
+
             bool isBetween(float height, float min, float max)
             {
                 return (height >= min && height <= max);
@@ -203,6 +205,7 @@
 
                 else
                     gl_FragColor = vec4(textureColor.rgb * vLightWeighting, textureColor.a);
+                    gl_FragColor = ((1.0 - red_amt) * gl_FragColor) + (red_amt * vec4(1.0, 0.0, 0.0, 1.0));
             }
         </script>
 
