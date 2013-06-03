@@ -58,6 +58,8 @@ function Shape (vertices, normals, texture_info, vertex_indices) {
     gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(vertex_indices), gl.STATIC_DRAW);
 }
 
+draw = 0;
+
 Shape.prototype.update = function() {
     mvPushMatrix();
 
@@ -66,6 +68,10 @@ Shape.prototype.update = function() {
     mvRotate(this.rotation.z, [0, 0, 1]);
 
     mvTranslate([this.offset.x, this.offset.y, this.offset.z]);
+
+    if (draw == 1) {
+        console.log(this);
+    }
 
     gl.uniform1i(shaderProgram.multi, this.multiTex);
     gl.uniform1i(shaderProgram.use_alpha, this.use_alpha);
@@ -110,10 +116,3 @@ Shape.prototype.draw = function() {
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.vertices_index_buffer);
     gl.drawElements(gl.TRIANGLES, this.vertices_index_buffer.length, gl.UNSIGNED_SHORT, 0);
 };
-
-Shape.prototype.setTexCoords = function(texCoords) {
-    if (texCoords) {
-        gl.bindBuffer(gl.ARRAY_BUFFER, this.vertex_texture_coords_buffer);
-        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(texCoords), gl.STATIC_DRAW);
-    }
-}

@@ -11,7 +11,7 @@ var vel = [
 ];
 
 function Emitter(offset, rotation, num_particles, acceleration) {
-    this.offset = offset || {x: 0, y: 0, z: 0};
+    var o = offset || {x: 0, y: 0, z: 0};
     this.rotation = rotation || {x: 0, y: 0, z: 0};
     num_particles = num_particles || 100;
     this.alive = true;
@@ -32,10 +32,12 @@ function Emitter(offset, rotation, num_particles, acceleration) {
         y = getRandInRange(0, 1) - .5 + .001;
         z = getRandInRange(0, 1) - .5 + .001;
 
-        this.particles.push(new Particle(offset, vel[i], pull, fade));
+        this.particles.push(new Particle(o, vel[i], pull, fade));
     }
 
-    console.log("");
+    for(var i = 0; i < temp.length; i++)
+        console.log(temp[i]);
+    console.log("SLKNASOIDAS:MADNCMA:");
 }
 
 Emitter.prototype.draw = function() {
@@ -52,7 +54,7 @@ Emitter.prototype.clean = function() {
     for (var i = 0; i < this.particles.length; i++) {
         if (!this.particles[i].alive)
         {
-            console.log(this.particles[i].velocity);
+            //console.log(this.particles[i].velocity);
             this.particles.splice(i, 1);
         }
     }
