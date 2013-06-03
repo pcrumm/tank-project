@@ -6,7 +6,7 @@ var app = express()
   , io = require('socket.io').listen(server);
 
   var connected_tanks = 0;
-  var TANK_LIMIT = 20; // The maximum number of allowed clients
+  var TANK_LIMIT = 10; // The maximum number of allowed clients
 
   var DEFAULT_HEALTH = 100; // The default health for each tank
   var HIT_DAMAGE = 35; // The amount of damage each hit will cause
@@ -37,7 +37,7 @@ io.sockets.on('connection', function(socket) {
         var tank_uniq_id = socket.id;
         game_data[tank_id] = {
             tank_id: tank_uniq_id,
-            position: {x: 150+(5*tank_id*Math.pow(-1,tank_id+1)), y: 0, z: 150+(5*tank_id*Math.pow(-1,tank_id))},
+            position: {x: 150+(2.5*tank_id*Math.pow(-1,tank_id+1)), y: 0, z: 150+(2.5*tank_id*Math.pow(-1,tank_id))},
             rotation: 0,
             turret_rotation: 0,
             health: DEFAULT_HEALTH,
