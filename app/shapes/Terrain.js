@@ -56,35 +56,30 @@ function Terrain() {
             var zVal = z*dimScale;
             var height = getNoise(generator, xVal*stepSize, zVal*stepSize);
 
+
+            //Generate a mask to shape the terain into an island
             var dx = (((2 * x) / dimension) - 1);
             var dz = (((2 * z) / dimension) - 1);
             var d = (dx*dx)+(dz*dz);
 
             var mask = height - (.4+.8*d)
+            var maskRange = (0.1 - (-0.5));
+            var maskWeight = (maskRange - Math.abs(0.1-mask))/maskRange;
 
-            if (mask > 0.1)
-                height = height; //No change
+            if (x == 0 || z == 0 || x >= dimension-2 || z >= dimension-2)
+                height = 0; //Force edges of the terrain into the ocean
 
-            else if (mask > 0)
-                height = 0.8 * height;
+            else {
 
-            else if (mask > -.07)
-                height *= 0.65;
+                if (mask > 0.1)
+                    height = height; //No change
 
-            else if (mask > -0.1)
-                height = 0.5 * height;
+                else if (mask > -0.5)
+                    height *= maskWeight;//0.05;
 
-            else if (mask > -0.2)
-                height *= 0.4;
-
-            else if (mask > -0.3)
-                height = 0.3 * height;
-
-            else if (mask > -0.5)
-                height *= 0.05;
-
-            else
-                height = 0;
+                else
+                    height = 0;
+            }
 
             mapVertices = mapVertices.concat([xVal, height * heightScale, zVal]);
 

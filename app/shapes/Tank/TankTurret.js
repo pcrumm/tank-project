@@ -44,14 +44,17 @@ TankTurret.prototype.generateProjectile = function() {
     var runx = -Math.sin(y_rotation_in_rads);
     var runz = -Math.cos(y_rotation_in_rads);
 
-    var rise = Math.sin(this.barrel.firing_angle * degreesToRadians) * 50;
+    var rise = Math.sin(this.barrel.firing_angle * degreesToRadians) * 30;
 
     var initial_projectile_offset = {x: this.offset.x, y: this.offset.y, z: this.offset.z};
     var projectile_velocity = {x: runx, y: rise, z: runz};
 
-    var p = new Projectile(initial_projectile_offset, projectile_velocity, player.getTank().id)
+    var p = new Projectile(initial_projectile_offset, projectile_velocity, player.getTank().id);
+    
+    multiplayer.fire(p.offset, p.velocity, p.owner, p.id);
+
     projectiles.push(p);
-    shapes.push(p);
+    //shapes.push(p);
 };
 
 TankTurret.prototype.draw = function() {

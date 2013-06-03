@@ -107,6 +107,7 @@ io.sockets.on('connection', function(socket) {
             hits: 0,
             logged: false
         };
+        
         // Let everyone else know
         socket.broadcast.emit('fire_projectile', offset, velocity, tank_id, proj_id);
     });
