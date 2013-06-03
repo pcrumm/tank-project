@@ -42,7 +42,7 @@ Projectile.prototype.checkForCollisions = function() {
     }
 
     // Check for collisions with a tank:
-    var tank_bounding_sphere_radius = 1.1;
+    var tank_bounding_sphere_radius = 1.5; // a little generous, to make shooting a bit easier
     for (var i = 0; i < tanks.length; i++) {
         var tank_offset = tanks[i].getOffset();
         var distance_between_centers = Math.sqrt(

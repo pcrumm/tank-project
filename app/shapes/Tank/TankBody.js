@@ -2,8 +2,8 @@ function TankBody(offset, y_rotation, tank) {
     Cube.call(this,
               offset || {x: 0, y: 0.25, z: 0},
               {x: 0, y: y_rotation || 0, z: 0},
-              {x: 1.25, y: 0.5, z: 2},
-              textures.metal
+              {x: 1.5, y: 0.5, z: 2.25},
+              {texture: textures.camo, tiling_factor: 3}
     );
 
     // This is how far the tank body must be translated "up" after rotation to be on top of the terrain:

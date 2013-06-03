@@ -44,6 +44,8 @@ function start() {
             new Sphere({x: terrain.displacement.horizontal, y: 0, z: terrain.displacement.horizontal} , {x: 0, y: 0, z: 0}, {x: 300, y: 300, z: 300}, textures.sky),
         ];
 
+        shapes[2].lighting = false;
+
         tanks = [];
 
         projectiles = [];
@@ -57,7 +59,9 @@ function start() {
 
         // Set up periodic updates:
         setInterval(drawScene, 30);
-        setInterval(multiplayer.receiveTankUpdate, 30);
+        setInterval("multiplayer.receiveTankUpdate", 30);
+
+        showGame();
     }
 }
 
