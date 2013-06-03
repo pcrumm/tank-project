@@ -13,6 +13,11 @@ function Tank(offset, y_rotation) {
     };
     this.adaptToTerrain(); // initial setup
 
+    this.setPositionAndRotation = function(pos, y_rot) {
+        body.offset = pos;
+        body.rotation.y = y_rot;
+    };
+    
     this.getOffset = function() {
         return body.offset;
     };
