@@ -111,6 +111,7 @@ Shape.prototype.draw = function() {
 
 
     gl.uniform1i(shaderProgram.lighting, this.lighting);
+    gl.uniform1i(shaderProgram.removeBlack, this.removeBlack);
 
     // Draw the cube.
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.vertices_index_buffer);
