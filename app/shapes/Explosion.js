@@ -1,6 +1,10 @@
 function Explosion() {
     this.generate = function(offset, size) {
         explosions.push(new ExplosionSphere(offset, {x: 2, y: 2, z: 2}));
+        if (size === 'big')
+        {
+            setTimeout(function() {explosions.push(new ExplosionSphere(offset, {x: 1, y: 1, z: 1}))}, 500);
+        }
         var t = player.getTank().getOffset();
         
         var distance = Math.sqrt(Math.pow(offset.x - t.x, 2) +
