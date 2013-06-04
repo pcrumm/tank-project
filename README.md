@@ -78,11 +78,20 @@ For this class project, we were required to implement at least three "advanced t
 
 ### Terrain Generation (generated from a random seed)
 
-...
+The game map is randomly generated using a simplex noise (the successor to Perlin noise) function. A 2D array of points
+is made, and each point is assigned a y value based on it's x/z values. Heigh given is actually a combination of several calls
+to the noise generator, to provide variation in the terrain. After the grid of points is made, the map is shaped into an island.
+This is done by normalizing the the grid into a 2x2 square and finding each points distance from the center, and using that distance
+to either reduce the terrain or force it below the water line, giving a natural looking island. Lastly, a box filter is applied to smooth
+the heights and normals are calculated for lighting. The code for all of this can be found in app/shapes/Terrain.js.
 
 ### Multitexturing (terrain generation based on height)
 
-...
+The island map for the game is made more interesting using multitexturing to give the appearance of climate change based on height.
+In Terrain.js, 5 regions are set, each of which overlaps with the regions next to it. Additionally, 5 textures are provided to the fragment
+shader - sand, dirt, grass, rock, and snow. The fragment shader compares the height value of the fragment to the regions, and will choose the
+appropriate texture. When a height falls in a region of overlap, a weighting function is used to smoothly interpolate between the two textures,
+giving a blended effect. The implementation for this can be found in app/index.html and app/shapes/Terrain.js.
 
 ### Projectile Physics (tank projectiles)
 
@@ -104,6 +113,13 @@ In order to detect collisions between two moving objects, simple bounding sphere
 the relatively non-approximate volume of a sphere proved to work just fine. The implementation of bounding sphere collision detection
 can be found in app/shapes/Tank/TankBody.js and app/shapes/Projectile.js.
 
+### Transparency
+
+The explosion particles make use of transparency in order to give a better effect. The particle itself is a square, and the texture
+applied is a fireball with a black background. In the fragment shader, the transparency of the background is set to 0, so only the actual
+fireball appears, making it look like a real particle and not a square. Additionally, over time the particle itself fades away until it disappears,
+giving the illusion of the fire dissipating.
+
 
 ## Credits
 
@@ -116,6 +132,8 @@ The following open-source libraries were used in Tanks:
 * [Simplex Noise](https://gist.github.com/banksean/304522): (Pseudorandom 3D noise), Stefan Gustavson & Sean McCullough
 
 * [jQuery](http://jquery.com/): (Animations & Miscellaneous), jQuery Foundation, Inc.
+
+* [Seedrandom](http://davidbau.com/archives/2010/01/30/random_seeds_coded_hints_and_quintillions.html): (Seeded random number generator), David Bau
 
 
 ## License

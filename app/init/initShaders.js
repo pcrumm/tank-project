@@ -58,7 +58,13 @@ function initShaders() {
     shaderProgram.r5Tex = gl.getUniformLocation(shaderProgram, "region5Texture");
 
     shaderProgram.multi = gl.getUniformLocation(shaderProgram, "multiTex");
+    shaderProgram.alpha = gl.getUniformLocation(shaderProgram, "alpha");
+    shaderProgram.use_alpha = gl.getUniformLocation(shaderProgram, "use_alpha");
+
+    shaderProgram.red_amt = gl.getUniformLocation(shaderProgram, "red_amt");
     shaderProgram.lighting = gl.getUniformLocation(shaderProgram, "lightingOn");
+    shaderProgram.useAlpha = gl.getUniformLocation(shaderProgram, "useAlpha");
+    shaderProgram.alpha = gl.getUniformLocation(shaderProgram, "alpha");
 
     gl.uniform1f(shaderProgram.r1max, regions[0].max);
     gl.uniform1f(shaderProgram.r1min, regions[0].min);
@@ -74,6 +80,8 @@ function initShaders() {
 
     gl.uniform1f(shaderProgram.r5max, regions[4].max);
     gl.uniform1f(shaderProgram.r5min, regions[4].min);
+
+    gl.uniform1f(shaderProgram.red_amt, 0.0);
 }
 
 //

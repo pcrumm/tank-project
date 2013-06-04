@@ -4,7 +4,6 @@ var loaded = false;
 
 function showGame()
 {
-	setTimeout(function() {
 		$('#intro').animate({
 			opacity:0.0,
 			marginTop: '-50'
@@ -16,7 +15,6 @@ function showGame()
 			}, 500);
 		});
 		loaded = true;
-	}, 1000);
 }
 
 $(document).ready(function() {

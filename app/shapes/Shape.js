@@ -44,6 +44,12 @@ function Shape (vertices, normals, texture_info, vertex_indices) {
         this.multitexture = texture_info.multitexture;
     }
 
+    this.alpha = 0;
+    if ( texture_info.use_alpha === true) {
+        this.use_alpha =1;
+        this.alpha = texture_info.alpha;
+    }
+
     // Build the element array buffer; this specifies the indices
     // into the vertex array for each face's vertices.
     this.vertices_index_buffer = gl.createBuffer();
@@ -57,13 +63,16 @@ function Shape (vertices, normals, texture_info, vertex_indices) {
 Shape.prototype.update = function() {
     mvPushMatrix();
 
-    mvRotate(this.rotation.x, [1, 0, 0]);
-    mvRotate(this.rotation.y, [0, 1, 0]);
-    mvRotate(this.rotation.z, [0, 0, 1]);
 
     mvTranslate([this.offset.x, this.offset.y, this.offset.z]);
 
+    mvRotate(this.rotation.x, [1, 0, 0]);
+    mvRotate(this.rotation.y, [0, 1, 0]);
+    mvRotate(this.rotation.z, [0, 0, 1]);
+    
     gl.uniform1i(shaderProgram.multi, this.multiTex);
+    gl.uniform1i(shaderProgram.use_alpha, this.use_alpha);
+    gl.uniform1f(shaderProgram.alpha, this.alpha);
 
     updateMatrixUniforms();
 

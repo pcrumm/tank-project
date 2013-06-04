@@ -94,6 +94,13 @@ function Multiplayer() {
 
             socket.disconnect();
         });
+
+        // Let us know when we're hit
+        socket.on('hit', function(tank_id) {
+            if (player.getTank().id != tank_id)
+                return;
+            player.playerHit();
+        });
     });
 
     // Used to notify the server this client is disconnecting

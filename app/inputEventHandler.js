@@ -14,6 +14,7 @@ function handleKeyDown(event) {
     if ( [32, 37, 38, 39, 40].indexOf(event.keyCode) > -1 ) {
         event.preventDefault();
     }
+
 }
 
 function handleKeyUp(event) {
@@ -21,6 +22,17 @@ function handleKeyUp(event) {
 }
 
 function handleKeys() {
+
+    if (currentlyPressedKeys[65] ||
+        currentlyPressedKeys[68] ||
+        currentlyPressedKeys[87] ||
+        currentlyPressedKeys[83])
+        sounds.tank_move.play(0.2, true);
+    else
+    {
+        sounds.tank_move.pause();
+    }
+
     if ( currentlyPressedKeys[65] ) { // A
         player.rotateTankBodyLeft();
     }

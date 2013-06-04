@@ -37,7 +37,10 @@ Projectile.prototype.checkForCollisions = function() {
         }
 
         this.update = Shape.prototype.update; // No more physics updates necessary
+        explosion.generate(this.offset, 'small');
         this.is_alive = false;
+        var e = new Emitter(this.offset, this.rotation, 80, {x: 0, y: -0.02, z: 0}, 1.8);
+        emitters.push(e);
         return;
     }
 
@@ -53,8 +56,11 @@ Projectile.prototype.checkForCollisions = function() {
 
         if ( distance_between_centers < (tank_bounding_sphere_radius + this.scale.x) ) {
             this.update = Shape.prototype.update; // No more physics updates necessary
+            explosion.generate(this.offset, 'small');
             multiplayer.tankHit(tanks[i].id, this.id);
             this.is_alive = false;
+            var e = new Emitter(this.offset, this.rotation, 80, {x: 0, y: -0.02, z: 0}, 1.8);
+            emitters.push(e);
             return;
         }
     }

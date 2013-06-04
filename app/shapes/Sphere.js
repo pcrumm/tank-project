@@ -1,4 +1,4 @@
-function Sphere(offset, rotation, scale, texture) {
+function Sphere(offset, rotation, scale, texture, alpha) {
 
     var vertices = [];
     var normals = [];
@@ -54,7 +54,10 @@ function Sphere(offset, rotation, scale, texture) {
         }
     }
 
-    Shape.call(this, vertices, normals, {texture: texture || textures.crate, texture_coords: texture_coords}, vertex_indices);
+    var use_alpha = false;
+    if (alpha) use_alpha = true;
+
+    Shape.call(this, vertices, normals, {texture: texture || textures.crate, texture_coords: texture_coords, alpha: alpha || 1.0, use_alpha: use_alpha}, vertex_indices);
 
     this.offset = offset || {x: 0, y: 0, z: 0};
     this.rotation = rotation || {x: 0, y: 0, z: 0};
