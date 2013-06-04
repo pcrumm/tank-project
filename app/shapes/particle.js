@@ -96,15 +96,25 @@ Particle.prototype.update = function() {
         }
     }
 
-    //Shape.prototype.update.call(this);
-
-    //Calculate the appropriate billboard rotations
-    var billboard = generateBillboardMatrix(this.offset);
-
+    // Copypasta-ing Shape.prototype.update(), in order to insert a billboard rotation after translation:
     mvPushMatrix();
 
-    multMatrix(billboard);
+    mvTranslate([this.offset.x, this.offset.y, this.offset.z]);
+
+    // Rotation after translation in order to rotate each particle about its own axis:
+    var rotation_about_own_axis = player.getCamera().getRotation();
+    mvRotate(rotation_about_own_axis.x, [1, 0, 0]);
+    mvRotate(-rotation_about_own_axis.y, [0, 1, 0]);
+
+    gl.uniform1i(shaderProgram.multi, this.multiTex);
+    gl.uniform1i(shaderProgram.use_alpha, this.use_alpha);
+    gl.uniform1f(shaderProgram.alpha, this.alpha);
+
     updateMatrixUniforms();
+
+    // Need to scale *after* updating the normals matrix (normals aren't normals if they get scaled)
+    // After, only updating the modelview matrix necessary.
+    mvScale(this.scale.x, this.scale.y, this.scale.z);
     updateViewMatrixUniform();
 
     mvPopMatrix();

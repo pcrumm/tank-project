@@ -11,8 +11,8 @@ function Camera(tank) {
     };
     var cameraRotYUniform = gl.getUniformLocation(shaderProgram, "uCameraRotY");
 
-    this.getPitch = function() {
-        return rotation.x;
+    this.getRotation = function() {
+        return rotation;
     };
 
     var distance_from_tank = 3;
@@ -43,8 +43,4 @@ function Camera(tank) {
 
         gl.uniform1f(cameraRotYUniform, rotation.y);
     }
-
-    this.getPos = function() {
-        return position;
-    };
 }
