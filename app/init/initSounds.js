@@ -9,8 +9,9 @@ function initSounds() {
     for (var key in sounds) {
         sounds[key] = new Audio(sounds[key].filename);
         // Overloading play() allows for playing the file before it is done playing:
-        sounds[key].play = function() {
+        sounds[key].play = function(volume) {
             var self = this;
+            if (volume) self.volume = volume;
             HTMLAudioElement.prototype.play.call(self);
             self.currentTime = 0;
         }
@@ -18,4 +19,3 @@ function initSounds() {
     sounds['tank_shoot'].volume = 0.3;
     sounds['boom'].volume = 0.5;
 }
-
