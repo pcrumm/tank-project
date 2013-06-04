@@ -25,6 +25,8 @@ Projectile.prototype.checkForCollisions = function() {
         return;
     }
 
+    var tank_hit = null;
+
     // Check for terrain (or water) collision:
     var terrain_height = (terrain.getMapHeightAndSlope(this.offset.x, this.offset.z)).y;
     if ( this.offset.y <= terrain_height ) {
@@ -36,12 +38,7 @@ Projectile.prototype.checkForCollisions = function() {
             this.offset.y = terrain_height;
         }
 
-        this.update = Shape.prototype.update; // No more physics updates necessary
-        explosion.generate(this.offset, 'small');
         this.is_alive = false;
-        var e = new Emitter(this.offset, this.rotation, 80, {x: 0, y: -0.02, z: 0}, 1.8);
-        emitters.push(e);
-        return;
     }
 
     // Check for collisions with a tank:
@@ -55,14 +52,42 @@ Projectile.prototype.checkForCollisions = function() {
         );
 
         if ( distance_between_centers < (tank_bounding_sphere_radius + this.scale.x) ) {
-            this.update = Shape.prototype.update; // No more physics updates necessary
-            explosion.generate(this.offset, 'small');
-            multiplayer.tankHit(tanks[i].id, this.id);
+            tank_hit = i;
             this.is_alive = false;
-            var e = new Emitter(this.offset, this.rotation, 80, {x: 0, y: -0.02, z: 0}, 1.8);
-            emitters.push(e);
-            return;
+            break;
         }
+    }
+
+    if ( this.is_alive === false ) {
+        this.update = Shape.prototype.update; // No more physics updates necessary
+
+        explosion.generate(this.offset, 'small');
+
+        var e = new Emitter(this.offset, this.rotation, 80, {x: 0, y: -0.02, z: 0}, 1.8);
+        emitters.push(e);
+
+        // Check if this explosion has caught any tank in its path:
+        var explosion_bounding_sphere_radius = 2;
+        var explosion_offset = this.offset;
+        for (i = 0; i < tanks.length; i++) {
+            var tank_offset = tanks[i].getOffset();
+            var distance_between_centers = Math.sqrt(
+                Math.pow(tank_offset.x - explosion_offset.x, 2) +
+                Math.pow(tank_offset.y - explosion_offset.y, 2) +
+                Math.pow(tank_offset.z - explosion_offset.z, 2)
+            );
+
+            if ( distance_between_centers < (tank_bounding_sphere_radius + explosion_bounding_sphere_radius) ) {
+                tank_hit = i;
+                break;
+            }
+        }
+
+    }
+
+    // Broadcast if a tank got hit:
+    if ( tank_hit !== null ) {
+        multiplayer.tankHit(tanks[tank_hit].id, this.id);
     }
 };
 
