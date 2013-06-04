@@ -110,7 +110,7 @@ can be found in app/shapes/Tank/TankBody.js and app/shapes/Projectile.js.
 
 ### Transparency
 
-The explosion particles make use of transparecy in order to give a better effect. The particle itself is a square, and the texture
+The explosion particles make use of transparency in order to give a better effect. The particle itself is a square, and the texture
 applied is a fireball with a black background. In the fragment shader, the transparency of the background is set to 0, so only the actual
 fireball appears, making it look like a real paticle and not a square. Additionally, over time the particle itself fades away until it disappears,
 giving the illusion of the fire disappating.
