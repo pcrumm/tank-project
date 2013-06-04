@@ -137,6 +137,11 @@ function drawScene() {
     for (var i = 0; i < items.length; i++)
         items[i].draw();
 
+    // Clouds move
+    shapes[2].rotation.x += 0.01;
+    shapes[2].rotation.y += 0.01;
+    if (shapes[2].rotation.x > 360.0) shapes[2].rotation.x -= 360.0;
+
     // Restore the original matrix
     mvPopMatrix();
 }
