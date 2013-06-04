@@ -91,7 +91,7 @@ function initTextures() {
     explosion.image.onload = function() {
         handleLoadedTexture(explosion);
     };
-    explosion.image.src = 'assets/images/explosion.jpg';
+    explosion.image.src = 'assets/images/e2.png';
     textures.explosion = explosion;
 
 }

@@ -70,7 +70,7 @@ function angleBetween(vec1, vec2) {
     var mag2 = Math.sqrt((vec2.x * vec2.x) + (vec2.y * vec2.y) + (vec2.z * vec2.z));
 
     return Math.acos(dot / (mag1 * mag2));
-} 
+}
 
 function Emitter(offset, rotation, num_particles, acceleration, maxSpeed) {
     this.offset = offset || {x: 0, y: 0, z: 0};

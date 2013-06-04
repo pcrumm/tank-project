@@ -17,6 +17,10 @@ function Player(player_tank) {
         return tank;
     };
 
+    this.getCamera = function() {
+        return camera;
+    }
+
     this.moveForward = function() {
         tank.moveOnZAxis(units_to_move);
         camera.syncWithTank();

@@ -43,4 +43,8 @@ function Camera(tank) {
 
         gl.uniform1f(cameraRotYUniform, rotation.y);
     }
+
+    this.getPos = function() {
+        return position;
+    };
 }

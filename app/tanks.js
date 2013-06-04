@@ -80,7 +80,7 @@ function initWebGL(canvas) {
     
     try {
         // Try to grab the standard context. If it fails, fallback to experimental.
-        gl = canvas.getContext("webgl") || canvas.getContext("experimental-webgl");
+        gl = canvas.getContext("webgl", {alpha: false}) || canvas.getContext("experimental-webgl", {alpha: false});
     }
     catch(e) {}
     
@@ -135,14 +135,14 @@ function drawScene() {
         items[i].draw();
 
     //Emitters must be drawn after all opaque objects
-    //gl.enable(gl.BLEND);
-    //gl.depthMask(false);
+    gl.enable(gl.BLEND);
+    gl.depthMask(false);
 
     for (var i = 0; i <emitters.length; i++)
         emitters[i].draw();
 
-    //gl.disable(gl.BLEND);
-    //gl.depthMask(true);
+    gl.disable(gl.BLEND);
+    gl.depthMask(true);
 
     // Restore the original matrix
     mvPopMatrix();
