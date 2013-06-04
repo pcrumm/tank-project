@@ -93,6 +93,7 @@ function Multiplayer() {
             $('#glcanvas').detach();
             $('#instructions').hide();
             $('#client_dead').fadeIn('slow');
+            sounds.sad_death.play();
 
             socket.disconnect();
         });

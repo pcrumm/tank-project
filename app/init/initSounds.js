@@ -2,7 +2,8 @@ var sounds = {
     tank_idle:  {filename: 'assets/sounds/tank-idle2.ogg'},
     tank_move:  {filename: 'assets/sounds/tank-move.ogg'},
     tank_shoot: {filename: 'assets/sounds/tank-shoot.ogg'},
-    boom: {filename: 'assets/sounds/boom.ogg'}
+    boom: {filename: 'assets/sounds/boom.ogg'},
+    sad_death: {filename: 'assets/sounds/sadtrombone.mp3'}
 };
 
 function initSounds() {
