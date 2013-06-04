@@ -184,6 +184,11 @@ function updateTankPosition(tank_id, tank_position, tank_rotation, tank_turret_r
 
 function updateTankHealth(tank_id, tank_health)
 {
+    if (tank_id == player.getTank().id)
+    {
+        updateHealthBar(tank_health);
+    }
+
     for (var i = 0; i < tanks.length; i++) {
         if ( tanks[i].id == tank_id ) {
             tanks[i].health = tank_health;

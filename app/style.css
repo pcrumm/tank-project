@@ -74,6 +74,41 @@ img#tanks-logo {
     display:block;
 }
 
+#health {
+    width: 800px;
+    height: 25px;
+    margin: -25px auto 0 auto;
+    position: relative;
+    top: -45px;
+}
+
+#health_full {
+    height: 25px;
+    display: inline-block;
+    width: 200px;
+    line-height: 25px;
+    margin-left: 20px;
+    border: 1px rgba(200, 200, 200, 1) solid;
+    background: rgba(0, 0, 0, 0.4);
+}
+
+#health_current {
+    background: rgba(255, 0, 0, 0.5);
+    height: 24px;
+    position: relative;
+    top: -25px;
+    z-index: 1;
+}
+
+#health p {
+    position: relative;
+    z-index: 2;
+    padding: 0 0 0 5px;
+    color: #fff;
+    margin: 0;
+    display: block;
+}
+
 #server_full_error, #client_dead {
     text-align: center;
     display: none;

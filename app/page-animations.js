@@ -29,3 +29,8 @@ function animate_loader_blocks() {
 	$('#loader-box-'+current_loader_block).addClass('loader-box-current');
 	if (!loaded) setTimeout(animate_loader_blocks, 200);
 }
+
+function updateHealthBar(health) {
+	$('#health_current').css('width', health + '%');
+	$('#health_value').html(health);
+}
