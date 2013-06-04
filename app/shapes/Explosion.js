@@ -6,9 +6,10 @@ function Explosion() {
         var distance = Math.sqrt(Math.pow(offset.x - t.x, 2) +
         Math.pow(offset.y - t.y, 2) +
         Math.pow(offset.z - t.z, 2));
+
         var volume = 1 - (distance / 50);
         if (volume < 0) volume = 0.2;
-        console.log(distance, volume);
+        
         sounds.boom.play(volume);
     }
 }
