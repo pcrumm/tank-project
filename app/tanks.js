@@ -171,12 +171,27 @@ function drawScene() {
 // updateTank
 // Moves the given tank to the given orientation.
 //
-function updateTank(tank_id, tank_position, tank_rotation, tank_turret_rotation)
+function updateTankPosition(tank_id, tank_position, tank_rotation, tank_turret_rotation)
 {
     for (var i = 0; i < tanks.length; i++) {
         if ( tanks[i].id == tank_id ) {
             tanks[i].setPositionAndRotation(tank_position, tank_rotation, tank_turret_rotation);
             tanks[i].adaptToTerrain();
+            return true;
+        }
+    }
+}
+
+function updateTankHealth(tank_id, tank_health)
+{
+    if (tank_id == player.getTank().id)
+    {
+        updateHealthBar(tank_health);
+    }
+
+    for (var i = 0; i < tanks.length; i++) {
+        if ( tanks[i].id == tank_id ) {
+            tanks[i].health = tank_health;
             return true;
         }
     }

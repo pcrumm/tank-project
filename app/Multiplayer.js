@@ -50,11 +50,11 @@ function Multiplayer() {
             }
         });
 
-        // Used to track tank movement
+        // Used to track tank movement and update health
         socket.on('tank_did_move', function(tank_data) {
             if (tanks[0].id != tank_data.tank_id) // Ignore self reports
             {
-                updateTank(tank_data.tank_id, tank_data.position, tank_data.rotation, tank_data.turret_rotation);
+                updateTankPosition(tank_data.tank_id, tank_data.position, tank_data.rotation, tank_data.turret_rotation, tank_data.health);
             }
         });
 
@@ -96,7 +96,9 @@ function Multiplayer() {
         });
 
         // Let us know when we're hit
-        socket.on('hit', function(tank_id) {
+        socket.on('hit', function(tank_id, tank_health) {
+            console.log(tank_id, tank_health);
+            updateTankHealth(tank_id, tank_health);
             if (player.getTank().id != tank_id)
                 return;
             player.playerHit();
