@@ -74,6 +74,27 @@ img#tanks-logo {
     display:block;
 }
 
+#score {
+    margin: -50px auto 0 auto;
+    height: 50px;
+    position: relative;
+    top: -430px;
+    width: 800px;
+}
+
+#nice {
+    font: normal 25px "BebasNeueRegular", Helvetica, sans-serif;
+}
+
+#score_value {
+    font: normal 25px "BebasNeueRegular", Helvetica, sans-serif;
+    float: right;
+    width: 200px;
+    text-align: right;
+    line-height: 50px;
+    padding-right: 15px;
+}
+
 #health {
     width: 800px;
     height: 25px;

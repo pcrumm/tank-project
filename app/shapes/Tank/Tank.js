@@ -3,6 +3,7 @@ function Tank(offset, y_rotation) {
     var turret = new TankTurret(offset, y_rotation);
 
     this.health = 100;
+    this.score = 0;
 
     this.adaptToTerrain = function() {
         var terrain_info = terrain.getMapHeightAndSlope(body.offset.x, body.offset.z);

@@ -36,3 +36,7 @@ function updateHealthBar(health) {
 	},1000);
 	$('#health_value').html(health);
 }
+
+function updateScoreScreen(score) {
+	$('#score_value').html(score);
+}

@@ -104,6 +104,19 @@ function Multiplayer() {
             if (player.getTank().id === tank_id)
                 player.playerHit();
         });
+
+        socket.on('score', function(tank_id, score) {
+
+            if (player.getTank().id == tank_id)
+                updateScoreScreen(score);
+
+            for (var i = 0; i < tanks.length; i++) {
+                if (tanks[i].id == tank_id ) {
+                    tanks[i].score = score;
+                    return true;
+                }
+            }
+        });
     });
 
     // Used to notify the server this client is disconnecting

@@ -11,6 +11,7 @@ var app = express()
   var DEFAULT_HEALTH = 100; // The default health for each tank
   var HIT_DAMAGE = 20; // The amount of damage each hit will cause
   var HIT_SCORE = 100; // The number of points scored on each hit
+  var KILL_SCORE = 900; // The number of points scored on each kill
 
 // Serve all of the static files in our directory
 app.use('/lib', express.static(__dirname + '/../app/lib'));
@@ -132,12 +133,21 @@ io.sockets.on('connection', function(socket) {
             if (hit_tank === null)
                 return;
 
+            
             hit_tank.health -= HIT_DAMAGE;
             console.log(tank_id + ' has been hit! Health reduced to ' + hit_tank.health);
 
             io.sockets.emit('hit', tank_id, hit_tank.health);
 
             proj_creator = projectiles[proj_id].creator;
+            killer = get_tank_by_id(proj_creator);
+
+            if (tank_id != killer)
+            {
+                killer.score += HIT_SCORE;
+                io.sockets.emit('score', killer.tank_id, killer.score);
+            }
+
 
             // Remove this projectile from the list so we don't double-count
             for (var i = 0; i < projectiles.length; i++)
@@ -150,11 +160,13 @@ io.sockets.on('connection', function(socket) {
             if (hit_tank.health <= 0)
             {
                 // Increment the score for the killer
-                killer = get_tank_by_id(proj_creator);
-                killer.score += HIT_SCORE;
+                killer.score += KILL_SCORE;
 
                 // Let this tank know it's dead...
                 io.sockets.emit('killed', tank_id);
+
+                // Let tanks update score
+                io.sockets.emit('score', killer.tank_id, killer.score);
 
                 // Kill it on everyone else
                 io.sockets.emit('remove_tank', tank_id);
