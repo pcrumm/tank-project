@@ -74,34 +74,39 @@ function angleBetween(vec1, vec2) {
 
 function Emitter(offset, num_particles, acceleration, maxSpeed, removeBlack, range, minFade) {
     this.offset = offset || {x: 0, y: 0, z: 0};
-    num_particles = num_particles || 50;
+    this.num_particles = num_particles || 50;
     this.range = range || 90;
     this.minFade = minFade || .03;
-    var removeBlack = removeBlack || 0;
+    this.removeBlack = removeBlack || 0;
     this.alive = true;
 
     this.particles = [];
 
     var pull = acceleration; //Change of the velocity of the particle
+    this.speed = maxSpeed || 1;
     var fade;
-    var speed = maxSpeed || 1;
     var vX, vY, vZ;
     var angle;
 
-    for (var i = 0; i < num_particles; i++) {
-        fade = getRandInRange(0, 99)/1000 + .03;//this.minFade;
+    this.addParticle = function(offset, maxSpeed, range, removeBlack, minFade) {
+        fade = getRandInRange(0, 99)/1000 + this.minFade;
 
         //Set a velocity that does not go into the terrain
         //A small value is added to make sure each particle has some speed
         do {
-        vX = getRandInRange(0, speed) - (.5 * speed) + .005;
-        vY = getRandInRange(0, speed) - (.5 * speed) + .005;
-        vZ = getRandInRange(0, speed) - (.5 * speed) + .005;
+            vX = getRandInRange(0, speed) - (.5 * speed) + .005;
+            vY = getRandInRange(0, speed) - (.5 * speed) + .005;
+            vZ = getRandInRange(0, speed) - (.5 * speed) + .005;
 
-        angle = angleBetween( {x: vX, y: vY, z: vZ}, getNormal(this.offset.x, this.offset.z) );
+            angle = angleBetween( {x: vX, y: vY, z: vZ}, getNormal(this.offset.x, this.offset.z) );
         } while (angle > this.range);
 
         this.particles.push(new Particle(copy(this.offset), {x: vX, y: vY, z: vZ}, pull, fade, removeBlack));
+    };
+
+
+    for (var i = 0; i < this.num_particles; i++) {
+        this.addParticle(this.offset, this.speed, this.range, this.removeBlack, this.minFade);
     }
 }
 
