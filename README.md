@@ -91,7 +91,7 @@ The island map for the game is made more interesting using multitexturing to giv
 In Terrain.js, 5 regions are set, each of which overlaps with the regions next to it. Additionally, 5 textures are provided to the fragment
 shader - sand, dirt, grass, rock, and snow. The fragment shader compares the height value of the fragment to the regions, and will choose the
 appropriate texture. When a height falls in a region of overlap, a weighting function is used to smoothly interpolate between the two textures,
-givin a blended effect. The implementation for this can be found in index.html and Terrain.js.
+giving a blended effect. The implementation for this can be found in app/index.html and app/shapes/Terrain.js.
 
 ### Projectile Physics (tank projectiles)
 
@@ -112,8 +112,8 @@ can be found in app/shapes/Tank/TankBody.js and app/shapes/Projectile.js.
 
 The explosion particles make use of transparency in order to give a better effect. The particle itself is a square, and the texture
 applied is a fireball with a black background. In the fragment shader, the transparency of the background is set to 0, so only the actual
-fireball appears, making it look like a real paticle and not a square. Additionally, over time the particle itself fades away until it disappears,
-giving the illusion of the fire disappating.
+fireball appears, making it look like a real particle and not a square. Additionally, over time the particle itself fades away until it disappears,
+giving the illusion of the fire dissipating.
 
 
 ## Credits
