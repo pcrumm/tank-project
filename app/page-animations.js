@@ -38,7 +38,7 @@ function updateHealthBar(health) {
 }
 
 function updateScoreScreen(score) {
-	var strings = ['Nice shot!', 'Awesome!', 'Got him!', 'Yeah, shoot that tank!'];
+	var strings = ['Nice shot!', 'Awesome!', 'Got him!', 'Yeah, shoot that tank!', 'Boom headshot!'];
 	var randomIndex = Math.floor(Math.random() * strings.length);
 	var randomString = strings[randomIndex];
 	

@@ -30,7 +30,9 @@ TankBody.prototype.moveOnZAxis = function(units) {
     if ( new_offset.y <= terrain.displacement.vertical ) {
         return;
     }
-    
+
+    // TODO: revert this removal of tank-on-tank collision detection once the bug of tanks spawning on tanks is resolved.
+    /*
     for (var i = 0; i < tanks.length; i++) {
         if ( tanks[i] === this.tank ) {
             continue;
@@ -46,7 +48,7 @@ TankBody.prototype.moveOnZAxis = function(units) {
             return;
         }
     }
-    
+    */
 
     this.offset = new_offset;
 }
