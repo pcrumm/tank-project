@@ -13,9 +13,9 @@
         <script src="lib/simplexNoise.js" type="text/javascript"></script>
         <script src="lib/jquery.min.js" type="text/javascript"></script>
         <script src="page-animations.js" type="text/javascript"></script>
-        <script src="initShaders.js" type="text/javascript"></script>
-        <script src="initTextures.js" type="text/javascript"></script>
-        <script src="initSounds.js" type="text/javascript"></script>
+        <script src="init/initShaders.js" type="text/javascript"></script>
+        <script src="init/initTextures.js" type="text/javascript"></script>
+        <script src="init/initSounds.js" type="text/javascript"></script>
         <script src="Camera.js" type="text/javascript"></script>
         <script src="Player.js" type="text/javascript"></script>
         <script src="Multiplayer.js" type="text/javascript"></script>
@@ -224,7 +224,6 @@
             uniform mediump mat4 uPMatrix;
 
             uniform mediump float uCameraRotY;
-            uniform mediump float uCameraRotX;
 
             varying vec3 vLightWeighting;
             varying vec2 vTextureCoord;
