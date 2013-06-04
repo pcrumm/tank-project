@@ -208,7 +208,7 @@
                         gl_FragColor.a = 0.0;
 
                     else
-                        gl_FragColor.a = min(1.0, (alpha*2.0));
+                        gl_FragColor.a = alpha;
                 }
 
                 gl_FragColor = ((1.0 - red_amt) * gl_FragColor) + (red_amt * vec4(1.0, 0.0, 0.0, 1.0));
