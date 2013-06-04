@@ -145,14 +145,15 @@ function drawScene() {
     for (var i = 0; i < items.length; i++)
         items[i].draw();
 
-    //Emitters must be drawn after all opaque objects
+    // Emitters must be drawn after all opaque objects
     gl.enable(gl.BLEND);
+
+    for (var i = 0; i < explosions.length; i++)
+        explosions[i].draw();
+
     gl.depthMask(false);
-
-    var boom = emitters.concat(explosions);
-    for (var i = 0; i <boom.length; i++)
-        boom[i].draw();
-
+    for (var i = 0; i < emitters.length; i++)
+        emitters[i].draw();
     gl.disable(gl.BLEND);
     gl.depthMask(true);
 
