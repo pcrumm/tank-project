@@ -5,6 +5,9 @@ var perspectiveMatrix;
 
 var shaderProgram;
 
+var explosion;
+var explosions;
+
 var shapes;
 var tanks;
 var projectiles;
@@ -49,10 +52,10 @@ function start() {
         shapes[1].lighting = shapes[2].lighting = false;
 
         tanks = [];
-
         projectiles = [];
-
         emitters = [];
+        explosion = new Explosion();
+        explosions = [];
 
         multiplayer = new Multiplayer();
         multiplayer.initConnection();
@@ -115,7 +118,7 @@ function drawScene() {
     player.update();
 
     // Remove projectiles if they are no longer active:
-    for (i = 0; i < projectiles.length; i++) {
+    for (var i = 0; i < projectiles.length; i++) {
         if ( projectiles[i].is_alive === false ) {
             projectiles.splice(i, 1);
         }
@@ -129,8 +132,16 @@ function drawScene() {
         }
     }
 
-    items = shapes.concat(tanks); // Since a tank may have been added...
+    // Clean explosions
+    for (var i = 0; i < explosions.length; i++) {
+        if ( explosions[i].is_alive === false ) {
+            explosions.splice(i, 1);
+        }
+    }
+
+    var items = shapes.concat(tanks); // Since a tank may have been added...
     items = items.concat(projectiles);
+
     for (var i = 0; i < items.length; i++)
         items[i].draw();
 
@@ -138,11 +149,18 @@ function drawScene() {
     gl.enable(gl.BLEND);
     gl.depthMask(false);
 
-    for (var i = 0; i <emitters.length; i++)
-        emitters[i].draw();
+    var boom = emitters.concat(explosions);
+    for (var i = 0; i <boom.length; i++)
+        boom[i].draw();
 
     gl.disable(gl.BLEND);
     gl.depthMask(true);
+
+
+    // Clouds move
+    shapes[2].rotation.x += 0.01;
+    shapes[2].rotation.y += 0.01;
+    if (shapes[2].rotation.x > 360.0) shapes[2].rotation.x -= 360.0;
 
     // Restore the original matrix
     mvPopMatrix();
