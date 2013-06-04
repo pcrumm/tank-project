@@ -7,9 +7,7 @@ function normalize(vec) {
 function cross(a, b) {
     //Returns an object holding the cross product of two objects {x, y, z}
     var x = (a.y * b.z) - (a.z * b.y);
-
     var y = (a.z * b.x) - (a.x * b.z);
-
     var z = (a.x * b.y) - (a.y * b.x);
 
     return {x: x, y: y, z: z};
@@ -37,6 +35,7 @@ function generateBillboardMatrix(obj) {
 
     return matrix;
 }
+
 function Particle(offset, velocity, pull, fade_rate) {
     var vertices = [
         -0.25,-0.25, 0.0,
@@ -53,8 +52,6 @@ function Particle(offset, velocity, pull, fade_rate) {
         0.0,  1.0, 0.0
     ];
 
-    // This array defines a face as two triangles, using the
-    // indices in the vertex array to specify each triangle's position.
     var vertex_indices = [
         0, 1, 2, 
         0, 2, 3
@@ -95,8 +92,8 @@ Particle.prototype.update = function() {
         this.alpha -= this.fade_rate;
 
         if (this.alpha <= 0) {
-                this.alpha = 0.0;
-                this.alive = false;
+            this.alpha = 0.0;
+            this.alive = false;
         }
     }
 
@@ -107,7 +104,6 @@ Particle.prototype.update = function() {
 
     // Rotation after translation in order to rotate each particle about its own axis:
     var rotation_about_own_axis = player.getCamera().getRotation();
-    mvRotate(rotation_about_own_axis.x, [1, 0, 0]);
     mvRotate(-rotation_about_own_axis.y, [0, 1, 0]);
 
     gl.uniform1i(shaderProgram.multi, this.multiTex);
