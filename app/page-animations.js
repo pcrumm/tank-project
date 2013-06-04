@@ -38,6 +38,12 @@ function updateHealthBar(health) {
 }
 
 function updateScoreScreen(score) {
+	var strings = ['Nice shot!', 'Awesome!', 'Got him!', 'Yeah, shoot that tank!'];
+	var randomIndex = Math.floor(Math.random() * strings.length);
+	var randomString = strings[randomIndex];
+	
+	$('#nice p').html(randomString);
+
 	$('#nice p').animate({opacity: 1, fontSize: 100+'px'}, 200);
 	setTimeout(function() {
 		$('#nice p').animate({opacity: 0, fontSize: 50+'px'}, 200);
