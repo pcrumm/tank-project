@@ -134,7 +134,7 @@ io.sockets.on('connection', function(socket) {
 
             hit_tank.health -= HIT_DAMAGE;
             console.log(tank_id + ' has been hit! Health reduced to ' + hit_tank.health);
-            socket.broadcast.emit('hit', tank_id);
+            socket.broadcast.emit('hit', tank_id, hit_tank.health);
 
             proj_creator = projectiles[proj_id].creator;
 
