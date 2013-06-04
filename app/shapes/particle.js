@@ -4,14 +4,15 @@ function normalize(vec) {
     return {x: vec.x/mag, y: vec.y/mag, z: vec.z/mag};
 }
 
-function cross(vec1, vec2) {
+function cross(a, b) {
     //Returns an object holding the cross product of two objects {x, y, z}
-    var v1 = $V([vec1.x, vec1.y, vec1.z]);
-    var v2 = $V([vec2.x, vec2.y, vec2.z]);
+    var x = (a.y * b.z) - (a.z * b.y);
 
-    var normal = v1.cross(v2);
+    var y = (a.z * b.x) - (a.x * b.z);
 
-    return {x: normal.x, y: normal.y, z: normal.z};
+    var z = (a.x * b.y) - (a.y * b.x);
+
+    return {x: x, y: y, z: z};
 }
 
 function generateBillboardMatrix(obj) {
@@ -21,6 +22,9 @@ function generateBillboardMatrix(obj) {
     var look = {x: (cam.x - obj.x), y: (cam.y - obj.y), z: (cam.z - obj.z)};
 
     var right = cross({x: 0, y: 1, z: 0}, look);
+
+    //console.log(right);
+    //console.log(look);
 
     var up = cross(look, right);
 
