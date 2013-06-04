@@ -95,7 +95,12 @@ giving a blended effect. The implementation for this can be found in app/index.h
 
 ### Projectile Physics (tank projectiles)
 
-...
+Projectile physics was used to realistically animate the projectiles shot by the tanks. When a projectile is generated, it
+has a initial height and velocity vector depending on the tank's position and direction of its turret. When the projectile
+is shot it is animated every frame with a variant of Newton's equation of motion. Each projectile has a mass constant and
+the game has a global gravity constant (-9.81). The units don't quite make sense in this context (since a meter in the game
+does is not always a real-world meter) but the equations, intuition, and constants are carried over from real physics to
+make the game easier to program and to understand. The code for this is mostly in app/shapes/Projectile.js.
 
 ### Collision Detection
 

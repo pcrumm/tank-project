@@ -62,21 +62,22 @@ function getNormal(x, z) {
 }
 
 function angleBetween(vec1, vec2) {
-    //Returns the angle between 2 vectors in radians
+    //Returns the angle between 2 vectors in degrees
     var dot = (vec1.x * vec2.x) + (vec1.y * vec2.y) + (vec1.z * vec2.z);
 
     var mag1 = Math.sqrt((vec1.x * vec1.x) + (vec1.y * vec1.y) + (vec1.z * vec1.z));
 
     var mag2 = Math.sqrt((vec2.x * vec2.x) + (vec2.y * vec2.y) + (vec2.z * vec2.z));
 
-    return Math.acos(dot / (mag1 * mag2));
+    return Math.acos(dot / (mag1 * mag2)) * 180/Math.PI;
 }
 
-function Emitter(offset, rotation, num_particles, acceleration, maxSpeed) {
+function Emitter(offset, num_particles, acceleration, maxSpeed, removeBlack, range, minFade) {
     this.offset = offset || {x: 0, y: 0, z: 0};
-
-    this.rotation = rotation || {x: 0, y: 0, z: 0};
-    num_particles = num_particles || 100;
+    this.num_particles = num_particles || 50;
+    this.range = range || 90;
+    this.minFade = minFade || .03;
+    this.removeBlack = removeBlack || 0;
     this.alive = true;
 
     this.particles = [];
@@ -87,20 +88,25 @@ function Emitter(offset, rotation, num_particles, acceleration, maxSpeed) {
     var vX, vY, vZ;
     var angle;
 
-    for (var i = 0; i < num_particles; i++) {
-        fade = getRandInRange(0, 99)/1000 + .03;
+    this.addParticle = function(offset, maxSpeed, range, removeBlack, minFade) {
+        fade = getRandInRange(0, 99)/1000 + minFade;
 
         //Set a velocity that does not go into the terrain
         //A small value is added to make sure each particle has some speed
         do {
-        vX = getRandInRange(0, speed) - (.5 * speed) + .005;
-        vY = getRandInRange(0, speed) - (.5 * speed) + .005;
-        vZ = getRandInRange(0, speed) - (.5 * speed) + .005;
+            vX = getRandInRange(0, speed) - (.5 * speed) + .005;
+            vY = getRandInRange(0, speed) - (.5 * speed) + .005;
+            vZ = getRandInRange(0, speed) - (.5 * speed) + .005;
 
-        angle = angleBetween( {x: vX, y: vY, z: vZ}, getNormal(this.offset.x, this.offset.z) );
-        } while (angle > Math.PI);
+            angle = angleBetween( {x: vX, y: vY, z: vZ}, getNormal(this.offset.x, this.offset.z) );
+        } while (angle > this.range);
 
-        this.particles.push(new Particle(copy(this.offset), {x: vX, y: vY, z: vZ}, pull, fade));
+        this.particles.push(new Particle(copy(this.offset), {x: vX, y: vY, z: vZ}, pull, fade, removeBlack));
+    };
+
+
+    for (var i = 0; i < this.num_particles; i++) {
+        this.addParticle(this.offset, this.speed, this.range, this.removeBlack, this.minFade);
     }
 }
 

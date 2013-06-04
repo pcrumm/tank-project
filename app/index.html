@@ -53,6 +53,7 @@
             uniform int use_alpha;
             uniform float alpha;
             uniform int lightingOn;
+            uniform int removeBlack;
 
             uniform TerrainRegion region1;
             uniform TerrainRegion region2;
@@ -204,7 +205,7 @@
 
                 if (use_alpha > 0)
                 {
-                    if (gl_FragColor.r < (80.0/255.0) && gl_FragColor.g < (80.0/255.0) && gl_FragColor.b < (80.0/255.0))
+                    if (removeBlack != 0 && gl_FragColor.r < (80.0/255.0) && gl_FragColor.g < (80.0/255.0) && gl_FragColor.b < (80.0/255.0))
                         gl_FragColor.a = 0.0;
 
                     else
