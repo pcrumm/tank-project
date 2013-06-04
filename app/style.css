@@ -80,10 +80,25 @@ img#tanks-logo {
     position: relative;
     top: -430px;
     width: 800px;
+    z-index: 5;
 }
 
 #nice {
-    font: normal 25px "BebasNeueRegular", Helvetica, sans-serif;
+    position: relative;
+    height: 450px;
+    width: 800px;
+    margin: -450px auto 0 auto;
+    top: 0px;
+}
+
+#nice p {
+    opacity: 0;
+    height: 110px;
+    line-height: 110px;
+    /*background: rgba(0, 0, 0, 0.2);*/
+    color: #fff;
+    text-align: center;
+    font: normal 40px "BebasNeueRegular", Helvetica, sans-serif;
 }
 
 #score_value {

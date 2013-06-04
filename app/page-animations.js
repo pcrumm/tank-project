@@ -38,5 +38,9 @@ function updateHealthBar(health) {
 }
 
 function updateScoreScreen(score) {
+	$('#nice p').animate({opacity: 1, fontSize: 100+'px'}, 200);
+	setTimeout(function() {
+		$('#nice p').animate({opacity: 0, fontSize: 50+'px'}, 200);
+	}, 1000);
 	$('#score_value').html(score);
 }
