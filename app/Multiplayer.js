@@ -99,11 +99,10 @@ function Multiplayer() {
 
         // Let us know when we're hit
         socket.on('hit', function(tank_id, tank_health) {
-            console.log(tank_id, tank_health);
             updateTankHealth(tank_id, tank_health);
-            if (player.getTank().id != tank_id)
-                return;
-            player.playerHit();
+
+            if (player.getTank().id === tank_id)
+                player.playerHit();
         });
     });
 

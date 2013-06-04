@@ -67,7 +67,7 @@ Projectile.prototype.checkForCollisions = function() {
         emitters.push(e);
 
         // Check if this explosion has caught any tank in its path:
-        var explosion_bounding_sphere_radius = 2;
+        var explosion_bounding_sphere_radius = 4;
         var explosion_offset = this.offset;
         for (i = 0; i < tanks.length; i++) {
             var tank_offset = tanks[i].getOffset();
