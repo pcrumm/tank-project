@@ -8,8 +8,8 @@ var app = express()
   var connected_tanks = 0;
   var TANK_LIMIT = 10; // The maximum number of allowed clients
 
-  var DEFAULT_HEALTH = 150; // The default health for each tank
-  var HIT_DAMAGE = 35; // The amount of damage each hit will cause
+  var DEFAULT_HEALTH = 100; // The default health for each tank
+  var HIT_DAMAGE = 20; // The amount of damage each hit will cause
   var HIT_SCORE = 100; // The number of points scored on each hit
 
 // Serve all of the static files in our directory
