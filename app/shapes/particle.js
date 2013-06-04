@@ -14,44 +14,25 @@ function cross(vec1, vec2) {
     return {x: normal.x, y: normal.y, z: normal.z};
 }
 
-function generateBillboard(obj) {
-    //Generates the required rotations and axes to create a billboard effect
-    //Assumes object has look at vector[0,0,1] and up vector [0,1,0] for simplicity.
-    //Both of these are true for the particles.
+function generateBillboardMatrix(obj) {
+    //Assumes initial particle up vector if [0,1,0]
+    var cam = player.getCamera().getPos()
 
-    var yRot, tiltRot;
-    var yAxis, tiltAxis;
+    var look = {x: (cam.x - obj.x), y: (cam.y - obj.y), z: (cam.z - obj.z)};
 
-    var cam = player.getCamera().getPos();
+    var right = cross({x: 0, y: 1, z: 0}, look);
 
-    var objToCam = {x: (cam.x - obj.x), y: (cam.y - obj.y), z: (cam.z - obj.z)};
-    var objToCamProj = copy(objToCam);
-    objToCamProj.y = 0;
+    var up = cross(look, right);
 
-    objToCam = normalize(objToCam);
-    objToCamProj = normalize(objToCamProj);
+    var matrix = [
+        right.x, up.x, look.x, obj.x,
+        right.y, up.y, look.y, obj.y,
+        right.z, up.z, look.z, obj.z,
+              0,    0,      0,     1
+    ];
 
-    yAxis = cross({x: 0, y: 0, z: 1}, objToCamProj);
-
-    var dotY = objToCamProj.z; //Dot product of lookAt and objToCamProj
-
-    if (Math.abs(dotY) < 0.9999)
-        yRot = Math.acos(dotY) * (180/ Math.PI);
-
-    var dotTilt = (objToCam.x * objToCamProj.x) + (objToCam.y * objToCamProj.y) + (objToCam.z * objToCamProj.z);
-
-    if (Math.abs(dotTilt) < 0.9999)
-        tiltRot = Math.acos(dotTilt);
-
-    if (objToCam.y < 0)
-        tiltAxis = {x: 1, y: 0, z: 0};
-
-    else
-        tiltAxis = {x: -1, y: 0, z: 0};
-
-    return {yRot: yRot, tiltRot: tiltRot, yAxis: yAxis, tiltAxis: tiltAxis};
+    return matrix;
 }
-
 function Particle(offset, velocity, pull, fade_rate) {
     var vertices = [
         -0.25,-0.25, 0.0,
@@ -86,8 +67,7 @@ function Particle(offset, velocity, pull, fade_rate) {
 
     this.offset = offset || {x: 0, y: 0, z: 0};
     this.scale = {x: 1, y: 1, z: 1};
-    this.rotation = {x: 0, y: 0, z: 0}//{y: 0, tilt: 0}; //This will be change each frame by billboarding
-    this.rotAx = {y: 0, tilt: 0}; //Same as above
+    this.rotation = {x: 0, y: 0, z: 0}; //This will be change each frame by billboarding
     this.alpha = 1.0;
     this.alive = 1.0;
     this.velocity = velocity || {x: 1, y: 1, z: 1};
@@ -107,14 +87,6 @@ Particle.prototype.update = function() {
     this.velocity.y += this.pull.y;
     this.velocity.z += this.pull.z;
 
-    //Calculate the appropriate billboard rotations
-    var billboard = generateBillboard(this.offset);
-
-    //this.rotation.y = billboard.yRot;
-    //this.rotation.tilt = billboard.tiltRot;
-    this.rotAx.y = billboard.yAxis;
-    this.rotAx.tilt = billboard.tiltAxis;
-
     if (this.alive) {
         this.alpha -= this.fade_rate;
 
@@ -124,25 +96,16 @@ Particle.prototype.update = function() {
         }
     }
 
-    Shape.prototype.update.call(this);
-/*
+    //Shape.prototype.update.call(this);
+
+    //Calculate the appropriate billboard rotations
+    var billboard = generateBillboardMatrix(this.offset);
+
     mvPushMatrix();
 
-    mvRotate(this.rotation.y, [this.rotAx.y.x, this.rotAx.y.y, this.rotAx.y.z]);
-    mvRotate(this.rotation.tilt, [this.rotAx.tilt.x, this.rotAx.tilt.y, this.rotAx.tilt.z]);
-
-    mvTranslate([this.offset.x, this.offset.y, this.offset.z]);
-
-    gl.uniform1i(shaderProgram.multi, this.multiTex);
-    gl.uniform1i(shaderProgram.use_alpha, this.use_alpha);
-    gl.uniform1f(shaderProgram.alpha, this.alpha);
-
+    multMatrix(billboard);
     updateMatrixUniforms();
-
-    // Need to scale *after* updating the normals matrix (normals aren't normals if they get scaled)
-    // After, only updating the modelview matrix necessary.
-    mvScale(this.scale.x, this.scale.y, this.scale.z);
     updateViewMatrixUniform();
 
-    mvPopMatrix();*/
+    mvPopMatrix();
 };
