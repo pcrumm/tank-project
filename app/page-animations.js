@@ -31,6 +31,8 @@ function animate_loader_blocks() {
 }
 
 function updateHealthBar(health) {
-	$('#health_current').css('width', health + '%');
+	$('#health_current').animate({
+		width: health+'%'
+	},2000);
 	$('#health_value').html(health);
 }
