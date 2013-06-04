@@ -28,7 +28,7 @@ function Particle(offset, velocity, pull, fade_rate, removeBlack, texture) {
 
     this.texture = texture || textures.explosion;
 
-    Shape.call(this, vertices, normals, {texture: texture, texture_coords: texture_coords, use_alpha: true, alpha: 1.0 }, vertex_indices);
+    Shape.call(this, vertices, normals, {texture: textures.explosion, texture_coords: texture_coords, use_alpha: true, alpha: 1.0 }, vertex_indices);
 
     this.offset = offset || {x: 0, y: 0, z: 0};
     this.scale = {x: 1, y: 1, z: 1};

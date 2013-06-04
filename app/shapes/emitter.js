@@ -83,13 +83,13 @@ function Emitter(offset, num_particles, acceleration, maxSpeed, removeBlack, ran
     this.particles = [];
 
     var pull = acceleration; //Change of the velocity of the particle
-    this.speed = maxSpeed || 1;
     var fade;
+    var speed = maxSpeed || 1;
     var vX, vY, vZ;
     var angle;
 
     this.addParticle = function(offset, maxSpeed, range, removeBlack, minFade) {
-        fade = getRandInRange(0, 99)/1000 + this.minFade;
+        fade = getRandInRange(0, 99)/1000 + minFade;
 
         //Set a velocity that does not go into the terrain
         //A small value is added to make sure each particle has some speed
