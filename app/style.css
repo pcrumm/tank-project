@@ -88,15 +88,15 @@ img#tanks-logo {
     width: 200px;
     line-height: 25px;
     margin-left: 20px;
-    border: 1px rgba(200, 200, 200, 1) solid;
+    border: 1px rgba(0, 0, 0, 0.5) solid;
     background: rgba(0, 0, 0, 0.4);
 }
 
 #health_current {
     background: rgba(255, 0, 0, 0.5);
-    height: 24px;
+    height: 25px;
     position: relative;
-    top: -25px;
+    top: -26px;
     z-index: 1;
 }
 
