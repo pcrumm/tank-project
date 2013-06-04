@@ -72,6 +72,7 @@ function Multiplayer() {
         socket.on('server_full', function() {
             $('#glcanvas').detach();
             $('#instructions').hide();
+            $('#health').hide();
             $('#server_full_error').fadeIn('slow');
         });
 
@@ -88,6 +89,7 @@ function Multiplayer() {
             if (player.getTank().id != tank_id)
                 return;
 
+            $('#health').hide();
             $('#glcanvas').detach();
             $('#instructions').hide();
             $('#client_dead').fadeIn('slow');
