@@ -1,9 +1,9 @@
-function Particle(offset, velocity, pull, fade_rate) {
+function Particle(offset, velocity, pull, fade_rate, removeBlack, texture) {
     var vertices = [
-        -0.25,-0.25, 0.0,
-         0.25,-0.25, 0.0,
-         0.25, 0.25, 0.0,
-        -0.25, 0.25, 0.0
+        -0.125,-0.125, 0.0,
+         0.125,-0.125, 0.0,
+         0.125, 0.125, 0.0,
+        -0.125, 0.125, 0.0
     ];
 
     //These don't matter. Particles aren't lit
@@ -26,6 +26,8 @@ function Particle(offset, velocity, pull, fade_rate) {
         1, 1
     ];
 
+    this.texture = texture || textures.explosion;
+
     Shape.call(this, vertices, normals, {texture: textures.explosion, texture_coords: texture_coords, use_alpha: true, alpha: 1.0 }, vertex_indices);
 
     this.offset = offset || {x: 0, y: 0, z: 0};
@@ -37,6 +39,7 @@ function Particle(offset, velocity, pull, fade_rate) {
     this.pull = pull || {x: 0.0, y: 0.0, z: 0.0};
     this.fade_rate = fade_rate || 1.0; //How fast the particle fades after it dies
     this.lighting = false;
+    this.removeBlack = removeBlack;
 }
 
 inheritPrototype(Particle, Shape);

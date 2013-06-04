@@ -63,7 +63,7 @@ Projectile.prototype.checkForCollisions = function() {
 
         explosion.generate(this.offset, 'small');
 
-        var e = new Emitter(this.offset, this.rotation, 80, {x: 0, y: -0.02, z: 0}, 1.8);
+        var e = new Emitter(this.offset, 80, {x: 0, y: -0.02, z: 0}, 1.4, 1);
         emitters.push(e);
 
         // Check if this explosion has caught any tank in its path:
@@ -82,7 +82,6 @@ Projectile.prototype.checkForCollisions = function() {
                 break;
             }
         }
-
     }
 
     // Broadcast if a tank got hit:
