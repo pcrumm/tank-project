@@ -31,6 +31,8 @@ TankBody.prototype.moveOnZAxis = function(units) {
         return;
     }
 
+    // TODO: revert this removal of tank on tank collison:
+    /*
     for (var i = 0; i < tanks.length; i++) {
         if ( tanks[i] === this.tank ) {
             continue;
@@ -46,6 +48,7 @@ TankBody.prototype.moveOnZAxis = function(units) {
             return;
         }
     }
+    */
 
     this.offset = new_offset;
 }
