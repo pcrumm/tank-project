@@ -94,6 +94,15 @@ function initTextures() {
     explosion.image.src = 'assets/images/explosion.jpg';
     textures.explosion = explosion;
 
+
+    var fire = gl.createTexture();
+    fire.image = new Image();
+    fire.image.onload = function() {
+        handleLoadedTexture(fire);
+    };
+    fire.image.src = 'assets/images/fire.gif';
+    textures.fire = fire;
+
 }
 
 function handleLoadedTexture(texture) {

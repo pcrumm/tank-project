@@ -5,6 +5,9 @@ var perspectiveMatrix;
 
 var shaderProgram;
 
+var explosion;
+var explosions;
+
 var shapes;
 var tanks;
 var projectiles;
@@ -29,6 +32,8 @@ function start() {
         gl.clearDepth(1.0);                 // Clear everything
         gl.enable(gl.DEPTH_TEST);           // Enable depth testing
         gl.depthFunc(gl.LEQUAL);            // Near things obscure far things
+        gl.enable(gl.BLEND);
+        gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
 
         initShaders();
         initTextures();
@@ -47,8 +52,10 @@ function start() {
         shapes[1].lighting = shapes[2].lighting = false;
 
         tanks = [];
-
         projectiles = [];
+
+        explosion = new Explosion();
+        explosions = [];
 
         multiplayer = new Multiplayer();
         multiplayer.initConnection();
@@ -111,14 +118,22 @@ function drawScene() {
     player.update();
 
     // Remove projectiles if they are no longer active:
-    for (i = 0; i < projectiles.length; i++) {
+    for (var i = 0; i < projectiles.length; i++) {
         if ( projectiles[i].is_alive === false ) {
             projectiles.splice(i, 1);
         }
     }
 
-    items = shapes.concat(tanks); // Since a tank may have been added...
+    for (var i = 0; i < explosions.length; i++) {
+        if ( explosions[i].is_alive === false ) {
+            explosions.splice(i, 1);
+        }
+    }
+
+    var items = shapes.concat(tanks); // Since a tank may have been added...
     items = items.concat(projectiles);
+    items = items.concat(explosions);
+
     for (var i = 0; i < items.length; i++)
         items[i].draw();
 
