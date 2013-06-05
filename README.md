@@ -76,16 +76,16 @@ terrain, handles mixing multiple textures based on height (more on this is discu
 
 For this class project, we were required to implement at least three "advanced topics."
 
-### Terrain Generation (generated from a random seed)
+### Terrain Generation
 
 The game map is randomly generated using a simplex noise (the successor to Perlin noise) function. A 2D array of points
-is made, and each point is assigned a y value based on it's x/z values. Heigh given is actually a combination of several calls
+is made, and each point is assigned a y value based on it's x/z values. Height given is actually a combination of several calls
 to the noise generator, to provide variation in the terrain. After the grid of points is made, the map is shaped into an island.
 This is done by normalizing the the grid into a 2x2 square and finding each points distance from the center, and using that distance
 to either reduce the terrain or force it below the water line, giving a natural looking island. Lastly, a box filter is applied to smooth
 the heights and normals are calculated for lighting. The code for all of this can be found in app/shapes/Terrain.js.
 
-### Multitexturing (terrain generation based on height)
+### Multitexturing
 
 The island map for the game is made more interesting using multitexturing to give the appearance of climate change based on height.
 In Terrain.js, 5 regions are set, each of which overlaps with the regions next to it. Additionally, 5 textures are provided to the fragment
@@ -93,7 +93,7 @@ shader - sand, dirt, grass, rock, and snow. The fragment shader compares the hei
 appropriate texture. When a height falls in a region of overlap, a weighting function is used to smoothly interpolate between the two textures,
 giving a blended effect. The implementation for this can be found in app/index.html and app/shapes/Terrain.js.
 
-### Projectile Physics (tank projectiles)
+### Projectile Physics
 
 Projectile physics was used to realistically animate the projectiles shot by the tanks. When a projectile is generated, it
 has a initial height and velocity vector depending on the tank's position and direction of its turret. When the projectile
