@@ -26,6 +26,30 @@ function Multiplayer() {
         socket.emit('client_join');
     };
 
+    // Maintain privacy with var
+    var endGame = function(cause) {
+        $('#glcanvas').detach();
+        $('#instructions').hide();
+        $('#health').hide();
+
+        if (cause === 'server_full') {
+            $('#server_full_error').fadeIn('slow');
+        }
+        else if (cause === 'client_dead') {
+            $('#client_dead').fadeIn('slow');
+            sounds.sad_death.play();
+        }
+        else {
+            // This function may get called multiple times, this will prevent
+            // multiple error messages being shown
+            if ($('#server_full_error').is(':hidden') && $('#client_dead').is(':hidden')) {
+                $('#server_error').fadeIn('slow');
+            }
+        }
+
+        socket.disconnect();
+    };
+
     // Listeners
     socket.on('connect', function()
     {
@@ -38,6 +62,16 @@ function Multiplayer() {
 
             // Let the server know the tank's new position in light of the adjustment above
             socket.emit('update_tank_position', tanks[0].id, tanks[0].getOffset(), tanks[0].getBodyYRotation());
+
+            // Create heartbeat:
+            setInterval(function heartbeat() {
+                socket.emit('heartbeat', tanks[0].id, function handleServerResponse(message) {
+                    // If the server did not acknowledge, kill the game:
+                    if (message !== 'success') {
+                        endGame('error');
+                    }
+                });
+            }, 1000);
         });
 
         // Used to add a new third-party tank.
@@ -70,10 +104,7 @@ function Multiplayer() {
 
         // Used to notify a client there's no room for them to join. At this point, they aren't connected
         socket.on('server_full', function() {
-            $('#glcanvas').detach();
-            $('#instructions').hide();
-            $('#health').hide();
-            $('#server_full_error').fadeIn('slow');
+            endGame('server_full');
         });
 
         // Used to notify a client to draw a projectile. Ignore if we're the owner
@@ -89,13 +120,7 @@ function Multiplayer() {
             if (player.getTank().id != tank_id)
                 return;
 
-            $('#health').hide();
-            $('#glcanvas').detach();
-            $('#instructions').hide();
-            $('#client_dead').fadeIn('slow');
-            sounds.sad_death.play();
-
-            socket.disconnect();
+            endGame('client_dead');
         });
 
         // Let us know when we're hit
@@ -120,8 +145,8 @@ function Multiplayer() {
         });
     });
 
-    // Used to notify the server this client is disconnecting
+    // Disconnected from server:
     socket.on('disconnect', function() {
-        socket.emit('leaving', tanks[0].id);
+        endGame('error');
     });
 }

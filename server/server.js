@@ -5,76 +5,98 @@ var app = express()
   , server = http.createServer(app).listen(8080, 511, console.log('Listening on :8080'))
   , io = require('socket.io').listen(server);
 
-  var connected_tanks = 0;
-  var TANK_LIMIT = 10; // The maximum number of allowed clients
+var TANK_LIMIT = 10; // The maximum number of allowed clients
+var CLIENT_TIMEOUT = 5000; // Client times out if no heartbeat in past 5000 milliseconds
 
-  var DEFAULT_HEALTH = 100; // The default health for each tank
-  var HIT_DAMAGE = 20; // The amount of damage each hit will cause
-  var HIT_SCORE = 100; // The number of points scored on each hit
-  var KILL_SCORE = 900; // The number of points scored on each kill
+var DEFAULT_HEALTH = 100; // The default health for each tank
+var HIT_DAMAGE = 20; // The amount of damage each hit will cause
+var HIT_SCORE = 100; // The number of points scored on each hit
+var KILL_SCORE = 900; // The number of points scored on each kill
 
 // Serve all of the static files in our directory
 app.use('/lib', express.static(__dirname + '/../app/lib'));
 app.use('/shapes', express.static(__dirname + '/../app/shapes'));
 app.use(express.static(__dirname + '/../app'));
 
-var game_data = []; // Store all of the ongoing game data here
+var tanks = []; // Stores all tanks
 var projectiles = []; // Stores all projectiles
 var hits = []; // Projectile hits
+
+// Remove a tank from the tanks array if it hasn't checked in within CLIENT_TIMEOUT:
+setInterval(function checkForDisconnects() {
+    var current_time = (new Date()).getTime();
+    for (var i = 0; i < tanks.length; i++) {
+        if (current_time - tanks[i].last_checkin.getTime() > CLIENT_TIMEOUT) {
+            io.sockets.emit('remove_tank', tanks[i].tank_id);
+            tanks.splice(i, 1);
+        }
+    }
+}, CLIENT_TIMEOUT);
 
 io.sockets.on('connection', function(socket) {
     // When a client emits "join", we'll respond with the data they need to get instantiated
     socket.on('client_join', function() {
 
         // See if we have room for the client...
-        if (connected_tanks >= TANK_LIMIT)
+        if (tanks.length >= TANK_LIMIT)
         {
             socket.emit('server_full');
             socket.disconnect();
             return;
         }
 
-        var tank_id = game_data.length;
-        var tank_uniq_id = socket.id;
-        game_data[tank_id] = {
-            tank_id: tank_uniq_id,
-            position: {x: 150+(2.5*tank_id*Math.pow(-1,tank_id+1)), y: 0, z: 150+(2.5*tank_id*Math.pow(-1,tank_id))},
+        var new_tank_index = tanks.length
+        var tank_id = socket.id;
+        tanks[new_tank_index] = {
+            tank_id: tank_id,
+            position: {x: 150+(2.5*new_tank_index*Math.pow(-1,new_tank_index+1)), y: 0, z: 150+(2.5*new_tank_index*Math.pow(-1, new_tank_index))},
             rotation: 0,
             turret_rotation: 0,
             health: DEFAULT_HEALTH,
-            score: 0
+            score: 0,
+            last_checkin: new Date()
         };
 
-        console.log('Hello, ' + tank_id);
-        connected_tanks++;
-
         // Now that we've created the default positioning information, provide it to the client
-        socket.emit('welcome_client', game_data[tank_id]);
+        socket.emit('welcome_client', tanks[new_tank_index]);
 
         // Tell all of the other clients to add this tank
-        socket.broadcast.emit('add_tank', game_data[tank_id]);
+        socket.broadcast.emit('add_tank', tanks[new_tank_index]);
 
         // Notify the client to add all of the other tanks
-        for (var i = 0; i < game_data.length; i++)
+        for (var i = 0; i < tanks.length; i++)
         {
-            if (game_data[i].tank_id != tank_uniq_id)
+            if (tanks[i].tank_id != tank_id)
             {
-                socket.emit('add_tank', game_data[i]);
+                socket.emit('add_tank', tanks[i]);
             }
         }
     });
 
+    socket.on('heartbeat', function(tank_id, callback) {
+        for (var i = 0; i < tanks.length; i++) {
+            if (tanks[i].tank_id === tank_id) {
+                tanks[i].last_checkin = new Date();
+                callback('success');
+                return;
+            }
+        }
+
+        // Otherwise:
+        callback('error');
+    });
+
     // When a client tells us that its player has moved
     socket.on('update_tank_position', function(tank_id, tank_position, tank_rotation, tank_turret_rotation) {
-        for (var i = 0; i < game_data.length; i++)
+        for (var i = 0; i < tanks.length; i++)
         {
-            if (game_data[i].tank_id == tank_id)
+            if (tanks[i].tank_id == tank_id)
             {
-                game_data[i].position = tank_position;
-                game_data[i].rotation = tank_rotation;
-                game_data[i].turret_rotation = tank_turret_rotation;
+                tanks[i].position = tank_position;
+                tanks[i].rotation = tank_rotation;
+                tanks[i].turret_rotation = tank_turret_rotation;
 
-                socket.broadcast.emit('tank_did_move', game_data[i]);
+                socket.broadcast.emit('tank_did_move', tanks[i]);
             }
         }
     });
@@ -83,13 +105,11 @@ io.sockets.on('connection', function(socket) {
     socket.on('disconnect', function() {
         var tank_id = socket.id;
         console.log('Removing ' + tank_id);
-        for (var i = 0; i < game_data.length; i++)
+        for (var i = 0; i < tanks.length; i++)
         {
-            if (game_data[i].tank_id == tank_id)
+            if (tanks[i].tank_id == tank_id)
             {
-                game_data.splice(i, 1);
-                connected_tanks--;
-
+                tanks.splice(i, 1);
                 break;
             }
         }
@@ -110,7 +130,7 @@ io.sockets.on('connection', function(socket) {
             hits: 0,
             logged: false
         };
-        
+
         // Let everyone else know
         socket.broadcast.emit('fire_projectile', offset, velocity, tank_id, proj_id);
     });
@@ -122,7 +142,7 @@ io.sockets.on('connection', function(socket) {
         projectiles[proj_id].hits++;
 
         // If more than half the clients report a hit, it counts
-        if (projectiles[proj_id].hits >= (connected_tanks / 2))
+        if (projectiles[proj_id].hits >= (tanks.length / 2))
         {
             if (projectiles[proj_id].logged)
                 return;
@@ -133,7 +153,6 @@ io.sockets.on('connection', function(socket) {
             if (hit_tank === null)
                 return;
 
-            
             hit_tank.health -= HIT_DAMAGE;
             console.log(tank_id + ' has been hit! Health reduced to ' + hit_tank.health);
 
@@ -178,10 +197,10 @@ io.sockets.on('connection', function(socket) {
 
 function get_tank_by_id(tank_id)
 {
-   for (var i = 0; i < game_data.length; i++)
+   for (var i = 0; i < tanks.length; i++)
    {
-       if (game_data[i].tank_id == tank_id)
-        return game_data[i];
+       if (tanks[i].tank_id == tank_id)
+        return tanks[i];
    }
 
    return null;
