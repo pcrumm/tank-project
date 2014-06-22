@@ -212,8 +212,3 @@ function randString()
 
     return text;
 }
-
-// Array Remove - By John Resig (MIT Licensed)
-Array.prototype.remove = function(offset) {
-    this.splice(this.indexOf(offset, 1));
-};

@@ -99,7 +99,7 @@ function Multiplayer() {
             for (var i = 0; i < tanks.length; i++)
                 if (tanks[i].id == tank_id)
                 {
-                    tanks.remove(i);
+                    tanks.splice(i, 1);
                     break;
                 }
         });
