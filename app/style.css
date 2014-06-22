@@ -145,18 +145,18 @@ img#tanks-logo {
     display: block;
 }
 
-#server_full_error, #client_dead {
+#server_full_error, #client_dead, #server_error {
     text-align: center;
     display: none;
 }
 
-#server_full_error h1, #client_dead h1 {
+#server_full_error h1, #client_dead h1, #server_error h1 {
     font-family: "BebasNeueRegular";
     font-size: 80px;
     margin: 0 0 30px 0;
 }
 
-#server_full_error p, #client_dead p {
+#server_full_error p, #client_dead p,  #server_error p {
     font-size: 30px;
 }
 
