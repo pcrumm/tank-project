@@ -66,9 +66,6 @@ function start() {
 
         // Set up periodic updates:
         setInterval(drawScene, 30);
-        setInterval("multiplayer.receiveTankUpdate", 30);
-
-        showGame();
     }
 }
 
@@ -80,13 +77,13 @@ function start() {
 //
 function initWebGL(canvas) {
     gl = null;
-    
+
     try {
         // Try to grab the standard context. If it fails, fallback to experimental.
         gl = canvas.getContext("webgl", {alpha: false}) || canvas.getContext("experimental-webgl", {alpha: false});
     }
     catch(e) {}
-    
+
     // If we don't have a GL context, give up now
     if ( !gl ) {
         alert("Unable to initialize WebGL. Your browser may not support it.");
@@ -104,7 +101,7 @@ function drawScene() {
 
     // Establish the perspective with which we want to view the
     // scene. Our field of view is 60 degrees, with a width/height
-    // ratio of 800:450 (16:9), and we only want to see objects between 0.1 units
+    // ratio of 800:450 (16:9), and we only want to see objects between 1
     // and 500 units away from the camera.
     perspectiveMatrix = makePerspective(60, 800.0/450.0, 1, 500.0);
 
@@ -114,7 +111,7 @@ function drawScene() {
 
     // Save the current matrix.
     mvPushMatrix();
-    
+
     player.update();
 
     // Remove projectiles if they are no longer active:
@@ -142,18 +139,21 @@ function drawScene() {
     var items = shapes.concat(tanks); // Since a tank may have been added...
     items = items.concat(projectiles);
 
-    for (var i = 0; i < items.length; i++)
+    for (var i = 0; i < items.length; i++) {
         items[i].draw();
+    }
 
     // Emitters must be drawn after all opaque objects
     gl.enable(gl.BLEND);
 
-    for (var i = 0; i < explosions.length; i++)
+    for (var i = 0; i < explosions.length; i++) {
         explosions[i].draw();
+    }
 
     gl.depthMask(false);
-    for (var i = 0; i < emitters.length; i++)
+    for (var i = 0; i < emitters.length; i++) {
         emitters[i].draw();
+    }
     gl.disable(gl.BLEND);
     gl.depthMask(true);
 
@@ -161,7 +161,9 @@ function drawScene() {
     // Clouds move
     shapes[2].rotation.x += 0.01;
     shapes[2].rotation.y += 0.01;
-    if (shapes[2].rotation.x > 360.0) shapes[2].rotation.x -= 360.0;
+    if (shapes[2].rotation.x > 360.0) {
+        shapes[2].rotation.x -= 360.0;
+    }
 
     // Restore the original matrix
     mvPopMatrix();
@@ -174,7 +176,7 @@ function drawScene() {
 function updateTankPosition(tank_id, tank_position, tank_rotation, tank_turret_rotation)
 {
     for (var i = 0; i < tanks.length; i++) {
-        if ( tanks[i].id == tank_id ) {
+        if (tanks[i].id == tank_id) {
             tanks[i].setPositionAndRotation(tank_position, tank_rotation, tank_turret_rotation);
             tanks[i].adaptToTerrain();
             return true;
@@ -184,13 +186,12 @@ function updateTankPosition(tank_id, tank_position, tank_rotation, tank_turret_r
 
 function updateTankHealth(tank_id, tank_health)
 {
-    if (tank_id == player.getTank().id)
-    {
+    if (tank_id == player.getTank().id) {
         updateHealthBar(tank_health);
     }
 
     for (var i = 0; i < tanks.length; i++) {
-        if ( tanks[i].id == tank_id ) {
+        if (tanks[i].id == tank_id) {
             tanks[i].health = tank_health;
             return true;
         }
@@ -205,13 +206,14 @@ function randString()
     var text = "";
     var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
-    for( var i=0; i < 24; i++ )
+    for (var i = 0; i < 24; i++) {
         text += possible.charAt(Math.floor(Math.random() * possible.length));
+    }
 
     return text;
 }
 
 // Array Remove - By John Resig (MIT Licensed)
 Array.prototype.remove = function(offset) {
-  this.splice(this.indexOf(offset, 1));
+    this.splice(this.indexOf(offset, 1));
 };

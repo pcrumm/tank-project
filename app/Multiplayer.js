@@ -60,6 +60,8 @@ function Multiplayer() {
             tanks[0].id = tank_data.tank_id;
             player = new Player(tanks[0]);
 
+            showGame();
+
             // Let the server know the tank's new position in light of the adjustment above
             socket.emit('update_tank_position', tanks[0].id, tanks[0].getOffset(), tanks[0].getBodyYRotation());
 
